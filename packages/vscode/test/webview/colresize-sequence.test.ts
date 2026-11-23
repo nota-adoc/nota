@@ -613,7 +613,7 @@ describe.skipIf(!CHROME)('a table of 7 columns with a very wide last one: every 
           expect(Math.abs(sum(wa.widths) - wa.tw)).toBeLessThanOrEqual(wa.widths.length / 2 + 1)
           expect(wa.cls.split(' ')).not.toContain('tbl-fixed')
           expect(wa.style).toBe('')
-          expect(wa.cols.every((col) => col === '')).toBe(true)
+          expect(Math.max(...wa.widths) - Math.min(...wa.widths), 'different content produces different column widths').toBeGreaterThan(1)
         })
       }
 

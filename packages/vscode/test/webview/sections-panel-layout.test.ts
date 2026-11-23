@@ -7,7 +7,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { beforeAll, describe, expect, it } from 'vitest'
 import { CHROME_QUEUE_MS, holdChromeSlot } from './chrome.js'
-import { chromeDump } from './chrome-dump.js'
+import { chromeDump, chromeFrameHeight } from './chrome-dump.js'
 import { tabBundle } from './bundle.js'
 
 const CHROME = [process.env.CHROME_BIN ?? '', '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium'].find((p) => p && existsSync(p))
@@ -266,25 +266,6 @@ async function limited<T>(job: () => Promise<T>): Promise<T> {
     waiting.shift()?.()
   }
 }
-const frames = new Map<number, number>()
-/** How many px of `--window-size` Chrome keeps for itself (see `overlap-layout.test.ts`). */
-async function frameHeight(height: number): Promise<number> {
-  const known = frames.get(height)
-  if (known !== undefined) return known
-  const dir = mkdtempSync(join(tmpdir(), 'nota-frame-'))
-  try {
-    writeFileSync(join(dir, 'p.html'), '<!doctype html><title></title><script>document.title = "H " + innerHeight</script>')
-    const html = await chromeDump(CHROME!, ['--headless=new', '--disable-gpu', `--window-size=1280,${height}`, '--dump-dom', `file://${join(dir, 'p.html')}`], 30_000).catch(() => '')
-    const m = /<title>H (\d+)<\/title>/.exec(html)
-    const v = m ? Math.max(0, height - Number(m[1])) : 0
-    frames.set(height, v)
-    return v
-  } finally {
-    rmSync(dir, { recursive: true, force: true })
-  }
-}
-
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Result = any
 
@@ -305,7 +286,7 @@ async function measureTabNow(cfg: Config): Promise<Result> {
 window.requestAnimationFrame = (f) => setTimeout(() => f(performance.now()), 16); window.cancelAnimationFrame = (id) => clearTimeout(id)</script>
 <script src="webview.js"></script><script>${runner(cfg, cfg.suite === 'short' ? SHORT : MANY, SHORT_OF_MANY)}</script></body></html>`,
     )
-    const args = ['--headless=new', '--disable-gpu', '--allow-file-access-from-files', `--window-size=${cfg.width},${cfg.height + (await frameHeight(cfg.height))}`, '--virtual-time-budget=120000', '--dump-dom']
+    const args = ['--headless=new', '--disable-gpu', '--allow-file-access-from-files', `--window-size=${cfg.width},${cfg.height + (await chromeFrameHeight(CHROME!))}`, '--virtual-time-budget=120000', '--dump-dom']
     if (cfg.reduced) args.splice(2, 0, '--force-prefers-reduced-motion')
     const html = await chromeOut([...args, `file://${join(dir, 'p.html')}`])
     const m = /<title>RES ([^<]*)<\/title>/.exec(html)

@@ -346,13 +346,14 @@ describe('round trip and speed', () => {
     const linked = rows((i) => `https://c.example.net/${i}[Ссылка ${i}] и текст`)
     const time = (text: string): number => {
       const doc = parse(text)
-      const t0 = performance.now()
+      const start = process.cpuUsage()
       projectDocument(doc)
-      return performance.now() - t0
+      const { user, system } = process.cpuUsage(start)
+      return (user + system) / 1000
     }
     time(plain)
     time(linked)
-    // (the same machine, the two measured one after the other: a load that comes and goes is in both; the best of seven rounds)
+    // Use CPU time in the fork to exclude time it spends waiting for the runner to schedule it.
     let ratio = Infinity
     let least = Infinity
     for (let round = 0; round < 7; round++) {

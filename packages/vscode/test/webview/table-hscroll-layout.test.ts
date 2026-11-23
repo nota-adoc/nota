@@ -8,8 +8,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'no
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { beforeAll, describe, expect, it } from 'vitest'
-import { withChrome } from './chrome.js'
-import { chromeFrameHeight } from './chrome-dump.js'
+import { chromeDump, withChrome } from './chrome.js'
 import { tabBundle } from './bundle.js'
 
 const CHROME = [process.env.CHROME_BIN ?? '', '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium'].find((p) => p && existsSync(p))
@@ -250,6 +249,22 @@ interface Out {
 
 
 const HEIGHT = 800
+let frameH: Promise<number> | undefined
+/** How many px of `--window-size` Chrome keeps for itself (as in overlap-layout.test.ts): the window is made taller by that. */
+function frameHeight(): Promise<number> {
+  return (frameH ??= learnFrameHeight())
+}
+async function learnFrameHeight(): Promise<number> {
+  const dir = mkdtempSync(join(tmpdir(), 'nota-frame-'))
+  try {
+    writeFileSync(join(dir, 'p.html'), '<!doctype html><title></title><script>document.title = "H " + innerHeight</script>')
+    const html = await chromeDump(CHROME!, ['--headless=new', '--disable-gpu', `--window-size=1000,${HEIGHT}`, '--dump-dom', `file://${join(dir, 'p.html')}`], 60_000).catch(() => '')
+    const m = /<title>H (\d+)<\/title>/.exec(html)
+    return m ? Math.max(0, HEIGHT - Number(m[1])) : 0
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
+}
 
 /**
  * The page runs in a real Chrome in real time (DevTools protocol over a WebSocket): scroll events, layout and the sticky of the bar need frames, and a
@@ -314,7 +329,7 @@ async function pageFor(job: Job): Promise<Out> {
 <script>window.__msgs=[];window.acquireVsCodeApi=()=>({postMessage(m){window.__msgs.push(m)},getState:()=>null,setState(){}})</script>
 <script src="webview.js"></script><script>${runner(job, FILES[job.id]())}</script></body></html>`,
     )
-    const title = await runInChrome(`file://${join(dir, 'p.html')}`, Math.max(job.width, 500), HEIGHT + (await chromeFrameHeight(CHROME!)))
+    const title = await runInChrome(`file://${join(dir, 'p.html')}`, Math.max(job.width, 500), HEIGHT + (await frameHeight()))
     const m = /^RES (.*)$/s.exec(title)
     if (!m) throw new Error('the page did not report')
     const out = JSON.parse(m[1]!) as Out
