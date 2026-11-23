@@ -120,6 +120,19 @@ const colorOf = (s) => { const m = /rgba?\\(([^)]*)\\)/.exec(s); return m ? m[1]
 const lum = (c) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4) }; return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]) }
 const contrast = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05) }
 
+const caretInFirstCell = () => {
+  const editor = document.querySelector('.ed-visual [contenteditable="true"]')
+  editor.focus({ preventScroll: true })
+  const td = document.querySelector('.ed-visual td, .ed-visual th')
+  const r = document.createRange()
+  const tn = document.createTreeWalker(td, NodeFilter.SHOW_TEXT).nextNode()
+  r.setStart(tn || td, 0); r.collapse(true)
+  const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r)
+  document.dispatchEvent(new Event('selectionchange'))
+  return editor
+}
+const key = (el, k, extra) => el.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true, cancelable: true, ...extra }))
+
 window.__errs = []
 window.addEventListener('error', (e) => window.__errs.push(String(e.message)))
 const run = async () => {
@@ -139,13 +152,7 @@ const run = async () => {
     }
   }
   if (C.caretIn) {
-    document.querySelector('.ed-visual [contenteditable="true"]').focus()
-    const td = document.querySelector('.ed-visual td, .ed-visual th')
-    const r = document.createRange()
-    const tn = document.createTreeWalker(td, NodeFilter.SHOW_TEXT).nextNode()
-    r.setStart(tn || td, 0); r.collapse(true)
-    const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r)
-    document.dispatchEvent(new Event('selectionchange'))
+    caretInFirstCell()
     await sleep(600)
   }
   out.capsules = [...document.querySelectorAll('.isle')].map((e) => Math.round(rc(e).height))
@@ -295,25 +302,29 @@ const run = async () => {
   // the keyboard: Enter on a grip of a column and of a row opens the bar and puts the focus on its first button; the bar is whole in the tab and on no capsule
   if (C.caretIn) {
     out.enter = []
+    move(2, 2)
+    document.querySelector('.ed-visual').scrollTop = 0
+    sc().scrollLeft = 0
+    const editor = caretInFirstCell()
+    await sleep(500)
+    key(editor, 'Tab', { shiftKey: true })
     for (const [kind, i] of [['col', 1], ['row', 0]]) {
-      move(2, 2)
-      await sleep(500)
-      await over(sc().querySelector('td'))
-      const strip = grips().querySelector('[data-t="0"][data-kind="' + kind + '"][data-i="' + i + '"]')
-      if (!strip) { out.enter.push({ kind, i, nogrip: true }); continue }
+      // Escape after the first toolbar returns focus to its column grip. From there ArrowDown reaches the first row.
+      key(document.activeElement, kind === 'col' ? 'ArrowRight' : 'ArrowDown')
+      const strip = document.activeElement
+      if (strip.dataset.kind !== kind || Number(strip.dataset.i) !== i) { out.enter.push({ kind, i, nogrip: true }); continue }
       const other = grips().querySelector('[data-t="0"][data-kind="row"][data-i="1"]')
       if (other) {
         const p = centre(rc(other))
         move(p.x, p.y)
         await sleep(200)
       }
-      strip.focus({ preventScroll: true })
-      strip.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }))
+      key(strip, 'Enter')
       await sleep(500)
       const bar = visibleBar()
       const b = bar && rc(bar)
       out.enter.push({ kind, i, open: !!bar, focused: !!bar && bar.contains(document.activeElement) && document.activeElement.classList.contains('gbtn'), whole: !!b && inside(b, bounds()), onCapsule: !!b && isles().some((s) => hit(b, s)) })
-      document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }))
+      key(document.activeElement, 'Escape')
       await sleep(300)
     }
   }

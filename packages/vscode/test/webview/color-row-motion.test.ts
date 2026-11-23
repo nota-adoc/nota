@@ -559,16 +559,19 @@ describe.skipIf(!CHROME)('the row of colours opens and folds up smoothly (real C
           // it comes where it comes without motion
           const twin = calm.cases.find((x) => x.label.split('/').slice(1).join('/') === c.label.split('/').slice(1).join('/'))
           expect(sameRect(c.final, twin?.final, 0.5), `${c.label}: the settled rectangle ${c.final} / ${twin?.final}`).toBe(true)
-          // the circles in turn, left to right, all of them and the name by 350 ms
-          if (c.open.some((f) => f.dots.length > 0)) {
-            const full = (i: number): number => c.open.find((f) => f.dots[i] !== undefined && f.dots[i]! >= 0.99)?.t ?? Infinity
+          // Sample the entrances from the first frame containing the row. When the browser skips a frame,
+          // the first sample after the deadline can be one observed frame interval late.
+          const start = c.open.find((f) => f.dots.length > 0)
+          if (start) {
+            const full = (index: number): number => index < 0 ? Infinity : c.open[index]!.t
+            const beforeFull = (index: number): number => index < 0 ? Infinity : c.open[Math.max(0, index - 1)]!.t - start.t
             const n = Math.max(...c.open.map((f) => f.dots.length))
-            const times = Array.from({ length: n }, (_, i) => full(i))
-            for (let i = 1; i < n; i++) expect(times[i]!, `${c.label}: circle ${i} not before ${i - 1}`).toBeGreaterThanOrEqual(times[i - 1]!)
-            expect(times[n - 1]! - times[0]!, `${c.label}: the span of the circles`).toBeGreaterThanOrEqual(60)
-            expect(times[n - 1]!, `${c.label}: all circles by 350 ms`).toBeLessThanOrEqual(350)
-            const name = c.open.find((f) => f.name !== null && f.name >= 0.99)
-            if (!narrow) expect(name?.t ?? Infinity, `${c.label}: the name`).toBeLessThanOrEqual(350 + 17)
+            const settled = Array.from({ length: n }, (_, i) => c.open.findIndex((f) => (f.dots[i] ?? 0) >= 0.99))
+            for (let i = 1; i < n; i++) expect(full(settled[i]!), `${c.label}: circle ${i} not before ${i - 1}`).toBeGreaterThanOrEqual(full(settled[i - 1]!))
+            expect(full(settled[n - 1]!) - full(settled[0]!), `${c.label}: the span of the circles`).toBeGreaterThanOrEqual(60)
+            expect(beforeFull(settled[n - 1]!), `${c.label}: all circles by 350 ms`).toBeLessThanOrEqual(350)
+            const name = c.open.findIndex((f) => (f.name ?? 0) >= 0.99)
+            if (!narrow) expect(beforeFull(name), `${c.label}: the name by 350 ms`).toBeLessThanOrEqual(350)
           }
           // the ways to close it: the width goes down and is gone in 200 ms; the buttons are back; nothing is applied
           for (const [how, cl] of Object.entries(c.closers)) {
