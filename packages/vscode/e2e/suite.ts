@@ -987,11 +987,12 @@ const cases: [string, () => Promise<void>][] = [
         20000,
       )
       // no band behind the capsules, the first line stands below them
-      const now = (await state()) as { row?: { background: string; firstGap: number; gapOpen: boolean } } | undefined
-      assert.equal(now?.row?.background, 'rgba(0, 0, 0, 0)')
-      // the same gap as before (30 px under the row), give or take 2
-      assert.ok(Math.abs((now?.row?.firstGap ?? -99) - 30) <= 2, `the first line is 30 px under the capsules: ${now?.row?.firstGap}`)
-      assert.equal(now?.row?.gapOpen, true, 'a click in the gap between the capsules reaches the document')
+      const row = (await state() as { row?: { background: string; compact: boolean; firstGap: number; gapOpen: boolean } } | undefined)?.row
+      assert.ok(row, 'the capsule row was measured')
+      assert.equal(row.background, 'rgba(0, 0, 0, 0)')
+      const expectedGap = row.compact ? 22 : 30
+      assert.ok(Math.abs(row.firstGap - expectedGap) <= 2, `the first line is ${expectedGap} px under the capsules: ${row.firstGap}`)
+      assert.equal(row.gapOpen, true, 'a click in the gap between the capsules reaches the document')
       assert.equal(doc.getText(), original)
       assert.equal(doc.isDirty, false)
     },
@@ -1104,6 +1105,7 @@ const cases: [string, () => Promise<void>][] = [
         assert.ok(Math.abs(m.paragraph - m.page) <= 2, `paragraph ${m.paragraph} px, page ${m.page} px`)
         assert.ok(Math.abs(m.table - m.page) <= 2, `table ${m.table} px, page ${m.page} px`)
         assert.equal(m.scrollOverflows, false, `the scroll area scrolls sideways on a tab of ${m.tab} px`)
+        assert.ok(m.codeRows >= 2, `the two lines of code take ${m.codeRows} rows`)
         assert.ok(m.image <= m.page + 1 && m.image <= m.imageNatural + 1, `image ${m.image} px, page ${m.page} px, natural ${m.imageNatural} px`)
         assert.ok(Math.abs(m.image - Math.min(m.page, m.imageNatural)) <= 2, `image ${m.image} px should grow to the page ${m.page} px`)
         assert.ok(m.diagram <= m.page + 1, `diagram ${m.diagram} px, page ${m.page} px`)
@@ -1130,27 +1132,16 @@ const cases: [string, () => Promise<void>][] = [
         const scrolled = (await measure()).scrollTop
         assert.ok(scrolled > 0, 'the tab did not scroll to the end of the document')
         const other = (await change(first, first.tab < 1200)) ?? (await change(first, first.tab >= 1200))
-        const checkBlocks = (m: Width): void => {
-          // what depends on the real width of the page: the table of 7 columns needs ~844 px, a line of 113 signs ~ 940 px
-          if (m.page >= 960 - 2) {
-            assert.equal(m.tableScrolls, false, `the table scrolls on a page of ${m.page} px`)
-            assert.equal(m.codeRows, 2, `the two lines of code take ${m.codeRows} rows on a page of ${m.page} px`)
-          }
-          if (m.page <= 800 + 2 && m.tab > 650) {
-            assert.equal(m.tableScrolls, true, `the table of 7 columns does not scroll in its frame on a page of ${m.page} px`)
-            assert.ok(m.codeRows > 2, `the lines of code did not wrap on a page of ${m.page} px`)
-          }
-          assert.ok(m.diagram > 0 && m.image > 0)
-        }
-        checkBlocks(first)
         if (!other) {
           const warning = `WARNING: no way changed the width of the tab (${seen.map((m) => m.tab).join(', ')} px): the follow-the-width check was not done, the formula was checked at the one width of ${first.tab} px`
           console.log(`wide: ${warning}`)
         } else {
-          const bySize = [first, other].sort((x, y) => x.tab - y.tab)
-          console.log(`wide: tabs ${bySize[0]!.tab} px and ${bySize[1]!.tab} px, pages ${bySize[0]!.page} px and ${bySize[1]!.page} px`)
+          const [narrow, wide] = first.page <= other.page ? [first, other] : [other, first]
+          console.log(`wide: tabs ${narrow.tab} px and ${wide.tab} px, pages ${narrow.page} px and ${wide.page} px`)
           check(other)
-          checkBlocks(other)
+          // The width at which content fits depends on the fonts of the VS Code webview. The next case checks fixed widths in a controlled page.
+          assert.ok(!wide.tableScrolls || narrow.tableScrolls, `the table starts scrolling when the page grows to ${wide.page} px`)
+          assert.ok(wide.codeRows <= narrow.codeRows, `the code gains rows when the page grows from ${narrow.page} px to ${wide.page} px`)
           assert.ok(other.scrollTop > 0, `the scroll jumped to the start after the width changed (was ${scrolled} px)`)
         }
         // every width the tab got on the way is checked once more by the formula

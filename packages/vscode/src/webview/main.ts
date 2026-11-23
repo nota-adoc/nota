@@ -1186,6 +1186,7 @@ export function startPage(api: HostApi, root: HTMLElement, options: StartOptions
         const hit = rowBox ? doc.elementFromPoint(rowBox.left + 2, rowBox.top + rowBox.height / 2) : null
         const row = {
           background: rowEl ? getComputedStyle(rowEl).backgroundColor : '',
+          compact: doc.defaultView?.matchMedia?.('(max-width: 640px)').matches ?? false,
           firstGap: rowBox && firstEl ? firstEl.getBoundingClientRect().top - rowBox.bottom : 0,
           gapOpen: rowEl !== null && hit !== null && hit !== rowEl && !rowEl.contains(hit),
         }
