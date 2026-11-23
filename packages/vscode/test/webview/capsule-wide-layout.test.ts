@@ -289,11 +289,9 @@ describe.skipIf(!CHROME)('the capsule is open where it fits and «+» where it d
     }
     // the same threshold in both themes (it is a width, not a colour)
     expect(thresholds.size).toBe(1)
-    // the round capsule with the gear on the right moved the threshold from ≈ 922 to ≈ 966 px (the gear is counted once)
-    // with `frequent` the threshold is lower (the copy has «+» and four icons)
     if (set === 'all') {
-      expect([...thresholds][0]!, 'threshold with the gear').toBeGreaterThanOrEqual(950)
-      expect([...thresholds][0]!, 'threshold with the gear').toBeLessThanOrEqual(985)
+      // The full row is visible at 1000px. Its exact switch point depends on the system font.
+      expect([...thresholds][0]!, 'the full row fits at 1000 px').toBeLessThanOrEqual(1000)
     } else {
       // (the short word of the remarks is kept while the set is `frequent`, so the room is one at every width: ≈ 651 px)
       expect([...thresholds][0]!, 'threshold of the frequent set').toBeGreaterThan(650)

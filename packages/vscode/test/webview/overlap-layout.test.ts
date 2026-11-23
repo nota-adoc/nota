@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { beforeAll, describe, expect, it } from 'vitest'
 import { CHROME_QUEUE_MS, holdChromeSlot } from './chrome.js'
-import { chromeDump, chromeVersion } from './chrome-dump.js'
+import { chromeDump, chromeFrameHeight, chromeVersion } from './chrome-dump.js'
 import { tabBundle } from './bundle.js'
 
 const CHROME = [process.env.CHROME_BIN ?? '', '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium'].find((p) => p && existsSync(p))
@@ -135,28 +135,6 @@ function why(r: Run): string {
   return `${r.name}: ${bits.join(' ')}${r.word ? ` (word ${r.word}, area ${r.area})` : ''}`
 }
 
-let frame: Promise<number> | undefined
-/**
- * How many px of `--window-size` Chrome keeps for itself: `--headless` makes the page `innerHeight` shorter than the window (87 px on Chrome 157, both
- * Google Chrome and Chrome for Testing, 39 and 51). The cases below are laid out for a page of `HEIGHT` px (the word at 470 px must have room under it),
- * so the window is made taller by what Chrome takes, learned from a page that reports its own size.
- */
-function frameHeight(): Promise<number> {
-  return (frame ??= learnFrameHeight())
-}
-async function learnFrameHeight(): Promise<number> {
-  const dir = mkdtempSync(join(tmpdir(), 'nota-frame-'))
-  try {
-    writeFileSync(join(dir, 'p.html'), '<!doctype html><title></title><script>document.title = "H " + innerHeight</script>')
-    const html = await chromeDump(CHROME!, ['--headless=new', '--disable-gpu', `--window-size=1280,${HEIGHT}`, '--dump-dom', `file://${join(dir, 'p.html')}`], 60_000).catch(() => '')
-    const m = /<title>H (\d+)<\/title>/.exec(html)
-    return m ? Math.max(0, HEIGHT - Number(m[1])) : 0
-  } finally {
-    rmSync(dir, { recursive: true, force: true })
-  }
-}
-
-
 async function measureTab(width: number, theme: 'dark' | 'light'): Promise<Result> {
   const css = readFileSync(at('../../../react/src/style.css'), 'utf8') + '\n' + readFileSync(at('../../src/webview/style.css'), 'utf8')
   const dir = mkdtempSync(join(tmpdir(), 'nota-overlap-'))
@@ -171,7 +149,7 @@ async function measureTab(width: number, theme: 'dark' | 'light'): Promise<Resul
     )
     const html = await chromeDump(
       CHROME!,
-      ['--headless=new', '--disable-gpu', '--allow-file-access-from-files', `--window-size=${width},${HEIGHT + (await frameHeight())}`, '--virtual-time-budget=180000', '--dump-dom', `file://${join(dir, 'p.html')}`],
+      ['--headless=new', '--disable-gpu', '--allow-file-access-from-files', `--window-size=${width},${HEIGHT + (await chromeFrameHeight(CHROME!))}`, '--virtual-time-budget=180000', '--dump-dom', `file://${join(dir, 'p.html')}`],
       110_000,
     )
     const m = /<title>RES ([^<]*)<\/title>/.exec(html)
@@ -188,7 +166,7 @@ describe.skipIf(!CHROME)('the panel over a selection and the other things of the
   for (const [width, theme] of TABS) {
     it(`a tab of ${width} px, ${theme} theme`, { timeout: 200_000 }, async () => {
       const result = await measureTab(width, theme)
-      const where = `${await chromeVersion(CHROME!)}, window ${width}x${HEIGHT + (await frameHeight())}, page ${result.width}x${result.height}`
+      const where = `${await chromeVersion(CHROME!)}, window ${width}x${HEIGHT + (await chromeFrameHeight(CHROME!))}, page ${result.width}x${result.height}`
       expect(result.error, where).toBeUndefined()
       expect(result.runs.filter((r) => !r.name.includes(' '))).toHaveLength(CASES.length * HEIGHTS.length)
       // the row of colours was really open in the cases that are measured with it

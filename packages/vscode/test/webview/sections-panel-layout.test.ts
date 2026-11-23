@@ -48,7 +48,16 @@ const strokes = () => q('.isle-strokes')
 const scroller = () => q('.ed-visual')
 const heading = (n) => [...document.querySelectorAll('.ProseMirror h2')].find((h) => h.textContent.startsWith('code = ' + n + '.'))
 // (headless Chrome in virtual time draws no frames, so the scroll event does not come by itself)
-const scrollHeadingTo = async (n, y) => { const h = heading(n); scroller().scrollTop += h.getBoundingClientRect().top - y; scroller().dispatchEvent(new Event('scroll')); await sleep(250) }
+const scrollHeadingTo = async (n) => {
+  const sc = scroller(), view = sc.getBoundingClientRect(), h = heading(n).getBoundingClientRect()
+  const row = q('.ed-isles'), bottom = parseFloat(row.style.getPropertyValue('--tools-bottom')) || 0
+  const covered = Math.max(5, Math.round(row.getBoundingClientRect().top + bottom + 4 - view.top))
+  // The outline selects the block at one third of the uncovered editor viewport.
+  const probe = view.top + covered + (view.height - covered) / 3
+  sc.scrollTop += (h.top + h.bottom) / 2 - probe
+  sc.dispatchEvent(new Event('scroll'))
+  await sleep(250)
+}
 const current = () => card().querySelector('.tree-item.on')
 const mouse = (el, type) => el.dispatchEvent(new MouseEvent(type))
 /** The visible part of the panel: the box and the clip (inset(t r b l round …)). */
@@ -100,7 +109,7 @@ const run = async () => {
   out.step = 'closed'
   if (CFG.suite === 'narrow') {
     out.strokes = { shown: shown(strokes()) }
-    await scrollHeadingTo(77, 150)
+    await scrollHeadingTo(77)
     const isle = q('.isle-sections'); isle.click(); await sleep(400)
     card().getAnimations().forEach((a) => a.finish())
     const cb = box(card()), tab = box(q('.ed-main')), list = card().querySelector('.tree-list'), lb = box(list)
@@ -161,7 +170,7 @@ const run = async () => {
   const on = q('.isle-strokes .stroke.on')
   out.marksOn = { count: document.querySelectorAll('.isle-strokes .stroke.on').length }
   out.step = 's2'; // ---- heading 77 in the top third
-  await scrollHeadingTo(77, 150)
+  await scrollHeadingTo(77)
   const on77 = q('.isle-strokes .stroke.on')
   const sb = box(strokes())
   const idx = Number(on77 ? on77.dataset.index : -1)
@@ -186,13 +195,13 @@ const run = async () => {
   mouse(strokes(), 'mouseleave'); await sleep(800)
   out.k5.closedAfter = card().hidden
   out.step = 's4'; // ---- the beginning of the document
-  await scrollHeadingTo(1, 150)
+  await scrollHeadingTo(1)
   out.k5.first = current() ? current().textContent.slice(0, 11) : ''
   out.step = 's5'; // ---- a pinned panel follows the document, the list that was scrolled by hand stays
   strokes().click(); await sleep(500)
   out.follow = []
   for (const n of [10, 30, 60, 90, 120]) {
-    await scrollHeadingTo(n, 150)
+    await scrollHeadingTo(n)
     const l = card().querySelector('.tree-list'), lbx = box(l), r = box(current())
     out.follow.push({ n, name: current().textContent.slice(0, 14), whole: r.t >= lbx.t - 0.5 && r.b <= lbx.b + 0.5 })
   }

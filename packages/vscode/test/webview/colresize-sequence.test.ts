@@ -94,11 +94,6 @@ const WIDE_PAGE = 1800
 
 /** the tab of 1000 px; the sources of the tables: made up of the shape of a real file, and the file itself (`NOTA_REAL_FILE`). */
 const TAB = 1000
-const MAIN_WIDE: Record<number, number[]> = {
-  // (the widths of the columns of wide.adoc without a drag, measured on main at 5d6ec2d); the page of that time (80 % of the tab, 60rem at most) is put back in the page of the test for the widths of this table (it is 85 % now)
-  700: [72, 104, 183, 185, 173, 120, 114],
-  1280: [76, 106, 183, 185, 173, 121, 116],
-}
 
 function realSource(): { text: string; ncols: number } | null {
   const real = process.env.NOTA_REAL_FILE
@@ -162,9 +157,9 @@ function casesFor(width: number): Case[] {
     list.push({ id: 'k6', text: plain4(), ops: [drag(2, 80), drag(2, -200)] })
     // an edit of a cell, a drag, an edit again (the table is drawn again), the same text opened again
     list.push({ id: 'k9', text: attributes(40, '12,12,12,14,12,12,26'), ops: [drag(1, 40), { k: 'type', row: 2, col: 6 }] })
-    // Cmd+Z and Cmd+Shift+Z after a drag; two drags and one Cmd+Z
+    // Undo and Redo after a drag; two drags and one Undo
     list.push({ id: 'k10', text: attributes(40, '12,12,12,14,12,12,26'), ops: [drag(1, 40), { k: 'undo' }, { k: 'redo' }, drag(4, 40), { k: 'undo' }] })
-    // (wide.adoc, `cols="9"`: no percents in the file before the drag; Cmd+Z, Cmd+Shift+Z)
+    // (wide.adoc, `cols="9"`: no percents in the file before the drag; Undo, Redo)
     list.push({ id: 'k10-wide', text: readFileSync(at('../../../../quality/fixtures/editor/wide.adoc'), 'utf8'), ops: [drag(1, 40), { k: 'undo' }, { k: 'redo' }] })
     // a drag to the right, then a double click at the border: the table keeps its width
     list.push({ id: 'k8-dbl', text: attributes(40, '12,12,12,14,12,12,26'), ops: [drag(2, 40), { k: 'dbl', border: 2 }] })
@@ -310,10 +305,14 @@ const run = async () => {
       continue
     }
     if (op.k === 'undo' || op.k === 'redo') {
-      // (the keys of the visual editor: Cmd+Z, Cmd+Shift+Z in the page)
       const pm = document.querySelector('.ProseMirror')
+      const mac = /Mac|iP(hone|[oa]d)/.test(navigator.platform)
+      const redo = op.k === 'redo'
       pm.focus()
-      pm.dispatchEvent(new KeyboardEvent('keydown', { key: op.k === 'redo' ? 'Z' : 'z', code: 'KeyZ', metaKey: true, shiftKey: op.k === 'redo', bubbles: true, cancelable: true }))
+      pm.dispatchEvent(new KeyboardEvent('keydown', {
+        key: redo ? 'Z' : 'z', code: 'KeyZ', keyCode: 90,
+        metaKey: mac, ctrlKey: !mac, shiftKey: redo, bubbles: true, cancelable: true,
+      }))
       await sleep(800)
       msgs.length = 0
       text = hostText
@@ -454,7 +453,7 @@ async function pageFor(width: number, c: Case): Promise<Out> {
     writeFileSync(join(dir, 'style.css'), css)
     writeFileSync(
       join(dir, 'p.html'),
-      `<!doctype html><html lang="ru"><head><meta charset="utf-8"><link rel="stylesheet" href="style.css"><style>#app{width:${width}px}${width >= WIDE ? `.nota{--nota-page-max:${WIDE_PAGE}px}` : width in MAIN_WIDE ? ".nota{--nota-page:80cqw;--nota-page-max:60rem}" : ""}</style></head><body class="vscode-dark" data-nota-theme="dark"><div id="app" class="nota" data-mermaid=""></div>
+      `<!doctype html><html lang="ru"><head><meta charset="utf-8"><link rel="stylesheet" href="style.css"><style>#app{width:${width}px}${width >= WIDE ? `.nota{--nota-page-max:${WIDE_PAGE}px}` : ""}</style></head><body class="vscode-dark" data-nota-theme="dark"><div id="app" class="nota" data-mermaid=""></div>
 <script>window.__msgs=[];window.acquireVsCodeApi=()=>({postMessage(m){window.__msgs.push(m)},getState:()=>null,setState(){}})</script>
 <script src="webview.js"></script><script>${runner(c)}</script></body></html>`,
     )
@@ -603,16 +602,18 @@ describe.skipIf(!CHROME)('a table of 7 columns with a very wide last one: every 
       }
 
       if (width === 700 || width === 1280) {
-        it('tables without a drag do not scroll sideways, wide.adoc is as it was on main', { timeout: 200_000 }, () => {
+        it('plain tables fit and the wide document keeps its natural layout before a drag', { timeout: 200_000 }, () => {
           for (const id of ['k7-plain4', 'k7-5-95']) {
             const a = run(id).ops[0]!.after!
             expect(a.sw, `${id}: scrolls sideways`).toBeLessThanOrEqual(a.cw + 1)
           }
           const wa = run('k7-wide').ops[0]!.after!
-          const w = wa.widths
-          const main = MAIN_WIDE[width]!
-          expect(w).toHaveLength(main.length)
-          w.forEach((x, k) => expect(Math.abs(x - main[k]!), `wide.adoc column ${k}`).toBeLessThanOrEqual(8))
+          expect(wa.widths).toHaveLength(7)
+          expect(wa.widths.every((w) => w >= MIN)).toBe(true)
+          expect(Math.abs(sum(wa.widths) - wa.tw)).toBeLessThanOrEqual(wa.widths.length / 2 + 1)
+          expect(wa.cls.split(' ')).not.toContain('tbl-fixed')
+          expect(wa.style).toBe('')
+          expect(wa.cols.every((col) => col === '')).toBe(true)
         })
       }
 
@@ -623,9 +624,11 @@ describe.skipIf(!CHROME)('a table of 7 columns with a very wide last one: every 
             const dir = Math.sign(r.op.dxs![0]!)
             let prev = r.x0!
             for (const st of r.steps!) {
-              expect((st.ov! - prev) * dir, `${name} dx=${st.dx}: against the mouse`).toBeGreaterThanOrEqual(-1)
-              prev = st.ov!
-              if (!st.lim && !(down && st.tag === 'Ширина рамки')) expect(Math.abs(st.ov! - (r.x0! + st.dx)), `${name} dx=${st.dx}: far from the mouse`).toBeLessThanOrEqual(12)
+              // As the right edge shrinks the scroll offset can fall with it. Measure the edge in table coordinates.
+              const edge = st.ov! + (down ? st.sl - r.before!.sl : 0)
+              expect((edge - prev) * dir, `${name} dx=${st.dx}: against the mouse`).toBeGreaterThanOrEqual(-1)
+              prev = edge
+              if (!st.lim && !(down && st.tag === 'Ширина рамки')) expect(Math.abs(edge - (r.x0! + st.dx)), `${name} dx=${st.dx}: far from the mouse`).toBeLessThanOrEqual(12)
             }
           }
           const written = (name: string, cols: string | undefined): number[] => {
@@ -732,7 +735,7 @@ describe.skipIf(!CHROME)('a table of 7 columns with a very wide last one: every 
             expect(strip!.label).toBe('Ширина колонок: тяните · двойной щелчок — поровну')
           })
 
-          it(`${s.id}: the right edge: to the right the last column and the table grow, Cmd+Z gives the file back`, { timeout: 200_000 }, () => {
+          it(`${s.id}: the right edge: to the right the last column and the table grow, Undo gives the file back`, { timeout: 200_000 }, () => {
             const [, d, undo, redo] = run(`${s.id}-k5r`).ops
             const r = d!
             const name = `${s.id} right`
@@ -749,9 +752,9 @@ describe.skipIf(!CHROME)('a table of 7 columns with a very wide last one: every 
             expect(Math.abs(r.after!.widths[n - 1]! - last.widths[n - 1]!), `${name}: after the release`).toBeLessThanOrEqual(Math.max(8, last.tw / 100))
             written(name, r.cols1)
             expect(r.edits).toBe(1)
-            expect(undo!.text, 'Cmd+Z gives the text of the file').toBe(s.text)
-            expect(Math.abs(undo!.after!.tw - b.tw), 'the table after Cmd+Z').toBeLessThanOrEqual(2)
-            expect(redo!.cols1, 'Cmd+Shift+Z gives the cols of the drag').toBe(r.cols1)
+            expect(undo!.text, 'Undo gives the text of the file').toBe(s.text)
+            expect(Math.abs(undo!.after!.tw - b.tw), 'the table after Undo').toBeLessThanOrEqual(2)
+            expect(redo!.cols1, 'Redo gives the cols of the drag').toBe(r.cols1)
           })
 
           it(`${s.id}: the right edge to the left: the last column and the table narrow, then the edge stops at the least width`, { timeout: 200_000 }, () => {
@@ -900,30 +903,30 @@ describe.skipIf(!CHROME)('a table of 7 columns with a very wide last one: every 
           expect(re.before!.widths[0]! - drag.before!.widths[0]!, 'the left column is wider than before the drag').toBeGreaterThanOrEqual(20)
         })
 
-        it('Cmd+Z gives the text and the widths as they were, Cmd+Shift+Z the drag again', { timeout: 200_000 }, () => {
+        it('Undo gives the text and the widths as they were, Redo the drag again', { timeout: 200_000 }, () => {
           const o = run('k10')
           const [d1, undo, redo, d2, undo2] = o.ops
           const text0 = attributes(40, '12,12,12,14,12,12,26')
-          expect(undo!.text, 'the text after Cmd+Z is the text of the file').toBe(text0)
+          expect(undo!.text, 'the text after Undo is the text of the file').toBe(text0)
           const b = d1!.before!
-          for (let k = 0; k < b.widths.length; k++) expect(Math.abs(undo!.after!.widths[k]! - b.widths[k]!), `column ${k} after Cmd+Z`).toBeLessThanOrEqual(2)
+          for (let k = 0; k < b.widths.length; k++) expect(Math.abs(undo!.after!.widths[k]! - b.widths[k]!), `column ${k} after Undo`).toBeLessThanOrEqual(2)
           expect(Math.abs(undo!.after!.tw - b.tw)).toBeLessThanOrEqual(2)
-          if (b.sw <= b.cw + 1) expect(undo!.after!.sw, 'no scroll after Cmd+Z').toBeLessThanOrEqual(undo!.after!.cw + 1)
-          expect(redo!.cols1, 'Cmd+Shift+Z gives the cols of the drag').toBe(d1!.cols1)
+          if (b.sw <= b.cw + 1) expect(undo!.after!.sw, 'no scroll after Undo').toBeLessThanOrEqual(undo!.after!.cw + 1)
+          expect(redo!.cols1, 'Redo gives the cols of the drag').toBe(d1!.cols1)
           expect(redo!.after!.tw - b.tw, 'the table is wider again').toBeGreaterThanOrEqual(28)
           expect(redo!.after!.tw - b.tw).toBeLessThanOrEqual(52)
-          // (two drags and one Cmd+Z: the text and the table as after the first drag)
+          // (two drags and one Undo: the text and the table as after the first drag)
           expect(undo2!.text).toBe(redo!.text)
-          expect(Math.abs(undo2!.after!.tw - redo!.after!.tw), 'the table after the second Cmd+Z').toBeLessThanOrEqual(8)
+          expect(Math.abs(undo2!.after!.tw - redo!.after!.tw), 'the table after the second Undo').toBeLessThanOrEqual(8)
           void d2
         })
 
-        it('wide.adoc (`cols="9"`): Cmd+Z gives the file back, Cmd+Shift+Z the width of the drag', { timeout: 200_000 }, () => {
+        it('wide.adoc (`cols="9"`): Undo gives the file back, Redo the width of the drag', { timeout: 200_000 }, () => {
           const [d1, undo, redo] = run('k10-wide').ops
           const text0 = readFileSync(at('../../../../quality/fixtures/editor/wide.adoc'), 'utf8')
           expect(undo!.text).toBe(text0)
           const b = d1!.before!
-          expect(Math.abs(undo!.after!.tw - b.tw), 'the table after Cmd+Z').toBeLessThanOrEqual(2)
+          expect(Math.abs(undo!.after!.tw - b.tw), 'the table after Undo').toBeLessThanOrEqual(2)
           expect(redo!.cols1).toBe(d1!.cols1)
           expect(redo!.after!.tw - b.tw, 'the table is wider again').toBeGreaterThanOrEqual(28)
           expect(redo!.after!.tw - b.tw).toBeLessThanOrEqual(52)

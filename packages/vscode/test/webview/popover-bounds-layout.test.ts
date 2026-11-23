@@ -9,7 +9,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { beforeAll, describe, expect, it } from 'vitest'
 import { CHROME_QUEUE_MS, holdChromeSlot } from './chrome.js'
-import { chromeDump } from './chrome-dump.js'
+import { chromeDump, chromeFrameHeight } from './chrome-dump.js'
 import { tabBundle } from './bundle.js'
 
 const CHROME = [process.env.CHROME_BIN ?? '', '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium'].find((p) => p && existsSync(p))
@@ -49,7 +49,7 @@ const init = () => window.postMessage({ type: 'init', text: TEXT, version: 1, fi
 const again = () => window.postMessage({ type: 'reset', text: TEXT, version: ++ver + 1, stale: false }, '*')
 const V = () => $('.ed-visual')
 const snap = () => ({ rh: R.scrollHeight, rch: R.clientHeight, rw: R.scrollWidth, rcw: R.clientWidth, sy: scrollY, sx: scrollX, vsw: V().scrollWidth, vcw: V().clientWidth, vch: V().clientHeight, vsh: V().scrollHeight, vst: V().scrollTop })
-const out = { height: innerHeight, width: innerWidth, bad: [], log: [], ran: [], views: [] }
+const out = { height: innerHeight, width: innerWidth, bad: [], ran: [], views: [] }
 let tag = ''
 const fail = (label, what) => out.bad.push(tag + ' ' + label + ': ' + what)
 const inside = (el) => {
@@ -66,7 +66,6 @@ const check = (label, base, el, step, grows) => {
   else if (c.vsw !== base.vsw || c.vcw !== base.vcw || c.vch !== base.vch) bad.push('V sizes ' + [c.vsw, c.vcw, c.vch] + ' were ' + [base.vsw, base.vcw, base.vch] + ' L ' + $('.ed-main').getBoundingClientRect().height + ' kids ' + [...$('.ed-main').children].map((k) => k.className + ':' + Math.round(k.getBoundingClientRect().height)).join('|'))
   if (!grows && c.vsh > base.vsh) bad.push('V grew ' + base.vsh + ' -> ' + c.vsh)
   if (el) { const r = el.getBoundingClientRect(); if (!inside(el)) bad.push('window out of L: ' + [r.left, r.top, r.right, r.bottom].map(Math.round) + ' L ' + (() => { const l = $('.ed-main').getBoundingClientRect(); return [l.left, l.top, l.right, l.bottom].map(Math.round) })()) }
-  out.log.push({ tag, label, step, R: [c.rcw, c.rch, c.rw, c.rh], V: [c.vcw, c.vch, c.vsw, c.vsh, c.vst], win: [c.sx, c.sy], bad: bad.length })
   for (const b of bad) fail(label + ' ' + step, b)
   return c
 }
@@ -357,11 +356,8 @@ interface Result {
   bad: string[]
   ran: string[]
   views: string[]
-  log: { tag: string; label: string; step: string; R: number[]; V: number[]; win: number[]; bad: number }[]
 }
 
-/** The height of the frame of the headless window: the page gets `--window-size` less this. */
-const CHROME_BAR = 87
 /** The narrowest window headless Chrome opens: a tab of 390 px is `#app` of 390 px in a window of 500. */
 const MIN_WIDTH = 500
 
@@ -382,7 +378,7 @@ async function measureTab(width: number, height: number): Promise<Result> {
     // a busy machine: Chrome has dumped the page and then did not close in time (its watchdog ends it with status 2): the dump is good, `chromeDump` takes it
     const html = await chromeDump(
       CHROME!,
-      ['--headless=new', '--disable-gpu', '--allow-file-access-from-files', `--window-size=${Math.max(width, MIN_WIDTH)},${height + CHROME_BAR}`, '--virtual-time-budget=600000', '--dump-dom', `file://${join(dir, 'p.html')}`],
+      ['--headless=new', '--disable-gpu', '--allow-file-access-from-files', `--window-size=${Math.max(width, MIN_WIDTH)},${height + (await chromeFrameHeight(CHROME!))}`, '--virtual-time-budget=600000', '--dump-dom', `file://${join(dir, 'p.html')}`],
       550_000,
     )
     const m = /<title>RES ([^<]*)<\/title>/.exec(html)
@@ -418,8 +414,7 @@ describe.skipIf(!CHROME)('the windows at the edge of the tab do not change the s
       // the capsule is wide (the blocks as icons, no «+») where it fits (a threshold of ≈ 966 px, `capsule-wide-layout.test.ts`), else «+» opens the list
       const view = width >= 966 ? 'wide' : 'list'
       expect(r.views, 'the view of «+»').toEqual([view, view])
-      // the numbers of R and V before, during and after: in the message, if anything is wrong
-      expect(r.bad, JSON.stringify(r.log.filter((l) => l.bad > 0))).toEqual([])
+      expect(r.bad, r.bad.join('\n')).toEqual([])
     })
   }
 })

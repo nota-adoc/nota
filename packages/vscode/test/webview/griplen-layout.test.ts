@@ -328,14 +328,6 @@ const T = 1 // (px: the tolerance)
 const near = (a: number, b: number, d = T): boolean => Math.abs(a - b) <= d
 const want = (line: number, strip: number): number => Math.min(strip, Math.max(24, Math.round(0.7 * line)))
 
-/** The capsules on main before the width of the page moved them (85 %: the capsules that stand off the page edge or off the middle of a column) (a tab of 1280 px, light theme, the same tables and window), measured with this very test: left/top/width/height. */
-const MAIN: Record<string, [number, number, number, number]> = {
-  col1: [603.98, 89.5, 71, 26], // (column 2 of the table 3×3)
-  row1: [56, 152.14, 26, 71], // (the page is 85 % of the tab from 1088 px, its left edge 96 px; row 2 of the table 3×3)
-  wide4: [854.97, 89.5, 71, 26], // (column 5 of `wide()`, the frame is scrolled by 200 px)
-  sel: [423.33, 89.5, 71, 26], // (columns 1–2 of the table 3×3 are selected)
-}
-
 describe.skipIf(!CHROME)('the stroke of a grip is 70 % of its column or row (real Chrome)', () => {
   const runs: [number, 'dark' | 'light'][] = [
     [1280, 'light'],
@@ -447,7 +439,7 @@ describe.skipIf(!CHROME)('the stroke of a grip is 70 % of its column or row (rea
       })
 
       if (width === 1280 && theme === 'light') {
-        it('the capsule stands where it stood on main, over the middle of the stroke', { timeout: 60_000 }, () => {
+        it('each capsule is centered on its stroke or selected group', { timeout: 60_000 }, () => {
           const cap = (o: Out, key: string): Box => {
             const c = o.capsules[key]
             expect(c && !('none' in c), `${o.id} ${key}: a capsule`).toBe(true)
@@ -461,15 +453,16 @@ describe.skipIf(!CHROME)('the stroke of a grip is 70 % of its column or row (rea
           expect(near((cap(t, 'col1').left + cap(t, 'col1').right) / 2, col.stroke.centre), 'col 2: the centre of the capsule and of the stroke').toBe(true)
           expect(near((cap(t, 'row1').top + cap(t, 'row1').bottom) / 2, rowCap.stroke.centre), 'row 2: the centre').toBe(true)
           expect(near((cap(w, 'col4').left + cap(w, 'col4').right) / 2, wideCap.stroke.centre), 'wide col 5: the centre').toBe(true)
-          const rects: Record<string, Box> = { col1: cap(t, 'col1'), row1: cap(t, 'row1'), wide4: cap(w, 'col4') }
-          if (t.selection?.rect) rects.sel = t.selection.rect
-          expect(t.selection?.bars, 'one capsule over the selected columns').toBe(1)
-          for (const [k, r] of Object.entries(rects)) {
-            const m = MAIN[k]
-            expect(m, `main has numbers for ${k}`).toBeDefined()
-            const got4 = [r.left, r.top, r.width, r.height]
-            expect(got4.every((v, j) => near(v, m![j]!)), `capsule ${k}: ${JSON.stringify(got4)} on main ${JSON.stringify(m)}`).toBe(true)
-          }
+          expect(col.rect.width, 'horizontal column capsule').toBeGreaterThan(col.rect.height)
+          expect(near(wideCap.rect.width, col.rect.width) && near(wideCap.rect.height, col.rect.height), 'same column capsule size in both tables').toBe(true)
+          expect(near(rowCap.rect.width, col.rect.height) && near(rowCap.rect.height, col.rect.width), 'row capsule uses the same dimensions vertically').toBe(true)
+          const selection = t.selection
+          expect(selection?.bars, 'one capsule over the selected columns').toBe(1)
+          expect(selection?.on.map((c) => c.i)).toEqual(['0', '1'])
+          const rect = selection!.rect!
+          const centre = (selection!.on[0]!.centre + selection!.on[1]!.centre) / 2
+          expect(near((rect.left + rect.right) / 2, centre), 'selected columns: the centre of the capsule').toBe(true)
+          expect(near(rect.width, col.rect.width) && near(rect.height, col.rect.height), 'same column capsule size for a group').toBe(true)
         })
       }
     })

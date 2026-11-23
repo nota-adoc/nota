@@ -191,7 +191,8 @@ export function BubbleMenu(props: BubbleMenuProps): ReactElement | null {
       return
     }
     el.style.width = ''
-    const to = el.offsetWidth
+    // Keep the fractional width so clearing the inline width does not move the panel.
+    const to = el.getBoundingClientRect().width
     final.current = to
     // it starts from the width of now (no transition on the way there), then goes to the width it comes to
     el.style.transition = 'none'
@@ -414,7 +415,7 @@ export function BubbleMenu(props: BubbleMenuProps): ReactElement | null {
     }
     const el = ref.current
     // (while it moves: the width it comes to, so the place does not change with every frame)
-    const w = moving.current ? final.current : (el?.offsetWidth ?? 0)
+    const w = moving.current ? final.current : (el?.getBoundingClientRect().width ?? 0)
     const h = el?.offsetHeight ?? 0
     const sameLine = Math.abs(a.top - b.top) < 4
     const mid = sameLine ? (a.left + b.right) / 2 : a.left

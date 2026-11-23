@@ -303,7 +303,8 @@ function grows(c: ReturnType<typeof ok>, n: number, tol = 8): void {
   expect(w.every((x) => Number.isInteger(x) && x > 0), `${c.id}: whole percents`).toBe(true)
   expect(sum(w)).toBe(100)
   // (the release: the table stays as wide as the drag left it, the border is where the mouse let go, the frame is not scrolled back)
-  expect(Math.abs(c.after.real - last.real), `${c.id}: the border jumped at the release`).toBeLessThanOrEqual(12)
+  // After release the document stores whole percentages, so a wider table can shift the border by more than 12 pixels.
+  expect(Math.abs(c.after.real - last.real), `${c.id}: the border jumped at the release`).toBeLessThanOrEqual(Math.max(12, last.tw / 100))
   expect(Math.abs(c.after.tw - last.tw), `${c.id}: the table after the release`).toBeLessThanOrEqual(tol)
   expect(c.after.sl, `${c.id}: scrollLeft`).toBeGreaterThanOrEqual(last.sl - 1)
 }

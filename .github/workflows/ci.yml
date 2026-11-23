@@ -34,9 +34,9 @@ jobs:
       - run: npm run build
       - run: npm run typecheck
       - run: npm run lint
-      - run: npm test
-        env:
-          NOTA_CHROME_MAX: 4
+      - run: >-
+          npm test -- --project node --project codemirror --project prosemirror --project react
+          --project demo --project demo-build --project vscode-host --maxWorkers 2
       - run: npm run check:browser
       - name: TCK of the Eclipse AsciiDoc project (pinned commit, adapter of Nota)
         run: npm run tck
@@ -62,6 +62,23 @@ jobs:
         run: npm run notices -- --check
       - name: build the demo page
         run: npm run demo:build
+
+  # Chrome runs the bundled webview once. The Node matrix still checks the host and packages on every supported release.
+  webview:
+    name: Chrome webview
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: google-chrome --version
+      - run: nice -n 19 npm test -- --project vscode-webview --maxWorkers 2
+        env:
+          NOTA_CHROME_MAX: 2
 
   # Build and install the VSIX in a clean VS Code, then run the e2e suite.
   vscode:
@@ -112,9 +129,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - run: npm test
-        env:
-          NOTA_CHROME_MAX: 4
+      - run: >-
+          npm test -- --project node --project codemirror --project prosemirror --project react
+          --project demo --project demo-build --project vscode-host --maxWorkers 2
 
   node20:
     name: runtime on Node 20

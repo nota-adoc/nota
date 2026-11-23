@@ -162,6 +162,11 @@ const run = async () => {
     // (the row of the table that is visible: a row that is out of the tab is brought in)
     const tr = [...sc().querySelectorAll(':scope > table > tbody > tr')]
     if (v.kind === 'row' && !C.bottom) tr[v.i].scrollIntoView({ block: 'center', behavior: 'instant' })
+    if (v.kind === 'col' && (C.caretIn || C.caretOut)) {
+      // Bring each column of the first table into view before looking for its grip.
+      const frame = rc(sc()), column = rc(tr[0].children[v.i])
+      if (column.left < frame.left || column.right > frame.right) sc().scrollLeft += centre(column).x - centre(frame).x
+    }
     await sleep(300)
     const cell = [...sc().querySelectorAll(':scope > table > tbody > tr > :is(td, th)')].find((c) => { const q = rc(c); const f = rc(sc()); return q.left >= f.left && q.right <= f.right + 1 && q.top >= bounds().top + 60 && q.bottom <= bounds().bottom - 10 }) || sc().querySelector('td')
     await over(cell)

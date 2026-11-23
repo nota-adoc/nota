@@ -105,6 +105,8 @@ export function Dropdown(props: DropdownProps): ReactElement {
     const host = bounds ? bounds() : (wrap.current.closest<HTMLElement>('.fl, .pop')?.offsetParent as HTMLElement | null | undefined)
     const layer = host?.getBoundingClientRect()
     el.style.maxHeight = ''
+    el.style.left = ''
+    el.style.right = ''
     const w = el.offsetWidth
     const h = el.offsetHeight
     const width = Math.min(doc.documentElement.clientWidth || win?.innerWidth || 0, layer && layer.width > 0 ? layer.right : Infinity)
@@ -121,7 +123,17 @@ export function Dropdown(props: DropdownProps): ReactElement {
         el.style.maxHeight = `${Math.max(80, side === 'up' ? above : below)}px`
       }
     }
-    setPlace({ right: width > 0 && w > 0 && at.left + w > width - 4, up })
+    const right = width > 0 && w > 0 && at.left + w > width - 4
+    if (width > 0 && w > 0) {
+      const minLeft = Math.max(0, layer && layer.width > 0 ? layer.left : 0) + 4
+      const anchor = right ? at.right - w : at.left
+      const left = Math.max(minLeft, Math.min(anchor, width - w - 4))
+      if (left !== anchor) {
+        el.style.left = `${left - at.left}px`
+        el.style.right = 'auto'
+      }
+    }
+    setPlace({ right, up })
   }, [open, flip, items.length, bounds, topLimit])
 
   useEffect(() => {

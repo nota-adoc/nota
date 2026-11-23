@@ -557,9 +557,8 @@ body.vscode-high-contrast:not(.vscode-high-contrast-light) .nota-tip kbd { backg
   .ed-isles[data-blocks="frequent"] .rm-text::after { content: attr(data-short); font-size: 13px; }
 }
 
-/* in the mode «Текст» the capsule is longer by the note «Режим «Текст»»; with `frequent` it opens at ≈ 703 px, and «Разделы» with its name (+80 px, from 801 px)
-   would close it again until ≈ 877 px (so would the long word of «Замечания», the same 801 px). So here both keep the short form up to 900 px (the name fits again well before it): the capsule opens once */
-@container (max-width: 900px) {
+/* The Text-mode note takes extra room. Keep section and remark labels short until the full row fits with Linux and macOS system fonts. */
+@container (max-width: 940px) {
   .ed-isles[data-blocks="frequent"]:has(.isle-tools .tb-note) .isle-sections { width: 36px; padding: 0; justify-content: center; }
   .ed-isles[data-blocks="frequent"]:has(.isle-tools .tb-note) .isle-sections .isle-name,
   .ed-isles[data-blocks="frequent"]:has(.isle-tools .tb-note) .isle-sections .i-chev { display: none; }
