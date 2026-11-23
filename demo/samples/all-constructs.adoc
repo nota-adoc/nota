@@ -1,0 +1,147 @@
+= Every construct, part two
+Alex Doe <alex@example.com>
+v2.0, 2026-10-14: Everything at once
+:toc:
+:flavor: plain
+:doctype: article
+
+A short opening paragraph.
+
+== Lists
+
+* first bullet
+** nested bullet
+*** a still deeper bullet
+* second bullet
++
+a paragraph attached to the bullet
++
+----
+a listing attached to the bullet
+----
+
+. step one
+. step two
+.. nested step
+
+1. written number
+2. another written number
+
+a. lettered item
+b. another lettered item
+
+term:: its definition
+other:: one more definition
+* [x] finished
+* [ ] still open
+
+== Blocks
+
+====
+An example block with a paragraph.
+
+* and a list inside it
+====
+
+****
+A sidebar block.
+****
+
+____
+A quotation block.
+____
+
+[NOTE]
+====
+An admonition written as a block.
+====
+
+--
+An open block.
+--
+
+----
+A listing block.
+----
+
+[source,ruby]
+----
+puts 'source listing'
+----
+
+....
+A literal block.
+....
+
+++++
+<b>passthrough</b>
+++++
+
+////
+A comment block.
+////
+
+====
+outer
+======
+inner
+======
+====
+
+== Macros and breaks
+
+image::picture.png[Alt text,200,100]
+
+video::clip.mp4[]
+
+audio::sound.mp3[]
+
+toc::[]
+
+'''
+
+<<<
+
+---
+
+- - -
+
+***
+
+== Markdown
+
+```ruby
+puts 'a fenced block'
+```
+
+> a quotation in the Markdown style
+> -- Somebody
+
+== Conditions and attributes
+
+ifdef::flavor[]
+Text for the flavor.
+endif::[]
+
+ifndef::flavor[]
+Text without the flavor.
+endif::[]
+
+ifeval::["{flavor}" == "plain"]
+The plain flavor.
+endif::[]
+
+include::part.adoc[]
+
+:body-attribute: set in the body
+
+ifdef::body-attribute[]
+* the body attribute is set
+endif::[]
+
+== Callouts
+
+----
+code <1>
+----
+<1> the explanation

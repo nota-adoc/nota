@@ -1,0 +1,21 @@
+////
+page_id: 1000002
+title: Sample page
+confluence_url: https://wiki.example.test/pages/viewpage.action?pageId=1000002
+ancestors:
+  - Handbook
+version: 7
+updated_at: 2026-10-03T11:20:00Z
+////
+:doctype: book
+
+= Sample page
+
+link:https://wiki.example.test/pages/viewpage.action?pageId=1000002[Open in Confluence]
+
+:toc:
+:source-highlighter: highlight.js
+
+:relfilesuffix: .adoc
+
+The first paragraph of the page.

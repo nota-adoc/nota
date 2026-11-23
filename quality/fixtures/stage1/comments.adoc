@@ -1,0 +1,23 @@
+= Comments
+
+// a single line comment
+
+// consecutive
+// line
+// comments
+
+/// three slashes is paragraph text
+
+////
+////
+
+////
+A block comment
+with content.
+////
+
+//////
+A longer block comment delimiter.
+//////
+
+Text.

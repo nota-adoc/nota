@@ -1,0 +1,172 @@
+= Substitutions of blocks
+:product: Nota
+
+== Listings
+
+----
+int a = *b*; // <1>
+if (a < 1) { // <2>
+  printf("%s", _c_); # <3>
+}
+<b>tag</b> & {product} (C) -- ...
+----
+<1> First.
+<2> Second.
+<3> Third.
+
+....
+literal *not bold* & <tag> {product} <1>
+....
+
+[source,java]
+----
+class A { // <.>
+  void f() {} // <.>
+}
+----
+<.> One.
+<.> Two.
+
+[source]
+----
+no language <1>
+----
+<1> Explained.
+
+[listing]
+----
+plain listing
+----
+
+== Subs attribute
+
+[subs="+quotes"]
+----
+*bold* and _italic_ and `mono` <1>
+----
+
+[subs="attributes"]
+----
+{product} and *not bold* <b>
+----
+
+[subs="+attributes,+quotes"]
+----
+{product} *bold*
+----
+
+[subs="specialchars,macros"]
+----
+https://example.com[link] and <b>
+----
+
+[subs="normal"]
+----
+*bold* {product} (C) https://example.com
+----
+
+[subs="none"]
+----
+*bold* {product} <b> &amp;
+----
+
+[subs="verbatim"]
+----
+*bold* <b>
+----
+
+[subs="-specialchars"]
+----
+*not converted* <b>raw</b>
+----
+
+[subs="quotes,replacements"]
+....
+*bold* (C) --
+....
+
+[subs="-replacements"]
+A paragraph with (C) and -- and *bold* and {product}.
+
+[subs="+macros"]
+A paragraph with https://example.com[a link] and pass:[<b>x</b>].
+
+[subs="quotes"]
+A paragraph with only quotes: *bold* {product} (C) https://example.com.
+
+[subs="none"]
+A paragraph with no substitutions: *bold* {product} (C) <b>.
+
+[subs="attributes+"]
+A paragraph: {product} *bold*.
+
+[subs="q,a"]
+A paragraph with short names: *bold* {product} (C).
+
+[subs="callouts"]
+----
+text *not bold* <1>
+----
+
+[subs="post_replacements"]
+Line +
+break.
+
+[subs="+post_replacements"]
+Another +
+break.
+
+== Pass blocks
+
+++++
+<b>raw</b> *not bold* {product} & <
+++++
+
+[pass]
+<i>raw paragraph</i> {product}
+
+[subs="attributes"]
+++++
+<b>{product}</b> *x*
+++++
+
+[subs="macros,quotes"]
+++++
+https://example.com[x] *y*
+++++
+
+== Verse and literal paragraphs
+
+[verse]
+____
+A *verse* with {product}
+  and an indented line & <b>
+____
+
+[verse,Author,Source]
+A verse paragraph with *bold*
+and (C) --
+
+ A literal paragraph with *not bold* and <b> {product}
+
+[literal]
+Another literal *not bold*.
+
+[listing]
+A listing paragraph *not bold* <1>
+
+[source,ruby]
+A source paragraph *not bold* {product}
+
+== Stem and comment
+
+[stem]
+++++
+x^2 & <y> {product}
+++++
+
+////
+comment *bold* {product}
+////
+
+Text after the comment.

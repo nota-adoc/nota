@@ -1,0 +1,14 @@
+= CRLF Line Endings
+
+== Section
+
+First line
+second line
+
+:crlf: value
+
+NOTE: note
+
+----
+code
+----

@@ -1,0 +1,8 @@
+= Comments Inside Paragraphs
+
+First line
+// a comment inside the paragraph
+second line
+// and at the end
+
+Next paragraph.

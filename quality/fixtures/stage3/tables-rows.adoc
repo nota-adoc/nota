@@ -1,0 +1,168 @@
+= Rows and headers
+
+Rows come from the number of columns, not from lines:
+
+[cols="3*"]
+|===
+|a |b |c |d |e |f
+|g
+|h |i
+|===
+
+One line holds several rows:
+
+[cols="2*"]
+|===
+|a |b |c |d |e |f
+|===
+
+A cell of several lines:
+
+[cols="1,1"]
+|===
+|first line
+second line
+third line |b
+|c |d
+|===
+
+A blank line inside a cell makes paragraphs:
+
+[cols="1,1"]
+|===
+|one
+
+two |b
+|c |d
+|===
+
+The implicit header, a blank line after the first line:
+
+|===
+|Name |Value
+
+|alpha |1
+|beta |2
+|===
+
+No implicit header without the blank line:
+
+|===
+|Name |Value
+|alpha |1
+|beta |2
+|===
+
+The header cancelled:
+
+[%noheader]
+|===
+|Name |Value
+
+|alpha |1
+|===
+
+A header and a footer:
+
+[%header%footer]
+|===
+|Name |Value
+|alpha |1
+|beta |2
+|Total |3
+|===
+
+The header option written out:
+
+[cols="2*",options="header,footer"]
+|===
+|Name |Value
+|alpha |1
+|Total |1
+|===
+
+A header over two lines of the first row:
+
+|===
+|Name
+|Value
+
+|alpha |1
+|===
+
+The implicit header, but the first row goes on after the blank line:
+
+|===
+|Name |Value
+
+|alpha
+|1
+|beta |2
+|===
+
+Blank lines before the first cell and between rows:
+
+
+|===
+
+|a |b
+
+|c |d
+
+|e |f
+
+|===
+
+A comment line inside a table:
+
+|===
+|a |b
+// a comment
+|c |d
+|===
+
+A table with nothing in it:
+
+|===
+|===
+
+An empty cell:
+
+|===
+| |b
+|c |
+|===
+
+Cells with leading and trailing space:
+
+|===
+|   padded   |b
+|c |   d
+|===
+
+A header that has cell specs:
+
+[cols="1,1"]
+|===
+^|Name >|Value
+
+|alpha |1
+|===
+
+A style in the header row that is dropped:
+
+[cols="1a,1l"]
+|===
+|* one |two
+
+|* three |four
+|===
+
+A footer over rows with row spans:
+
+[%footer,cols="2*"]
+|===
+|a |b
+.2+|tall |c
+|d
+|===

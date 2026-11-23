@@ -1,0 +1,111 @@
+= Titles and ids
+:idprefix: id_
+:idseparator: -
+
+== A *bold* title with `code` and (C)
+
+== A title with a https://example.com[link] and a footnote:[in a title]
+
+== Title with an {nbsp} attribute & entities &copy; <b>tag</b>
+
+== Duplicate
+
+== Duplicate
+
+== Duplicate
+
+== [[explicit-id]]Title with an inline anchor
+
+== Title with a reference to <<duplicate>>
+
+[#custom-id]
+== Custom id
+
+[[anchor-id,Reftext]]
+== Anchor with reftext
+
+[reftext="From an attribute"]
+== Attribute reftext
+
+[discrete]
+== Discrete heading with *markup*
+
+[float]
+=== Float heading
+
+.A block title with *markup* and {nbsp}
+Paragraph with a title.
+
+.Example title
+====
+Example content.
+====
+
+.Another example
+====
+More content.
+====
+
+.Listing title
+----
+listing
+----
+
+.Image title
+image::sample.png[Sample]
+
+.Table of things
+[cols="1"]
+|===
+|cell
+|===
+
+[[block-id]]
+.Block with an id
+Text with a block id.
+
+See <<block-id>>, <<custom-id>>, <<anchor-id>>, <<Anchor with reftext>>, <<From an attribute>>, <<explicit-id>>, and xref:custom-id[].
+
+[caption="Custom: "]
+.Custom caption
+====
+Content.
+====
+
+[caption=]
+.No caption
+====
+Content.
+====
+
+:example-caption!:
+
+.After unsetting the caption
+====
+Content.
+====
+
+:example-caption: Exhibit
+
+.With another caption
+====
+Content.
+====
+
+[#no-title]
+====
+An example without a title.
+====
+
+== Numbered xrefs
+
+[xrefstyle=full]
+See <<custom-id>> and <<block-id>>.
+
+:xrefstyle: short
+
+See <<custom-id>> and <<block-id>>.
+
+:xrefstyle: basic
+
+See <<custom-id>>.

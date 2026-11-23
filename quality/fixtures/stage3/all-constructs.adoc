@@ -1,0 +1,158 @@
+= All constructs of stage 3
+Jane Roe <jane@example.org>
+v1.0, 2026-09-30: Tables
+:toc:
+:flavor: plain
+:doctype: article
+
+Introductory paragraph, then a table with everything a table is made of.
+
+== Columns, header, footer
+
+.Prices
+[cols="2,1,1",options="header,footer",frame=ends,grid=rows,stripes=even,width=80%]
+|===
+|Item |Count |Price
+
+|Pencil |10 |1.50
+|Notebook |3 |4.00
+|Total |13 |5.50
+|===
+
+[%autowidth,cols="3*"]
+|===
+|a |b |c
+|d |e |f
+|===
+
+[%noheader,cols="2*"]
+|===
+|not a header |b
+
+|c |d
+|===
+
+[cols="1,~,30%"]
+|===
+|auto |width |percent
+|===
+
+[cols="^.>2,<1m,>.^1e"]
+|===
+|first |second |third
+|x |y |z
+|===
+
+== Cell specs
+
+[cols="4*"]
+|===
+2+|colspan |x |y
+.2+|rowspan |a |b |c
+|d |e |f
+2.2+^.>s|both |g |h
+|i |j
+4*|repeated
+<|left ^|center >|right |plain
+.<|top .^|middle .>|bottom |plain
+a|asciidoc d|default e|emphasis h|header
+l|literal m|monospace s|strong v|verse
+|===
+
+== Formats
+
+,===
+"a,b",c
+"say ""hi""",d
+"a cell
+over two lines",e
+,===
+
+:===
+a:b\:c
+d:e
+:===
+
+[format=tsv]
+|===
+a	b
+c	d
+|===
+
+[separator=¦]
+|===
+¦a ¦b
+¦c ¦d
+|===
+
+|===
+|a\|b |cell
+over lines
+|
+first paragraph
+
+second paragraph
+|x
+|===
+
+== Nested tables
+
+|===
+a|
+Level one.
+
+!===
+a!
+Level two.
+
+[cols="a"]
+,===
+"Level three.
+
+[cols=1]
+:===
+Level four
+:==="
+,===
+!===
+|===
+
+|===
+a|
+* a list in a cell
++
+--
+and a block
+--
+
+....
+literal in a cell
+....
+
+++++
+<em>raw html</em>
+++++
+
+:inner: only in the cell
+|===
+
+== In other blocks
+
+====
+.A table in an example
+|===
+|a |b
+|===
+====
+
+* An item with a table:
++
+|===
+|x |y
+|===
+
+NOTE: A note.
+
+|===
+|last |table
+|===

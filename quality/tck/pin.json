@@ -1,0 +1,8 @@
+{
+  "name": "asciidoc-tck",
+  "repo": "https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-tck.git",
+  "commit": "cdfada9c2768b164eadf4bc12e9f9c68e6caf68a",
+  "ref": "main",
+  "license": "EPL-2.0",
+  "note": "A tool of the checks only: fetched into .tck/ (not in the repository), never copied into the repository or the packages."
+}

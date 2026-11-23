@@ -1,0 +1,8 @@
+= Book With Parts
+:doctype: book
+
+= Part
+
+== Chapter
+
+Text.

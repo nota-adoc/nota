@@ -1,0 +1,10 @@
+**
+!package.json
+!README.md
+!LICENSE
+!THIRD_PARTY_NOTICES.md
+!media/icon.png
+!package.nls*.json
+!dist/*.js
+!dist/*.css
+!dist/package.json

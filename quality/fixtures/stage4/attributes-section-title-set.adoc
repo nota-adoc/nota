@@ -1,0 +1,25 @@
+= Set in a section title
+
+== Plain title {set:leveloffset:1}
+
+== Section after a title with a set
+
+:leveloffset: 0
+
+== Title with an id at the end {set:leveloffset:1} [[own-id]]
+
+== Section after a title with an id
+
+:leveloffset: 0
+
+[#own]
+== Title with an id in the attributes {set:leveloffset:1}
+
+== Section after a title with its own id
+
+:leveloffset: 0
+
+[discrete]
+== Discrete title {set:leveloffset:1}
+
+== Section after a discrete title

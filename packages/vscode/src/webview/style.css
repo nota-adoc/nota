@@ -1,0 +1,960 @@
+/*
+ * The style of the tab of Nota in VS Code, the look «Лист» (direction A): the text stands on the background of
+ * the editor, three capsules hang over it and the cards hang from the capsules. The tokens `--ap-*` are the «Светлая» and «Тёмная»
+ * themes: light by default, dark when `body` says so (`data-nota-theme`, set from the class of `body` that VS Code keeps). The
+ * background and the text come from the theme of VS Code (`--vscode-editor-*`), the values after them are Default Light/Dark Modern.
+ * The fonts are the three variables `--nota-font-*` below and nothing else: by default the font of VS Code (`--vscode-font-family`),
+ * no `@font-face`. Text 15px, headings weight 600, h1/h2/h3 26/19/15.5px (22/17.5/15px in a narrow tab): «как в VS Code».
+ */
+body {
+  /* the fonts of the look: the text of the document, its headings, the interface (capsules, cards, panels, captions, tables) */
+  --nota-font-text: var(--vscode-font-family, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+  --nota-font-heading: var(--vscode-font-family, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+  --nota-font-ui: var(--vscode-font-family, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+  /* the width of the page: clamp(min, share of the tab, ceiling), in the middle; from 761 px of the tab the margin at each side is not less than the gutter: strokes end at 46 px, the handle stands 32 px from the block, 80 px leaves 2 px spare */
+  --nota-page-min: 38rem;
+  --nota-page: 85cqw;
+  --nota-page-max: 100cqw;
+  --nota-gutter: 80px;
+  --ap-canvas: var(--vscode-editor-background, #ffffff); --ap-paper: var(--vscode-editor-background, #ffffff); --ap-isle-bg: var(--vscode-editor-background, #ffffff); --ap-chrome: #f8f9fb; --ap-chrome-hover: #eceef3;
+  --ap-ink: var(--vscode-editor-foreground, #3b3b3b); --ap-ink-muted: #5b6270; --ap-ink-faint: #8b919c; --ap-rule: #e7e9ee; --ap-rule-strong: #d4d7de;
+  --ap-accent: #4f46e5; --ap-accent-hover: #4338ca; --ap-accent-soft: #eceafd; --ap-on-accent: #ffffff; --ap-selection: #dcd8fb;
+  --ap-mark-background: #fff0a3; --ap-code-bg: #f5f6f8;
+  --ap-tok-keyword: #7c3aed; --ap-tok-string: #157347; --ap-tok-comment: #6b7280; --ap-tok-number: #b45309; --ap-tok-type: #0b7285; --ap-tok-name: #1d4ed8;
+  --ap-shadow-color: rgba(29, 31, 36, 0.09);
+  --ap-plate-bg: #f6f7f9; --ap-plate-border: #c3c8d1; --ap-plate-border-hover: #8b919c; --ap-plate-ink: #4a525c;
+  --ap-notice-bg: #fff4d6; --ap-notice-border: #e3b341; --ap-notice-ink: #4d3a00;
+  --ap-warning: #d97706; --ap-warning-soft: #fdefd9;
+  --ap-error: #c62f3a; --ap-error-soft: #fdebec;
+  --ap-pop-bg: var(--layer-bg); --ap-pop-ink: var(--layer-ink); --ap-pop-border: var(--layer-border); --ap-pop-shadow: var(--layer-shadow);
+  --ap-pop-hover: var(--ap-chrome-hover); --ap-pop-muted: var(--ap-ink-muted); --ap-pop-on-bg: var(--ap-accent-soft); --ap-pop-on-ink: var(--ap-accent); --ap-pop-key: var(--ap-chrome-hover);
+  --ap-hl-yellow: #fff0a3; --ap-hl-red: #fbdcdc; --ap-hl-orange: #fde5cc; --ap-hl-green: #d4f3dc; --ap-hl-teal: #cdf1ec; --ap-hl-blue: #d7eaff; --ap-hl-pink: #fde0ee; --ap-hl-purple: #e9e2ff; --ap-hl-gray: #e8eaee;
+  --ap-tx-red: #c42b2b; --ap-tx-blue: #1d4ed8; --ap-tx-green: #15803d; --ap-tx-gray: #6b7280;
+  --ap-tx-orange: #b45309; --ap-tx-purple: #7e22ce; --ap-tx-pink: #be1a80; --ap-tx-teal: #0f766e;
+  /* the bright circles of the fills in the row of colours (the circle and its ring); the fills of the document are --ap-hl-* above and are not changed */
+  --ap-sw-yellow: #ffd21f; --ap-swr-yellow: #a07800; --ap-sw-red: #f25a55; --ap-swr-red: #c42b2b; --ap-sw-orange: #ff9a3c; --ap-swr-orange: #b45309;
+  --ap-sw-green: #3cc46a; --ap-swr-green: #15803d; --ap-sw-teal: #2cc8b8; --ap-swr-teal: #0f766e; --ap-sw-blue: #4f9cff; --ap-swr-blue: #1d4ed8;
+  --ap-sw-pink: #f472b6; --ap-swr-pink: #be1a80; --ap-sw-purple: #a78bfa; --ap-swr-purple: #7e22ce; --ap-sw-gray: #b6bcc6; --ap-swr-gray: #6b7280;
+  --ap-adm-note-bg: #eef3ff; --ap-adm-note-edge: #3b6fd8; --ap-adm-note-ink: #1e3a75;
+  --ap-adm-tip-bg: #ebf7ef; --ap-adm-tip-edge: #1f9d55; --ap-adm-tip-ink: #14532d;
+  --ap-adm-important-bg: #f3efff; --ap-adm-important-edge: #7c3aed; --ap-adm-important-ink: #4c1d95;
+  --ap-adm-warn-bg: #fff7e6; --ap-adm-warn-edge: #e0a020; --ap-adm-warn-ink: #6b4e12;
+  --ap-adm-caution-bg: #fff0ee; --ap-adm-caution-edge: #dc4a3a; --ap-adm-caution-ink: #7f1d1d;
+  --ap-adm-note-word: #3b6fd8; --ap-adm-tip-word: #1a7f4b; --ap-adm-important-word: #7c3aed; --ap-adm-warn-word: #9a6200; --ap-adm-caution-word: #c0392b;
+  --ap-font-ui: var(--nota-font-ui);
+  --ap-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ap-radius: 8px; --ap-radius-small: 5px;
+}
+body[data-nota-theme="dark"] {
+  color-scheme: dark;
+  --ap-canvas: var(--vscode-editor-background, #1f1f1f); --ap-paper: var(--vscode-editor-background, #1f1f1f); --ap-isle-bg: color-mix(in srgb, var(--vscode-editor-background, #1f1f1f) 90%, #ffffff); --ap-chrome: #1c1f26; --ap-chrome-hover: #272b34;
+  --ap-ink: var(--vscode-editor-foreground, #cccccc); --ap-ink-muted: #9aa1ae; --ap-ink-faint: #6c7380; --ap-rule: #2a2e37; --ap-rule-strong: #3a3f4b;
+  --ap-accent: #5eead4; --ap-accent-hover: #99f6e4; --ap-accent-soft: #173a37; --ap-on-accent: #0b2b27; --ap-selection: #1f4a46;
+  --ap-mark-background: #5c4b10; --ap-code-bg: #1d2027;
+  --ap-tok-keyword: #c4a7ff; --ap-tok-string: #86d9a6; --ap-tok-comment: #8b919c; --ap-tok-number: #f0b04a; --ap-tok-type: #6fd3e6; --ap-tok-name: #8fb4ff;
+  --ap-shadow-color: rgba(0, 0, 0, 0.38);
+  --ap-plate-bg: #1b1e24; --ap-plate-border: #4a505c; --ap-plate-border-hover: #7a8290; --ap-plate-ink: #b3bac2;
+  --ap-notice-bg: #3a2f10; --ap-notice-border: #a8842a; --ap-notice-ink: #f1dc9c;
+  --ap-warning: #f0b04a; --ap-warning-soft: #3a2c12;
+  --ap-error: #f07178; --ap-error-soft: #3a1c1f;
+  --ap-pop-bg: var(--layer-bg); --ap-pop-ink: var(--layer-ink); --ap-pop-border: var(--layer-border); --ap-pop-shadow: var(--layer-shadow);
+  --ap-pop-hover: var(--ap-chrome-hover); --ap-pop-muted: var(--ap-ink-muted); --ap-pop-on-bg: var(--ap-accent-soft); --ap-pop-on-ink: var(--ap-accent); --ap-pop-key: var(--ap-chrome-hover);
+  --ap-hl-yellow: #5c4b10; --ap-hl-red: #5c2222; --ap-hl-orange: #5c3a14; --ap-hl-green: #1d4630; --ap-hl-teal: #14504b; --ap-hl-blue: #183d5c; --ap-hl-pink: #55203f; --ap-hl-purple: #3b2b66; --ap-hl-gray: #353a45;
+  --ap-tx-red: #ff8f87; --ap-tx-blue: #8fb5ff; --ap-tx-green: #6fe0a0; --ap-tx-gray: #a3aab6;
+  --ap-tx-orange: #f5a35c; --ap-tx-purple: #c9a2ff; --ap-tx-pink: #f58ad6; --ap-tx-teal: #45d9d0;
+  --ap-sw-yellow: #ffd84a; --ap-swr-yellow: #ffd84a; --ap-sw-red: #ff7a72; --ap-swr-red: #ff7a72; --ap-sw-orange: #ffa155; --ap-swr-orange: #ffa155;
+  --ap-sw-green: #5ad98a; --ap-swr-green: #5ad98a; --ap-sw-teal: #3fd6c8; --ap-swr-teal: #3fd6c8; --ap-sw-blue: #6aa8ff; --ap-swr-blue: #6aa8ff;
+  --ap-sw-pink: #ff85c8; --ap-swr-pink: #ff85c8; --ap-sw-purple: #b79cff; --ap-swr-purple: #b79cff; --ap-sw-gray: #a3aab6; --ap-swr-gray: #a3aab6;
+  --ap-adm-note-bg: #17223a; --ap-adm-note-edge: #6c9cff; --ap-adm-note-ink: #c8d8ff;
+  --ap-adm-tip-bg: #14291e; --ap-adm-tip-edge: #4ade80; --ap-adm-tip-ink: #bdf0cf;
+  --ap-adm-important-bg: #231d3a; --ap-adm-important-edge: #a78bfa; --ap-adm-important-ink: #ddd3ff;
+  --ap-adm-warn-bg: #2c2616; --ap-adm-warn-edge: #e0b040; --ap-adm-warn-ink: #e8cf8a;
+  --ap-adm-caution-bg: #2f1a19; --ap-adm-caution-edge: #f87171; --ap-adm-caution-ink: #fbcaca;
+  --ap-adm-note-word: #6c9cff; --ap-adm-tip-word: #4ade80; --ap-adm-important-word: #b9a3ff; --ap-adm-warn-word: #e0b040; --ap-adm-caution-word: #ff8a8a;
+}
+
+/* плавающий слой: the one base of everything that floats over the page — the capsules, the cards, the windows, the lists, the popup of the buttons, the menus and the panels. The background, the frame, the radius and the shadow of each of them are these tokens and nothing else; change one here and all of them change. On `body`, like the tokens of the themes: `var()` is taken on the element, so the dark theme overrides what the base reads. */
+body {
+  --layer-bg: var(--ap-isle-bg); --layer-ink: var(--ap-ink); --layer-border: var(--ap-rule-strong); --layer-shadow: none; --layer-shadow-capsule: 0 1px 2px var(--ap-shadow-color), 0 4px 14px var(--ap-shadow-color);
+  --layer-radius: 14px; --layer-radius-capsule: 18px; --layer-radius-card: 16px; --layer-radius-tip: 10px;
+  --layer-pad: 5px; --layer-head-pad: 6px 9px 5px; --layer-opt-h: 32px; --layer-opt-pad: 0 8px 0 9px; --layer-opt-radius: 9px;
+  --layer-card-head-pad: 6px 10px 4px; --layer-card-item-pad: 8px 10px; --layer-card-item-radius: 10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; margin: 0; padding: 0; }
+body { background: var(--ap-canvas); color: var(--ap-ink); font: 13px/1.4 var(--nota-font-ui); -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--ap-accent); outline-offset: 1px; }
+svg.i { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+.nota { height: 100%; display: flex; flex-direction: column; background: var(--ap-canvas); color: var(--ap-ink); font-family: var(--ap-font-ui); }
+.scroll { flex: 1; min-height: 0; overflow: auto; padding: calc(30px + var(--isles-h, 52px) + var(--strip-h, 0px) + var(--lead-extra, 0px)) 24px 0 36px; scroll-padding-top: calc(30px + var(--isles-h, 52px) + var(--strip-h, 0px)); }
+/* the air after the document is a block of its own, not the padding of .scroll: the bar of a table sticks to the edge of the content box of the scroll, and the padding would hold it 96 px above the bottom of the window */
+.scroll::after { content: ''; display: block; height: 96px; }
+/* the sheet: the text stands on the background of the editor; the whole page (all blocks, common edges) is clamp(38rem, 85cqw, 100cqw) in the middle of the tab */
+.page { width: clamp(var(--nota-page-min), var(--nota-page), var(--nota-page-max)); max-width: 100%; margin: 0 auto; padding: 0; background: none; border: 0; box-shadow: none; }
+
+/* what ProseMirror needs of its own style sheet */
+.ProseMirror { position: relative; font-variant-ligatures: none; font-feature-settings: "liga" 0; }
+.ProseMirror-hideselection *::selection { background: transparent; }
+.ProseMirror-hideselection { caret-color: transparent; }
+.ProseMirror-selectednode { outline: none; }
+
+.doc { font-family: var(--nota-font-text); font-size: 15px; line-height: 1.65; outline: none; caret-color: var(--ap-accent); min-width: 0; white-space: pre-wrap; overflow-wrap: break-word; }
+.doc ::selection { background: var(--ap-selection); }
+.doc p { margin: 0 0 0.8em; }
+.doc h1, .doc h2, .doc h3, .doc h4, .doc h5, .doc h6 { font-family: var(--nota-font-heading); line-height: 1.25; font-weight: 600; margin: 1.4em 0 0.5em; text-wrap: balance; }
+.doc > :first-child, .doc > .nota-anchor:first-child + * { margin-top: 0; } /* the anchor widget over the first block is the first child; the block under it is the first one */
+.doc h1 { font-size: 26px; }
+.doc h2 { font-size: 19px; }
+.doc h3 { font-size: 15.5px; }
+.doc h4 { font-size: 1.05em; }
+.doc h5 { font-size: 0.95em; }
+.doc h6 { font-size: 0.9em; color: var(--ap-ink-muted); }
+.doc code { font: 0.84em/1 var(--ap-font-mono); padding: 0.15em 0.35em; border-radius: 4px; background: var(--ap-code-bg); }
+/* no side padding on a fill: it would shift the text when the fill is set or removed */
+.doc mark { background: var(--ap-mark-background); color: inherit; padding: 0; border-radius: 2px; }
+.doc s { text-decoration-thickness: 1.5px; }
+.doc a { color: var(--ap-accent); text-decoration: underline; text-underline-offset: 0.18em; text-decoration-thickness: 1px; cursor: text; }
+/* colour roles of text, `[.hl-red]#…#`: letters in colour, or a fill (`-bg`) */
+.doc [class*="-bg"] { border-radius: 3px; padding: 0; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.doc .hl-yellow-bg { background: var(--ap-hl-yellow); }
+.doc .hl-red-bg { background: var(--ap-hl-red); }
+.doc .hl-orange-bg { background: var(--ap-hl-orange); }
+.doc .hl-green-bg { background: var(--ap-hl-green); }
+.doc .hl-teal-bg { background: var(--ap-hl-teal); }
+.doc .hl-blue-bg { background: var(--ap-hl-blue); }
+.doc .hl-pink-bg { background: var(--ap-hl-pink); }
+.doc .hl-purple-bg { background: var(--ap-hl-purple); }
+.doc .hl-gray-bg { background: var(--ap-hl-gray); }
+.doc .hl-red { color: var(--ap-tx-red); }
+.doc .hl-blue { color: var(--ap-tx-blue); }
+.doc .hl-green { color: var(--ap-tx-green); }
+.doc .hl-orange { color: var(--ap-tx-orange); }
+.doc .hl-purple { color: var(--ap-tx-purple); }
+.doc .hl-pink { color: var(--ap-tx-pink); }
+.doc .hl-teal { color: var(--ap-tx-teal); }
+.doc .hl-gray { color: var(--ap-tx-gray); }
+/* the service lines above a block, such as [[acceptance]]: grey, monospace */
+.doc [data-meta]::before { content: attr(data-meta); display: block; white-space: pre-wrap; overflow-wrap: anywhere; margin-bottom: 2px; font: 400 12px/1.5 var(--ap-font-mono); color: var(--ap-ink-faint); }
+/* the anchor above a block (`[#id]`, `[[id]]`): hidden, with `nota.showAnchors` a plate of one line, the whole id in a tip */
+.doc .nota-anchor { display: none; }
+body[data-show-anchors] .doc .nota-anchor {
+  display: block; position: relative; max-width: 100%; height: 18px; margin: 0 0 2px; user-select: none; cursor: default;
+  font: 400 11.5px/1 var(--ap-font-mono); white-space: nowrap;
+}
+body[data-show-anchors] .doc .nota-anchor::before {
+  content: "# " attr(data-id); display: block; box-sizing: border-box; width: max-content; max-width: min(100%, 34ch); height: 18px; padding: 0 6px;
+  line-height: 16px; overflow: hidden; text-overflow: ellipsis; border: 1px dashed var(--ap-plate-border); border-radius: 5px;
+  background: var(--ap-plate-bg); color: var(--ap-ink-faint);
+}
+body[data-show-anchors] .doc .nota-anchor:hover::before { border-style: solid; border-color: var(--ap-plate-border-hover); }
+body[data-show-anchors] .doc .nota-anchor .anchor-tip {
+  display: none; position: absolute; top: calc(100% + 4px); left: 0; z-index: 30;
+  width: max-content; max-width: min(440px, 100%); box-sizing: border-box; padding: 6px 9px; border-radius: 5px;
+  background: var(--ap-ink); color: var(--ap-paper); white-space: normal;
+  box-shadow: 0 4px 14px var(--ap-shadow-color, rgba(0, 0, 0, 0.25)); pointer-events: none;
+}
+body[data-show-anchors] .doc .nota-anchor .anchor-tip::before { content: attr(data-tip); display: block; font: 500 12px/1.3 var(--ap-font-ui); opacity: 0.8; }
+body[data-show-anchors] .doc .nota-anchor .anchor-tip::after { content: attr(data-id); display: block; margin-top: 3px; font: 12px/1.45 var(--ap-font-mono); overflow-wrap: anywhere; }
+body[data-show-anchors] .doc .nota-anchor:hover .anchor-tip { display: block; }
+/* a flex or grid parent does not shrink under a long word unless it may */
+.doc .adm-para, .doc .adm-text, .doc .nota-island, .doc .li-text { min-width: 0; }
+.doc h1, .doc h2, .doc h3, .doc h4, .doc h5, .doc h6, .doc p, .doc .adm-text { overflow-wrap: anywhere; }
+
+/* an island: a block the editor does not draw, shown as its AsciiDoc source and edited as text */
+.nota-island {
+  position: relative; margin: 0 0 0.9em; padding: 8px 12px 10px;
+  background: transparent; border: 1px dashed var(--ap-plate-border); border-radius: var(--ap-radius-small);
+  color: var(--ap-plate-ink); white-space: normal;
+}
+.nota-island:focus-within { border-style: solid; border-color: var(--ap-accent); }
+.nota-island .island-note { margin-bottom: 4px; font: 500 11px/16px var(--ap-font-ui); color: var(--ap-ink-faint); user-select: none; }
+.nota-island .island-note:has(.island-collapse) { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.nota-island .island-collapse { flex: none; height: 20px; padding: 0 8px; border: 1px solid var(--ap-rule-strong); border-radius: 10px; background: var(--ap-paper); color: var(--ap-ink-muted); font: 500 11px/1 var(--ap-font-ui); cursor: pointer; }
+.nota-island .island-collapse:hover { background: var(--ap-chrome-hover); color: var(--ap-ink); }
+.nota-island .island-src { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 13px/1.55 var(--ap-font-mono); }
+.nota-island.unsaved { border-style: solid; border-color: var(--ap-warning); }
+.nota-island .island-unsaved { margin-top: 6px; font: 500 12px/1.4 var(--ap-font-ui); color: var(--ap-warning); user-select: none; }
+
+/* a table: a grid of cells; one in a cell is inside the cell. Every cell draws its own left and top line (a merged cell too); the table is shifted 1 px under the frame of .tbl-scroll, so the lines on the edge are clipped */
+.doc .tbl { margin: 12px 0; }
+.doc .tbl .tbl { margin: 8px 0 0; }
+.doc .tbl { font-family: var(--nota-font-ui); }
+.doc .tbl-scroll { --nota-tbl-radius: 10px; overflow-x: auto; border: 1px solid var(--ap-rule-strong); border-radius: var(--nota-tbl-radius); }
+.doc .tbl table { border-collapse: separate; border-spacing: 0; width: calc(100% + 1px); margin: -1px 0 0 -1px; border: 0; font-size: 14px; }
+.doc .tbl th, .doc .tbl td { padding: 8px 12px; vertical-align: top; text-align: left; min-width: 64px; border-left: 1px solid var(--ap-rule); border-top: 1px solid var(--ap-rule); }
+.doc .tbl th { background: var(--ap-chrome); font-weight: 600; white-space: nowrap; overflow-wrap: normal; }
+/* a table with the widths in cols, or one whose border is dragged, wraps its head (else the columns sit at their least width and the widths do nothing) */
+.doc .tbl.tbl-fixed th, .doc .tbl.tbl-drag th { white-space: normal; overflow-wrap: anywhere; }
+.doc .tbl .nota-inline-chip { white-space: normal; overflow-wrap: anywhere; }
+/* (a tip of a plate that is hidden still widens the scroll of the frame of a table: it is not laid out until the plate is hovered) */
+.doc .tbl .nota-inline-chip::after { display: none; }
+.doc .tbl .nota-inline-chip:hover::after { display: block; }
+.doc .tbl .h-center { text-align: center; }
+.doc .tbl .h-right { text-align: right; }
+.doc .tbl .v-middle { vertical-align: middle; }
+.doc .tbl .v-bottom { vertical-align: bottom; }
+.doc .tbl .cell-text { min-height: 1.4em; overflow-wrap: anywhere; }
+.doc .tbl .cell-a { font-size: 14px; }
+.doc .tbl .cell-plate { margin: 0; white-space: pre-wrap; font: 13px/1.55 var(--ap-font-mono); }
+/* in a table with widths (tbl-fixed, or while a border is dragged) the content of a cell breaks inside a word (a name of a field of 40 characters in a list, code, a plate), so the least width of a column does not hold it wider than the width it was dragged to */
+.doc .tbl:is(.tbl-fixed, .tbl-drag) td, .doc .tbl:is(.tbl-fixed, .tbl-drag) td :is(.li-text, .adm-text, .cell-text, code, .cell-plate) { overflow-wrap: anywhere; }
+/* a table wider than its frame has its scroll bar as a bar that sticks to the bottom of the window (the bar of the frame is hidden, they are linked by TableNodeView) */
+.doc .tbl .tbl-bar { display: none; }
+.doc .tbl.has-bar > .tbl-scroll { scrollbar-width: none; }
+.doc .tbl.has-bar > .tbl-scroll::-webkit-scrollbar { display: none; }
+.doc .tbl.has-bar > .tbl-bar { display: block; position: sticky; bottom: 0; z-index: 3; box-sizing: content-box; height: 10px; margin: 2px 1px 0; overflow-x: scroll; overflow-y: hidden; background: var(--ap-canvas); }
+/* while the bottom of the table is below the window the bar stands at the very bottom edge of the tab (TableNodeView sets .bar-stuck): 15 px = a line 1, a gap 2, the track 10, a gap 2; the side lines of the frame reach it and the top line closes the table, a light shadow over it. The place it takes in the flow is the same 12 px as under the table (the margins make up for the borders), so the table does not jump when the bar lets go */
+.doc .tbl.has-bar.bar-stuck > .tbl-bar {
+  margin: -1px 0 -2px; border: solid transparent; border-width: 3px 1px 2px; background-origin: border-box; background-clip: border-box;
+  background-color: var(--ap-canvas);
+  background-image: linear-gradient(var(--ap-rule-strong), var(--ap-rule-strong)), linear-gradient(var(--ap-rule-strong), var(--ap-rule-strong)), linear-gradient(var(--ap-rule-strong), var(--ap-rule-strong));
+  background-position: 0 0, 0 0, 100% 0; background-size: 100% 1px, 1px 100%, 1px 100%; background-repeat: no-repeat;
+  box-shadow: 0 -6px 8px -6px color-mix(in srgb, var(--ap-ink) 22%, transparent);
+}
+.doc .tbl .tbl-bar > div { height: 1px; }
+.doc .tbl .tbl-bar::-webkit-scrollbar { height: 10px; background: transparent; }
+.doc .tbl .tbl-bar::-webkit-scrollbar-thumb { border-radius: 5px; background: var(--ap-rule-strong); }
+.doc .tbl .tbl-bar::-webkit-scrollbar-thumb:hover { background: var(--ap-ink-faint); }
+.doc .tbl-cap { font: 500 12px/1.4 var(--ap-font-ui); color: var(--ap-ink-faint); }
+
+/* code: a frame with the language over the text, in monospace; the colours are the classes tok-… of the highlighter */
+.nota-code { position: relative; margin: 0 0 0.9em; padding: 22px 12px 10px; background: var(--ap-code-bg); border-radius: var(--ap-radius-small); }
+.nota-code .code-lang { position: absolute; top: 4px; left: 12px; font: 500 11px/16px var(--ap-font-ui); color: var(--ap-ink-faint); user-select: none; }
+.nota-code .code-src { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 2; font: 13px/1.55 var(--ap-font-mono); color: var(--ap-ink); }
+.nota-code .tok-keyword, .nota-code .tok-operatorKeyword, .nota-code .tok-modifier { color: var(--ap-tok-keyword); }
+.nota-code .tok-string, .nota-code .tok-string2, .nota-code .tok-regexp { color: var(--ap-tok-string); }
+.nota-code .tok-comment { color: var(--ap-tok-comment); font-style: italic; }
+.nota-code .tok-number, .nota-code .tok-bool, .nota-code .tok-null, .nota-code .tok-atom { color: var(--ap-tok-number); }
+.nota-code .tok-typeName, .nota-code .tok-className, .nota-code .tok-tagName, .nota-code .tok-namespace { color: var(--ap-tok-type); }
+.nota-code .tok-propertyName, .nota-code .tok-attributeName, .nota-code .tok-variableName { color: var(--ap-tok-name); }
+.nota-code .tok-definition, .nota-code .tok-function { color: var(--ap-tok-name); }
+
+/* an image: the picture over its caption; a plate says why there is none */
+.nota-toc { display: flex; align-items: center; gap: 8px; height: 28px; margin: 0 0 0.9em; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--ap-plate-border); border-radius: var(--ap-radius-small); background: var(--ap-plate-bg); color: var(--ap-plate-ink); font: 500 12px/1 var(--ap-font-ui); user-select: none; cursor: default; }
+.nota-toc:not(.pinned):hover { border-color: var(--ap-plate-border-hover); }
+.nota-toc.ProseMirror-selectednode { border-color: var(--ap-accent); background: var(--ap-accent-soft); outline: 1px solid var(--ap-accent); }
+.nota-toc .toc-icon::before { content: "\2630"; font-size: 12px; }
+.nota-toc .toc-label { flex: none; }
+.nota-toc .toc-rule { flex: 1; min-width: 12px; align-self: center; border-bottom: 1px dotted var(--ap-plate-border); }
+.nota-toc .toc-src { flex: none; font: 11.5px/1 var(--ap-font-mono); color: var(--ap-ink-faint); }
+.nota-image { margin: 0 0 0.9em; text-align: center; }
+.nota-image img { max-width: 100%; height: auto; border-radius: var(--ap-radius-small); }
+.nota-image .image-plate { display: inline-block; padding: 18px 22px; border: 1px dashed var(--ap-plate-border); border-radius: var(--ap-radius-small); color: var(--ap-plate-ink); font: 13px/1.5 var(--ap-font-ui); overflow-wrap: anywhere; user-select: none; }
+.nota-image .image-plate-address { display: block; margin-top: 2px; font: 12px/1.4 var(--ap-font-mono); color: var(--ap-ink-faint); }
+.nota-image figcaption { margin-top: 6px; font-size: 0.9em; color: var(--ap-ink-muted); }
+.nota-image figcaption:empty::before { content: attr(data-placeholder); color: var(--ap-ink-faint); }
+
+.nota-inline-chip {
+  position: relative; font: 0.8em/1 var(--ap-font-mono); padding: 0.18em 0.4em; border-radius: var(--ap-radius-small);
+  border: 1px dashed var(--ap-plate-border); background: var(--ap-plate-bg); color: var(--ap-plate-ink);
+  white-space: nowrap; cursor: text; user-select: none;
+}
+.nota-inline-chip:hover { border-style: solid; border-color: var(--ap-plate-border-hover); }
+.nota-inline-chip::after {
+  content: "Edited in Text mode"; position: absolute; left: 0; bottom: calc(100% + 6px); z-index: 5;
+  padding: 4px 8px; border-radius: var(--ap-radius-small); background: var(--ap-ink); color: var(--ap-paper);
+  font: 500 12px/1.3 var(--ap-font-ui); white-space: nowrap; pointer-events: none; visibility: hidden;
+}
+.nota-inline-chip:lang(ru)::after { content: "Правится в режиме «Текст»"; }
+.nota-inline-chip:hover::after { visibility: visible; }
+
+/* the layout: the row of capsules over the document (visual or source) */
+.ed-body { flex: 1; min-height: 0; display: flex; position: relative; }
+.ed-main { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; position: relative; container-type: inline-size; }
+.doc a { cursor: text; }
+/* Cmd (Ctrl off a Mac) held over a link: it opens */
+.link-key .doc a:hover { cursor: pointer; text-decoration-thickness: 2px; }
+.doc a.nota-link-chip { user-select: none; }
+/* a refusal heard again: the strip blinks */
+.notice.again { animation: nota-notice-again 0.25s ease-out; }
+@keyframes nota-notice-again { from { opacity: 0.35; } to { opacity: 1; } }
+.ed-main > .scroll { flex: 1; min-height: 0; }
+.ed-source { flex: 1; min-height: 0; overflow: hidden; background: var(--ap-canvas); }
+/* the text of the source scrolls under the capsules (and the strip of a big file): the first line stands below them as it stood below the row */
+.ed-source .cm-content { padding-top: calc(4px + var(--isles-h, 52px) + var(--strip-h, 0px)); }
+.ed-source .cm-editor { height: 100%; font-size: 13px; }
+.ed-source .cm-editor.cm-focused { outline: none; }
+.ed-source .cm-ap-diagnostic-code { margin-left: 4px; color: var(--ap-ink-faint); }
+
+/* the capsules: sections at the left, tools in the middle, remarks at the right; the row has no background and lies over the document: the text scrolls under the capsules and shows between them, no haze; the row and the empty wraps let the mouse through, the capsules, the cards and the windows take it */
+.ed-isles { position: absolute; top: 0; left: 0; right: 0; z-index: 40; pointer-events: none; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(max-content, 1fr); align-items: start; gap: 12px; min-height: 52px; padding: 10px 14px 0; background: none; }
+.isle-wrap { position: relative; min-width: 0; pointer-events: none; }
+.isle-wrap > *, .tools-root > * { pointer-events: auto; }
+.tools-root { pointer-events: none; }
+/* the capsule of tools reaches down over the text (the row «Таблица», opened «⋯»): the row of capsules is as high as the main row of the closed capsule (`--tools-main-h`, 36 px in a wide tab, two lines where «⋯» wraps it), the text does not move */
+.isle-mid { height: var(--tools-main-h, 36px); }
+/* the handle of a block and the panels over blocks stay under the capsule: where it reaches over the text, they never lie on its row */
+.ed-main .blk-handle, .ed-main .blockbar { z-index: 39; }
+/* the row of the types of an admonition is of the family of the capsules: the radius and the shadow of the base */
+.admpick .adm-row { border-radius: var(--layer-radius-capsule); box-shadow: var(--layer-shadow-capsule); }
+.isle-left { justify-self: start; max-width: 100%; }
+.isle-right { justify-self: end; display: flex; align-items: flex-start; gap: 8px; } /* «Замечания» and the round capsule with the gear */
+.isle {
+  display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 13px; max-width: 100%;
+  background: var(--layer-bg); color: var(--layer-ink); border: 1px solid var(--layer-border); border-radius: var(--layer-radius-capsule);
+  box-shadow: var(--layer-shadow-capsule); font: 13px/1.2 var(--nota-font-ui);
+}
+button.isle:hover:not(:disabled) { background: color-mix(in srgb, var(--layer-bg) 92%, var(--layer-ink)); }
+button.isle[aria-expanded="true"] { border-color: var(--ap-accent); }
+button.isle:disabled, button.isle[aria-disabled="true"] { cursor: default; }
+button.isle:disabled { opacity: 0.45; }
+.isle-sections .isle-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.isle-sections .i-chev { width: 14px; height: 14px; opacity: 0.7; }
+.isle-remarks { white-space: nowrap; }
+.isle-settings { flex: none; width: 36px; padding: 0; justify-content: center; cursor: pointer; }
+.isle-settings svg.i { width: 17px; height: 17px; }
+.rm-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ap-warning); flex: none; }
+/* no remarks: the whole capsule is invisible, but keeps its place (the top row does not jump); the first remark fades it in */
+.isle-remarks { transition: opacity 0.16s ease, visibility 0.16s; }
+.isle-sections[data-empty] { visibility: hidden; pointer-events: none; }
+.isle-remarks:not(.has-remarks) { opacity: 0; visibility: hidden; pointer-events: none; }
+.isle-tools { flex-direction: column; align-items: stretch; gap: 0; padding: 0 5px; }
+.tl-main { display: flex; align-items: center; gap: 1px; min-height: 34px; min-width: 0; }
+.tl-lists { display: contents; }
+.isle-tools .tb-b { height: 30px; border-radius: 15px; }
+.isle-tools .tl-sep { margin: 0 5px; }
+.isle-tools .dd { flex: none; }
+/* the plus: an exact 30 px circle, the sign is centred by the grid; the row keeps its place when it opens (2 px = (34 - 30) / 2) */
+.isle-tools .tl-plus { display: grid; place-items: center; width: 30px; min-width: 30px; padding: 0; }
+.isle-tools .tl-plus svg { display: block; }
+.isle-tools .tl-style { padding: 0 9px; gap: 5px; }
+/* the capsule goes to its new size by one transition (the script sets the width and the height in px, `data-morph` is on it meanwhile); the row «Таблица» does not unfold by itself:
+   it comes in with a fade and a 4 px lowering, and the one that goes lies where it was, fades out, and the capsule closes it from below */
+.tl-table { display: grid; grid-template-rows: 1fr; animation: tl-in 0.16s linear 0.04s backwards; }
+.tl-table.is-back { animation: none; }
+.tl-table.is-leaving { opacity: 0; animation: none; pointer-events: none; transition: opacity 0.09s linear; }
+.isle-tools[data-morph] { overflow: hidden; max-width: none; }
+.isle-tools[data-morph="open"] { transition: width 0.22s cubic-bezier(0.2, 0, 0, 1), height 0.22s cubic-bezier(0.2, 0, 0, 1), margin-left 0.22s cubic-bezier(0.2, 0, 0, 1); }
+.isle-tools[data-morph="close"] { transition: width 0.17s cubic-bezier(0.4, 0, 1, 1), height 0.17s cubic-bezier(0.4, 0, 1, 1), margin-left 0.17s cubic-bezier(0.4, 0, 1, 1); }
+.isle-tools[data-morph] .tl-row { animation: bb-fade 0.16s linear 0.04s backwards; }
+/* in a stretched capsule (a narrow tab) the buttons stand at its left edge with the usual 5 px of the capsule, not in the middle: the row, the row of blocks, its hidden copy and the leaving circles */
+.tl-main { justify-content: flex-start; }
+.tl-colors-out { position: absolute; inset: 3px 0; display: flex; justify-content: flex-start; align-items: center; pointer-events: none; animation: bb-out 0.09s linear forwards; }
+@keyframes tl-in { from { opacity: 0; transform: translateY(-4px); } }
+.tl-style-name { display: inline-grid; justify-items: start; font-variant-numeric: tabular-nums; }
+.tl-style-name > .tl-style-label { grid-area: 1 / 1; }
+.tl-style-name > .tl-style-label.is-hidden { visibility: hidden; }
+.tl-row { position: relative; min-height: 0; overflow: hidden; display: flex; align-items: center; flex-wrap: nowrap; gap: 1px; padding: 3px 0; border-top: 1px solid var(--ap-rule); }
+.tl-row .fl-sep { width: 1px; height: 16px; background: var(--ap-rule-strong); margin: 0 5px; flex: none; }
+.tl-row .fl-chip { flex: none; margin: 0 4px 0 3px; padding: 1px 7px; border-radius: 20px; background: var(--ap-chrome-hover); color: var(--ap-ink-muted); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.tl-row .tb-b.danger:hover { color: var(--ap-danger, #d1453b); }
+/* the capsule has two views: wide (open: «Текст ⌄», the headings 2–6, the lists, the blocks as icons, on one line) and narrow («+», «Текст ⌄», the lists);
+   the invisible copy of the wide one tells how wide it is; the list of «+» hangs under the capsule */
+.isle-tools { position: relative; }
+.tl-main .tl-blk, .tl-measure .tl-blk { min-width: 30px; padding: 0 5px; }
+.tl-main .tl-blk:focus-visible { outline: 2px solid var(--ap-accent); outline-offset: -1px; }
+.bl-glyph { display: inline-block; width: 16px; text-align: center; font: 700 11.5px/1 var(--nota-font-ui); letter-spacing: -0.02em; }
+.tl-measure { position: absolute; left: -9999px; top: 0; visibility: hidden; pointer-events: none; width: max-content; }
+.tl-measure .tl-main { width: max-content; }
+.tl-measure .tl-gsep { flex: none; width: 1px; height: 18px; margin: 0 5px; }
+.tl-ghost-name { display: inline-grid; justify-items: start; font-variant-numeric: tabular-nums; }
+.tl-ghost-name > .tl-ghost-label { grid-area: 1 / 1; }
+.blocklist { display: flex; flex-direction: column; width: 368px; max-width: calc(100% - 16px); padding: 5px; overflow: hidden !important; white-space: normal;
+  background: var(--layer-bg); color: var(--layer-ink); border: 1px solid var(--layer-border); border-radius: var(--layer-radius-card); box-shadow: var(--layer-shadow); font: 13px/1.3 var(--nota-font-ui);
+  transform-origin: top left; animation: bl-in 0.22s cubic-bezier(0.2, 0, 0, 1) both; }
+@keyframes bl-in { from { opacity: 0; transform: translateY(-4px) scale(0.985); } }
+.blocklist .sm-head { flex: none; padding: 6px 9px 5px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.3px; color: var(--ap-ink-faint); }
+.blocklist .bm-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; display: grid; gap: 1px; align-content: start; scrollbar-width: thin; }
+.blocklist .bm-sep { height: 1px; background: var(--ap-rule); margin: 3px 6px; }
+.blocklist button { position: relative; display: grid; grid-template-columns: 18px max-content minmax(0, 1fr); align-items: center; gap: 9px; width: 100%; min-height: 32px; padding: 0 9px 0 8px; border: 0; border-radius: 9px; background: none; color: var(--layer-ink); text-align: left; font: inherit; font-size: 13px; }
+.blocklist button:hover { background: var(--ap-chrome-hover); }
+.blocklist button[data-on], .blocklist button:focus-visible { background: var(--ap-accent-soft); outline: none; }
+.blocklist .bm-icon { display: grid; place-items: center; color: var(--ap-ink-muted); }
+.blocklist .bm-icon svg { display: block; width: 16px; height: 16px; }
+.blocklist button[data-on] .sm-name, .blocklist button[data-on] .bm-icon, .blocklist button:focus-visible .sm-name, .blocklist button:focus-visible .bm-icon { color: var(--ap-accent); }
+.blocklist .sm-name { white-space: nowrap; }
+.blocklist button[aria-disabled="true"] { cursor: default; }
+.blocklist button[aria-disabled="true"] .sm-name, .blocklist button[aria-disabled="true"] .bm-icon { color: var(--ap-ink-faint); opacity: 0.6; }
+.blocklist button[aria-disabled="true"]:hover { background: none; }
+.blocklist .sm-hint { min-width: 0; text-align: right; font-size: 12px; color: var(--ap-ink-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.blocklist .bl-foot { flex: none; margin-top: 4px; padding: 7px 9px 4px; border-top: 1px solid var(--ap-rule); font-size: 12px; color: var(--ap-ink-faint); }
+@media (prefers-reduced-motion: reduce) { .blocklist { animation: none; } }
+.isle-tools .tb-note { margin: 0 8px 0 6px; font-size: 12.5px; color: var(--ap-ink-muted); white-space: nowrap; }
+/* the popup of a button of the capsule: a card like the windows, under the capsule, in the middle of its button; the place is set by the script */
+.nota-tip {
+  position: fixed; z-index: 70; left: 0; top: 0; width: max-content; max-width: min(272px, calc(100vw - 16px)); padding: 8px 11px 9px;
+  background: var(--layer-bg); color: var(--layer-ink); border: 1px solid var(--layer-border); border-radius: var(--layer-radius-tip); box-shadow: var(--layer-shadow);
+  font: 12.5px/1.42 var(--ap-font-ui); pointer-events: none; text-align: left; white-space: normal;
+  animation: nota-tip-in 0.12s ease-out;
+}
+@keyframes nota-tip-in { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+.nota-tip-name { font-weight: 600; font-size: 13px; }
+.nota-tip-desc { margin-top: 2px; color: var(--ap-pop-muted); text-wrap: pretty; }
+.nota-tip-keys { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 7px; color: var(--ap-pop-muted); font-size: 12px; }
+.nota-tip-keys > span { flex: 1 1 0; min-width: 0; }
+.nota-tip-keys > kbd + kbd + kbd + span { flex-basis: 100%; }
+.nota-tip kbd { display: inline-block; min-width: 20px; padding: 2px 5px; border-radius: 5px; background: var(--ap-pop-key); color: var(--ap-pop-ink); border: 1px solid var(--ap-pop-border); font: 11.5px/1.25 var(--ap-font-mono); text-align: center; }
+.nota-tip-off { margin-top: 7px; padding-top: 6px; border-top: 1px solid var(--ap-pop-border); color: var(--ap-warning); font-size: 12px; }
+.nota-tip.is-off .nota-tip-name { color: var(--ap-pop-muted); }
+/* the high contrast of VS Code: black, the frame of the theme, all the texts white */
+body.vscode-high-contrast:not(.vscode-high-contrast-light) .nota-tip { background: #000000; color: #ffffff; border-color: var(--vscode-contrastBorder, #6fc3df); }
+body.vscode-high-contrast:not(.vscode-high-contrast-light) .nota-tip-desc,
+body.vscode-high-contrast:not(.vscode-high-contrast-light) .nota-tip-keys,
+body.vscode-high-contrast:not(.vscode-high-contrast-light) .nota-tip.is-off .nota-tip-name { color: #ffffff; }
+body.vscode-high-contrast:not(.vscode-high-contrast-light) .nota-tip kbd { background: #000000; border-color: var(--vscode-contrastBorder, #6fc3df); }
+.tb-b .g-b { font-weight: 800; }
+.tb-b .g-i { font-style: italic; font-family: Georgia, serif; font-weight: 600; }
+.tb-b .g-s { text-decoration: line-through; }
+.tb-b .g-mark { background: var(--ap-mark-background); color: var(--ap-ink); padding: 0 3px; border-radius: 3px; font-size: 12px; }
+
+/* the island of strokes at the left edge: one stroke for a section, the current one dark (no remark marks: the counters are in the card) */
+/* it stands in the middle of the tab's height (between the row of capsules + 8 px and the bottom − 16 px), and is as high as the open panel (`--sec-top`, `--sec-rail-h` are set by outline.ts); where the sections do not fit, a stroke stands for 2–3 of them; the current one is the accent, 4 px longer */
+.isle-strokes { position: absolute; z-index: 30; left: 14px; top: var(--sec-top, 10px); flex-direction: column; justify-content: center; align-items: center; gap: var(--stroke-gap, 9px); width: 34px; height: var(--sec-rail-h, auto); min-height: 0; max-height: calc(100% - 26px); padding: 10px 0; overflow: hidden; border-radius: 17px; }
+.stroke { position: relative; display: block; width: 15px; height: var(--stroke-h, 3px); border-radius: 2px; background: var(--ap-ink-faint); opacity: 0.55; flex: none; }
+.stroke.sub { width: 9px; }
+.stroke.on { background: var(--ap-accent); opacity: 1; width: 19px; }
+.stroke.sub.on { width: 13px; }
+
+/* the cards: they hang from a capsule, with the same background, frame, no shadow */
+.card {
+  position: absolute; z-index: 50; top: calc(100% + 8px); min-width: 220px; max-width: min(360px, calc(100cqw - 24px)); padding: 6px;
+  background: var(--layer-bg); color: var(--layer-ink); border: 1px solid var(--layer-border); border-radius: var(--layer-radius-card);
+  box-shadow: var(--layer-shadow); font: 13px/1.4 var(--nota-font-ui);
+}
+.isle-left .card { left: 0; }
+.isle-right .card { right: 0; }
+.isle-mid .card { left: var(--card-left, 0); top: calc(max(100%, var(--tools-h, 0px)) + 8px); }
+.card-head { padding: var(--layer-card-head-pad); font-size: 11.5px; font-weight: 600; letter-spacing: 0.3px; color: var(--ap-ink-faint); }
+.card-foot { margin-top: 4px; padding: 8px 10px 6px; border-top: 1px solid var(--ap-rule); font-size: 12px; color: var(--ap-ink-faint); }
+.card-item { display: block; width: 100%; padding: var(--layer-card-item-pad); border: 0; border-radius: var(--layer-card-item-radius); background: none; text-align: left; font-size: 13.5px; }
+.card-item:hover, .card-item:focus-visible { background: var(--ap-chrome-hover); }
+.card-item[aria-checked="true"] { font-weight: 700; }
+
+/* (the badge and its card hang from the page) */
+.page { position: relative; }
+/* the badge «i» of the header of the page: at the top right of the page, scrolls with it; the card hangs under it */
+.pagemeta-badge { position: absolute; z-index: 20; top: 4px; right: 0; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 1px solid var(--ap-rule-strong); background: var(--ap-isle-bg); color: var(--ap-ink-faint); font: italic 600 13px/1 Georgia, "Times New Roman", serif; cursor: pointer; }
+.pagemeta-badge:hover, .pagemeta-badge:focus-visible { color: var(--ap-ink); }
+.pagemeta-badge.pinned { border-color: var(--ap-accent); color: var(--ap-ink); }
+.pagemeta-badge[hidden], .pagemeta-card[hidden] { display: none; }
+.doc > h1:first-child, .doc > .nota-page-meta:first-child + h1 { padding-right: 36px; }
+.pagemeta-card { top: 32px; right: 0; width: 320px; padding: 10px 12px 12px; }
+.pagemeta-card .pm-path { font-size: 11.5px; color: var(--ap-ink-faint); margin-bottom: 2px; overflow-wrap: anywhere; }
+.pagemeta-card .pm-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; overflow-wrap: anywhere; }
+.pagemeta-card .pm-row { display: flex; gap: 8px; font-size: 12.5px; line-height: 1.6; }
+.pagemeta-card .pm-key { flex: none; width: 82px; color: var(--ap-ink-faint); }
+.pagemeta-card .pm-link { display: block; margin-top: 8px; padding: 0; border: 0; background: none; color: var(--ap-accent); font: inherit; text-decoration: underline; text-underline-offset: 0.18em; cursor: pointer; }
+.pagemeta-card .pm-empty { font-size: 12.5px; color: var(--ap-ink-muted); }
+.pagemeta-card .pm-edit { margin-top: 10px; height: 28px; font-size: 12.5px; }
+.pagemeta-card .pm-params { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--ap-rule); }
+.pagemeta-card .pm-params-label { font-size: 11px; color: var(--ap-ink-faint); margin-bottom: 4px; }
+.pagemeta-card .pm-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.pagemeta-card .pm-chip { padding: 1px 6px; border-radius: 4px; background: var(--ap-code-bg); font: 11.5px/1.5 var(--ap-font-mono); overflow-wrap: anywhere; }
+
+/* the card «Разделы» */
+/* «.card.sections-card»: the plain «.card» (a grid, lower in the sheet) must not beat the column, or the list never scrolls */
+.card.sections-card { width: 300px; display: flex; flex-direction: column; gap: 0; max-height: min(70vh, 460px); }
+.tree-list { list-style: none; margin: 0; padding: 2px 2px 6px; overflow: auto; flex: 1; min-height: 0; }
+/* the scrollbar of the list: thin, round, no arrows, the colours of the theme (the sliders of VS Code); at rest it is almost invisible, it shows when the mouse is over the list or the list scrolls (the class «scrolling», set by outline.ts).
+   Only the «::-webkit-scrollbar» parts: «scrollbar-width» and «scrollbar-color» would switch them off */
+.tree-list { --sb: var(--vscode-scrollbarSlider-background, color-mix(in srgb, var(--ap-ink) 28%, transparent)); --sb-hover: var(--vscode-scrollbarSlider-hoverBackground, color-mix(in srgb, var(--ap-ink) 40%, transparent)); --sb-active: var(--vscode-scrollbarSlider-activeBackground, color-mix(in srgb, var(--ap-ink) 55%, transparent)); }
+.tree-list::-webkit-scrollbar { width: 10px; height: 10px; background: transparent; }
+.tree-list::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+.tree-list::-webkit-scrollbar-track, .tree-list::-webkit-scrollbar-corner { background: transparent; }
+.tree-list::-webkit-scrollbar-thumb { background-color: color-mix(in srgb, var(--sb) 22%, transparent); border: 3px solid transparent; background-clip: padding-box; border-radius: 5px; min-height: 28px; }
+.tree-list:hover::-webkit-scrollbar-thumb, .tree-list.scrolling::-webkit-scrollbar-thumb { background-color: var(--sb); }
+.tree-list::-webkit-scrollbar-thumb:hover { background-color: var(--sb-hover); }
+.tree-list::-webkit-scrollbar-thumb:active { background-color: var(--sb-active); }
+.tree-row { position: relative; display: flex; align-items: center; gap: 4px; padding-left: calc(var(--lvl, 0) * 14px); border-radius: 10px; }
+.tree-item { flex: 1; min-width: 0; display: flex; align-items: flex-start; gap: 6px; text-align: left; border: 0; background: none; padding: 6px 8px; border-radius: 10px; color: var(--ap-ink-muted); font-size: 13.5px; line-height: 1.3; }
+.tree-item:hover { background: var(--ap-chrome-hover); color: var(--ap-ink); }
+.tree-item.on, .tree-item.on:hover { background: var(--ap-accent-soft); color: var(--ap-ink); font-weight: 600; }
+.tree-item.top { color: var(--ap-ink); }
+.tree-name { flex: 1; min-width: 0; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; }
+.tree-row[draggable="true"] { cursor: grab; }
+.tree-row.dragging { opacity: 0.45; }
+.tree-row.drop-before { box-shadow: 0 -2px 0 0 var(--ap-accent); }
+.tree-row.drop-after { box-shadow: 0 2px 0 0 var(--ap-accent); }
+.tree-badge { flex: none; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px; border: 0; background: var(--ap-warning-soft); color: var(--ap-warning); font-size: 11.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.tree-badge:hover { box-shadow: 0 0 0 1.5px var(--ap-warning); }
+
+/* the card of a remark */
+.remark-card { width: 340px; padding: 8px 10px 10px; }
+.remark-card .card-head { padding: 2px 0 6px; }
+.remark-text { margin: 0 0 10px; font-size: 13.5px; line-height: 1.5; overflow-wrap: anywhere; }
+.remark-acts { display: flex; gap: 8px; }
+.remark-acts .btn { height: 30px; padding: 0 12px; border-radius: 15px; }
+.remark-acts .remark-next { background: var(--ap-accent); border-color: var(--ap-accent); color: var(--ap-on-accent); }
+.remark-acts .remark-next:hover { background: var(--ap-accent-hover); }
+
+/* the place of the remark that the card shows */
+.doc .diag-on { background: color-mix(in srgb, var(--ap-warning) 24%, transparent); border-radius: 3px; }
+
+/* a tight tab (the width of the tab, not of the window), step by step; the capsule «● N замечаний» never gets narrower than itself (the column is max-content), so it cannot lie on the tools:
+   1) the tools stand in the middle; 2) no room → the tools go left of the middle and «Разделы» shrink to the icon; 3) «● 2»; 4) the narrow capsule: «+», B, I, code, the link and «⋯» */
+@container (max-width: 760px) {
+  .isle-strokes { display: none; }
+}
+/* a wide tab with strokes (the visual mode, the document has sections): the strokes are the only way to the sections, the capsule «Разделы» goes;
+   the card is the panel that grows from the strokes: the strokes stay its left column, the capsule has no frame of its own while it is open */
+@container (min-width: 761px) {
+  .ed-main:has(.isle-strokes:not([hidden])) .isle-sections { display: none; }
+  .ed-main:has(.isle-strokes:not([hidden])) .isle-left { position: static; }
+  .ed-main:has(.isle-strokes:not([hidden])) .isle-left .sections-card {
+    position: fixed; left: 14px; top: var(--sec-top, 10px); z-index: 50; width: 336px; max-width: none; padding-left: 46px;
+    height: var(--sec-h, auto); max-height: min(calc(100% - 70px), 560px);
+    /* the panel is always laid out; it comes and goes by the clip: left edge, top and height stay, the names do not move, only the width that is seen grows (220 ms) and shrinks (170 ms) */
+    visibility: visible; pointer-events: auto; clip-path: inset(0 0 0 0 round 16px); animation: none; /* (not the shared «nota-pop-in»: no shift, no fade) */
+    transition: clip-path 0.22s cubic-bezier(.2, 0, 0, 1), visibility 0s linear 0s;
+  }
+  /* closed: «[hidden] { display: none !important }» is global, so the rule is «!important» too; a short panel grows from nothing, one as low as the strokes from their width (`--sec-start`) */
+  .ed-main:has(.isle-strokes:not([hidden])) .isle-left .sections-card[hidden] {
+    display: flex !important; visibility: hidden; pointer-events: none; clip-path: inset(0 calc(336px - var(--sec-start, 34px)) 0 0 round 16px);
+    transition: clip-path 0.17s cubic-bezier(.4, 0, 1, 1), visibility 0s linear 0.17s;
+  }
+  .ed-main:has(.isle-strokes:not([hidden])) .isle-strokes { z-index: 60; }
+  /* an open panel is one thing with one frame: the strokes have no frame, background or focus ring of their own, hovered too, and while the card folds (170 ms) */
+  button.isle.isle-strokes[aria-expanded="true"], button.isle.isle-strokes[aria-expanded="true"]:hover:not(:disabled), button.isle.isle-strokes[aria-expanded="true"]:focus-visible,
+  .ed-main:has(.sections-card.closing) button.isle.isle-strokes, .ed-main:has(.sections-card.closing) button.isle.isle-strokes:hover:not(:disabled) { border-color: transparent; background: transparent; box-shadow: none; outline: none; }
+  /* the rule between the columns belongs to the panel; the focus on the strokes shows it: accent, 2 px */
+  .ed-main:has(.isle-strokes:not([hidden])) .isle-left .sections-card::before { content: ""; position: absolute; left: 33px; top: 12px; bottom: 12px; width: 1px; background: var(--ap-rule); pointer-events: none; }
+  .ed-main:has(.isle-strokes[aria-expanded="true"]:focus-visible) .isle-left .sections-card::before { left: 32.5px; width: 2px; background: var(--ap-accent); }
+  /* held open by a click: the accent frame, like any open capsule */
+  .ed-main:has(.isle-strokes:not([hidden])) .isle-left .sections-card[data-pinned] { border-color: var(--ap-accent); }
+}
+@container (max-width: 800px) {
+  .isle-sections { width: 36px; padding: 0; justify-content: center; }
+  .isle-sections .isle-name, .isle-sections .i-chev { display: none; }
+}
+@container (max-width: 720px) {
+  .rm-text { font-size: 0; }
+  .rm-text::after { content: attr(data-short); font-size: 13px; }
+}
+@container (max-width: 560px) {
+  .doc h1 { font-size: 22px; }
+  .doc h2 { font-size: 17.5px; }
+  .doc h3 { font-size: 15px; }
+}
+@container (max-width: 650px) {
+  .ed-isles { grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; padding: 8px 10px 0; }
+  .isle-wrap { position: static; }
+  .isle-left { max-width: none; }
+  .card, .sections-card, .remark-card { left: 10px; right: 10px; top: calc(100% - 4px); width: auto; max-width: none; }
+  .card.sections-card { width: auto; } /* (the plain width of the card of sections has two classes: the card is as wide as the tab less 10 px at each side) */
+  .pagemeta-card { left: 10px; right: 10px; top: 32px; width: auto; }
+  .nota-toc .toc-src { display: none; }
+  .isle-left .card, .isle-mid .card, .isle-right .card { left: 10px; right: 10px; top: max(calc(100% - 4px), calc(var(--tools-bottom, 0px) + 4px)); }
+  .isle-sections { width: 36px; padding: 0; justify-content: center; }
+  .isle-sections .isle-name, .isle-sections .i-chev { display: none; }
+  .isle-mid { justify-self: stretch; }
+  .isle-tools { width: 100%; }
+  /* in a narrow tab the capsule is one line as in a wide one: «+», «Текст ⌄», the lists (the marks, the colours and the link are on the panel over the selection);
+     the row «Таблица» is one line too, its buttons narrower (28 px, as the buttons of the panel), and wraps only in a tab narrower than 360 px */
+  .tl-row .tb-b { height: 28px; min-width: 28px; padding: 0 3px; }
+  .tl-row .fl-sep { margin: 0 3px; }
+  .rm-text { font-size: 0; }
+  .rm-text::after { content: attr(data-short); font-size: 13px; }
+}
+
+@container (max-width: 800px) {
+  /* the short word of «Замечания» is kept up to here while the blocks are `frequent`: the open capsule (from 651 px) then has one room at every width (the long word needs ≈768 px) */
+  .ed-isles[data-blocks="frequent"] .rm-text { font-size: 0; }
+  .ed-isles[data-blocks="frequent"] .rm-text::after { content: attr(data-short); font-size: 13px; }
+}
+
+/* in the mode «Текст» the capsule is longer by the note «Режим «Текст»»; with `frequent` it opens at ≈ 703 px, and «Разделы» with its name (+80 px, from 801 px)
+   would close it again until ≈ 877 px (so would the long word of «Замечания», the same 801 px). So here both keep the short form up to 900 px (the name fits again well before it): the capsule opens once */
+@container (max-width: 900px) {
+  .ed-isles[data-blocks="frequent"]:has(.isle-tools .tb-note) .isle-sections { width: 36px; padding: 0; justify-content: center; }
+  .ed-isles[data-blocks="frequent"]:has(.isle-tools .tb-note) .isle-sections .isle-name,
+  .ed-isles[data-blocks="frequent"]:has(.isle-tools .tb-note) .isle-sections .i-chev { display: none; }
+  .ed-isles[data-blocks="frequent"]:has(.isle-tools .tb-note) .rm-text { font-size: 0; }
+  .ed-isles[data-blocks="frequent"]:has(.isle-tools .tb-note) .rm-text::after { content: attr(data-short); font-size: 13px; }
+}
+
+/* the round capsule with the gear takes 44 px of the row, so in a tab of 450 px and less the capsule of tools gives up buttons that «+» has too (the list «Вставить блок» holds the three lists) */
+@container (max-width: 450px) {
+  .isle-tools .tl-ol, .isle-tools .tl-check { display: none; }
+}
+@container (max-width: 400px) {
+  .isle-tools .tl-ul { display: none; }
+}
+
+@container (max-width: 360px) {
+  .tl-row { flex-wrap: wrap; }
+}
+
+/* the strip of a big file: under the row of capsules */
+/* a plate of the width of the sheet that stands in place under the row of capsules; the text scrolls under it (`--strip-h` is its height, set by main.ts) */
+.big-strip { position: absolute; z-index: 39; top: calc(var(--isles-h, 52px) + 4px); left: 36px; right: 24px; max-width: clamp(var(--nota-page-min), var(--nota-page), var(--nota-page-max)); margin: 0 auto; display: flex; align-items: center; gap: 10px; padding: 9px 12px 9px 16px; background: var(--ap-notice-bg); color: var(--ap-notice-ink); border: 1px solid var(--ap-notice-border); border-radius: 10px; font-size: 13px; line-height: 1.45; }
+.big-text { flex: 1; min-width: 0; }
+.big-strip .btn { flex: none; height: 28px; }
+
+/* a remark of Nota under the text of the visual editor */
+.doc .diag { text-decoration: underline wavy var(--ap-warning); text-decoration-thickness: 1.5px; text-underline-offset: 5px; text-decoration-skip-ink: none; }
+.doc .diag[data-severity="error"] { text-decoration-color: var(--ap-error); }
+.doc a.diag { color: var(--ap-warning); }
+.doc .nota-island.diag, .doc .nota-code.diag, .doc .nota-image.diag { text-decoration: none; outline: 1px solid var(--ap-warning); }
+
+/* a refusal: the strip at the bottom of the tab */
+.notice {
+  flex: none; display: flex; align-items: flex-start; gap: 10px; padding: 10px 10px 10px 16px;
+  background: var(--ap-notice-bg); color: var(--ap-notice-ink); border-top: 1px solid var(--ap-notice-border);
+  font-size: 13px; line-height: 1.45;
+}
+.notice .i { margin-top: 1px; }
+.notice-text { flex: 1; min-width: 0; padding-top: 1px; }
+.notice-x { display: inline-grid; place-items: center; width: 24px; height: 24px; margin: -2px 0; border: 0; border-radius: var(--ap-radius-small); background: transparent; color: var(--ap-notice-ink); }
+.notice-x:hover { background: var(--ap-notice-border); }
+
+/* the screens: «слишком большой», «не открылся», «открываю» */
+.state { flex: 1; min-height: 0; overflow: auto; display: flex; align-items: flex-start; justify-content: center; padding: 12vh 24px 40px; }
+.card { width: 100%; max-width: 30rem; display: grid; gap: 14px; color: var(--ap-ink); }
+.badge { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; }
+.badge svg { width: 22px; height: 22px; }
+.badge.warn { background: var(--ap-warning-soft); color: var(--ap-warning); }
+.badge.err { background: var(--ap-error-soft); color: var(--ap-error); }
+.card h2 { margin: 4px 0 0; font-size: 19px; line-height: 1.3; font-weight: 650; text-wrap: balance; }
+.card p { margin: 0; color: var(--ap-ink-muted); font-size: 14px; line-height: 1.55; }
+.card p strong { color: var(--ap-ink); font-weight: 600; }
+.facts { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 2px 0; padding: 10px 12px; border: 1px solid var(--ap-rule); border-radius: var(--ap-radius-small); background: var(--ap-paper); font-size: 13px; }
+.facts dt { color: var(--ap-ink-faint); }
+.facts dd { margin: 0; min-width: 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.btn { height: 32px; padding: 0 14px; border-radius: var(--ap-radius-small); font-weight: 600; font-size: 13px; border: 1px solid var(--ap-rule-strong); background: var(--ap-paper); color: var(--ap-ink); }
+.btn:hover { background: var(--ap-chrome-hover); }
+.btn.primary { background: var(--ap-accent); border-color: var(--ap-accent); color: var(--ap-on-accent); }
+.btn.primary:hover { background: var(--ap-accent-hover); border-color: var(--ap-accent-hover); }
+.card p.foot { font-size: 12.5px; color: var(--ap-ink-faint); }
+details.more { font-size: 12.5px; color: var(--ap-ink-muted); }
+details.more summary { cursor: pointer; width: max-content; }
+details.more pre { margin: 8px 0 0; padding: 8px 10px; border-radius: var(--ap-radius-small); background: var(--ap-code-bg); color: var(--ap-ink); font: 12px/1.5 var(--ap-font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+.loading { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding-top: 20vh; color: var(--ap-ink-muted); gap: 10px; font-size: 13px; }
+.spin { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--ap-rule-strong); border-top-color: var(--ap-accent); animation: sp 0.8s linear infinite; margin-top: 1px; }
+@keyframes sp { to { transform: rotate(360deg); } }
+
+@media (max-width: 640px) {
+  .scroll::after { height: 72px; }
+  .scroll { padding: calc(22px + var(--isles-h, 52px) + var(--strip-h, 0px) + var(--lead-extra, 0px)) 14px 0 36px; } /* the left field keeps room for the handle of a block */
+  .state { padding: 7vh 18px 32px; }
+  .isle-tools .tb-note { display: none; } /* in a narrow tab the pale buttons say «Text» themselves; the label would stick out of the capsule */
+  .acts .btn { flex: 1 1 100%; height: 38px; }
+}
+
+/* lists, admonitions and collapsible blocks of the document, after design/editor/prototype.html */
+.doc .li { --lvl: 0; display: flex; align-items: flex-start; gap: 9px; padding-left: calc(var(--lvl, 0) * 26px); margin: 0 0 2px; white-space: normal; }
+.doc .li > .mk { flex: none; min-width: 16px; text-align: right; color: var(--ap-ink-faint); font-variant-numeric: tabular-nums; user-select: none; }
+.doc .li-ol > .mk { min-width: 22px; }
+.doc .li-text { flex: 1; min-width: 0; white-space: pre-wrap; overflow-wrap: break-word; }
+.doc .li > .chk { flex: none; width: 18px; height: 18px; margin-top: 0.3em; border-radius: 5px; border: 1.5px solid var(--ap-rule-strong); background: var(--ap-paper); display: grid; place-items: center; padding: 0; color: var(--ap-on-accent); cursor: pointer; }
+.doc .li > .chk.on { background: var(--ap-accent); border-color: var(--ap-accent); }
+.doc .li > .chk svg { width: 12px; height: 12px; opacity: 0; }
+.doc .li > .chk.on svg { opacity: 1; }
+.doc .li.done .li-text { color: var(--ap-ink-muted); text-decoration: line-through; text-decoration-color: var(--ap-ink-faint); }
+.doc .li.nota-draft .li-text:empty::after { content: "\200b"; }
+.doc .cell-li > .chk { cursor: default; }
+.doc .adm { --k-bg: var(--ap-adm-note-bg, #eef3ff); --k-edge: var(--ap-adm-note-edge, #3b6fd8); --k-ink: var(--ap-adm-note-ink, #1e3a75); background: none; color: var(--ap-ink); }
+.doc .adm-TIP { --k-bg: var(--ap-adm-tip-bg, #ebf7ef); --k-edge: var(--ap-adm-tip-edge, #1f9d55); --k-ink: var(--ap-adm-tip-ink, #14532d); }
+.doc .adm-IMPORTANT { --k-bg: var(--ap-adm-important-bg, #f3efff); --k-edge: var(--ap-adm-important-edge, #7c3aed); --k-ink: var(--ap-adm-important-ink, #4c1d95); }
+.doc .adm-WARNING { --k-bg: var(--ap-adm-warn-bg, #fff7e6); --k-edge: var(--ap-adm-warn-edge, #e0a020); --k-ink: var(--ap-adm-warn-ink, #6b4e12); }
+.doc .adm-CAUTION { --k-bg: var(--ap-adm-caution-bg, #fff0ee); --k-edge: var(--ap-adm-caution-edge, #dc4a3a); --k-ink: var(--ap-adm-caution-ink, #7f1d1d); }
+.doc .adm-para { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2px 8px; padding: 6px 14px; box-shadow: inset 3px 0 0 var(--k-edge); border-radius: 0; white-space: normal; margin: 0 0 0.8em; }
+.doc .adm-para .adm-ico, .doc .adm-head .adm-ico { color: var(--k-edge); margin-top: 0.28em; display: flex; }
+.doc .adm-lbl { font-weight: 700; flex: none; color: var(--k-edge); }
+.doc .adm-text { flex: 1 1 220px; min-width: 0; white-space: pre-wrap; overflow-wrap: break-word; }
+.doc .box-adm { border-left: 1px solid color-mix(in srgb, var(--k-edge) 35%, transparent); border-right: 1px solid color-mix(in srgb, var(--k-edge) 35%, transparent); padding: 0 16px; margin: 0; border-radius: 0; }
+.doc .box-adm.box-first { border-top: 1px solid color-mix(in srgb, var(--k-edge) 35%, transparent); border-radius: 10px 10px 0 0; padding-top: 10px; margin-top: 0.8em; }
+.doc .box-adm.box-last { border-bottom: 1px solid color-mix(in srgb, var(--k-edge) 35%, transparent); border-radius: 0 0 10px 10px; height: 10px; padding: 0; margin-bottom: 0.8em; }
+.doc .adm-head { display: flex; align-items: center; gap: 7px; color: var(--k-edge); font: 700 12px/1.6 var(--ap-font-ui); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+.doc .box-adm > p, .doc .box-adm .li-text { color: var(--ap-ink); }
+.doc .box-coll { border-left: 1px solid var(--ap-rule-strong); border-right: 1px solid var(--ap-rule-strong); padding: 0 16px 0 36px; margin: 0; }
+.doc .box-coll.box-first { border: 1px solid var(--ap-rule-strong); border-radius: 10px; padding: 0; margin-top: 0.8em; }
+.doc .box-coll.box-first.open { border-bottom: 0; border-radius: 10px 10px 0 0; }
+.doc .box-coll.box-last { border-bottom: 1px solid var(--ap-rule-strong); border-radius: 0 0 10px 10px; height: 10px; padding: 0; margin-bottom: 0.8em; }
+.doc .coll-head { width: 100%; display: flex; align-items: center; gap: 8px; border: 0; background: none; padding: 9px 14px; text-align: left; font: inherit; font-weight: 600; color: var(--ap-ink); border-radius: 10px; cursor: pointer; }
+.doc .coll-head:hover { background: var(--ap-chrome); }
+.doc .coll-head svg { transition: transform 0.17s ease-out; color: var(--ap-ink-faint); }
+.doc .box-coll.open .coll-head svg { transform: rotate(90deg); }
+.doc .box-end { display: block; }
+
+/* a diagram (Mermaid): the picture on the paper, no frame; while the cursor is in it, the code beside the picture in a frame of the accent */
+.nota-diagram { position: relative; margin: 0 0 0.9em; border: 1px solid transparent; border-radius: var(--ap-radius-small); background: var(--ap-paper); }
+.nota-diagram:hover { border-color: var(--ap-rule); }
+.nota-diagram.editing { border-color: var(--ap-accent); background: var(--ap-code-bg); }
+.nota-diagram .diagram-top { display: flex; justify-content: space-between; gap: 12px; padding: 4px 12px 0; font: 500 11px/16px var(--ap-font-ui); color: var(--ap-ink-faint); user-select: none; visibility: hidden; }
+.nota-diagram:hover .diagram-top, .nota-diagram.editing .diagram-top, .nota-diagram.broken .diagram-top { visibility: visible; }
+.nota-diagram .diagram-hint { color: var(--ap-ink-muted); text-align: right; }
+.nota-diagram .hint-edit { display: none; }
+.nota-diagram.editing .hint-edit { display: inline; }
+.nota-diagram.editing .hint-idle, .nota-diagram.broken .diagram-hint, .nota-diagram.nodrawer .diagram-hint { display: none; }
+.nota-diagram .diagram-main { display: grid; grid-template-columns: minmax(0, 1fr); }
+.nota-diagram .diagram-src { display: none; margin: 0; min-width: 0; padding: 8px 12px 12px; border-right: 1px solid var(--ap-rule); white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 2; font: 13px/1.55 var(--ap-font-mono); color: var(--ap-ink); }
+.nota-diagram.editing .diagram-main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); }
+.nota-diagram.editing .diagram-src { display: block; }
+.nota-diagram .diagram-box { min-width: 0; padding: 10px 16px 16px; display: flex; justify-content: center; align-items: center; min-height: 120px; cursor: text; overflow-x: auto; }
+.nota-diagram.editing .diagram-box { background: var(--ap-paper); border-radius: 0 0 var(--ap-radius-small) 0; }
+.nota-diagram .diagram-pic { width: 100%; min-width: 0; } /* the picture grows to the page up to its own width (mermaid sets max-width inline) */
+.nota-diagram .diagram-pic svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+.nota-diagram.stale .diagram-pic svg { opacity: 0.45; filter: grayscale(1); }
+.nota-diagram .diagram-wait { display: flex; align-items: center; gap: 10px; color: var(--ap-ink-muted); font-size: 13px; }
+.nota-diagram .diagram-spin { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--ap-rule-strong); border-top-color: var(--ap-accent); animation: diagram-spin 0.8s linear infinite; }
+@keyframes diagram-spin { to { transform: rotate(360deg); } }
+.nota-diagram .diagram-plate { width: 100%; max-width: 30rem; display: grid; justify-items: center; gap: 6px; padding: 18px 16px; border: 1px dashed var(--ap-plate-border); border-radius: var(--ap-radius-small); color: var(--ap-plate-ink); text-align: center; font-size: 13px; line-height: 1.45; }
+.nota-diagram .diagram-plate-title { font-weight: 600; color: var(--ap-ink); }
+.nota-diagram .diagram-plate-hint { color: var(--ap-ink-faint); font-size: 12px; }
+.nota-diagram .diagram-plate.failed { border-color: var(--ap-error); }
+.nota-diagram .diagram-bar { display: grid; gap: 4px; padding: 8px 12px 10px; border-top: 1px solid var(--ap-rule); background: var(--ap-error-soft); color: var(--ap-ink); font-size: 12.5px; line-height: 1.45; border-radius: 0 0 var(--ap-radius-small) var(--ap-radius-small); user-select: text; }
+.nota-diagram .diagram-bar[hidden] { display: none; }
+.nota-diagram .diagram-bar-text { color: var(--ap-error); font-weight: 600; }
+.nota-diagram .diagram-bar-error { margin: 0; font: 12px/1.5 var(--ap-font-mono); white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ap-ink-muted); }
+@media (max-width: 760px) {
+  .nota-diagram.editing .diagram-main { grid-template-columns: minmax(0, 1fr); }
+  .nota-diagram.editing .diagram-src { border-right: 0; border-bottom: 1px solid var(--ap-rule); }
+}
+
+/* the fill of a cell: the whole cell takes the colour; the label [.cell-…]##{empty}## is not drawn (the cell shows its text only) */
+.doc .tbl td.cell-yellow, .doc .tbl th.cell-yellow { background: var(--ap-hl-yellow); }
+.doc .tbl td.cell-green, .doc .tbl th.cell-green { background: var(--ap-hl-green); }
+.doc .tbl td.cell-blue, .doc .tbl th.cell-blue { background: var(--ap-hl-blue); }
+.doc .tbl td.cell-pink, .doc .tbl th.cell-pink { background: var(--ap-hl-pink); }
+.doc .tbl td.cell-purple, .doc .tbl th.cell-purple { background: var(--ap-hl-purple); }
+.doc .tbl td.cell-gray, .doc .tbl th.cell-gray { background: var(--ap-hl-gray); }
+/* the selected cells: a layer of the accent over the fill (16 %, in the dark theme 28 %), so the colour of the cell and the grey of the head stay in sight;
+   the frame is one for the whole block: 2 px inside the cells on its edge (e-t, e-b, e-l, e-r), the lines of the grid stay inside */
+.doc { --nota-sel-layer: 16%; --nota-sel-frame: var(--ap-accent); }
+body[data-nota-theme="dark"] .doc { --nota-sel-layer: 28%; --nota-sel-frame: var(--ap-accent-hover); }
+.doc .tbl td.sel, .doc .tbl th.sel {
+  background-image: linear-gradient(color-mix(in srgb, var(--ap-accent) var(--nota-sel-layer), transparent), color-mix(in srgb, var(--ap-accent) var(--nota-sel-layer), transparent));
+  box-shadow:
+    inset 0 var(--sel-t, 0) 0 0 var(--nota-sel-frame), inset 0 calc(-1 * var(--sel-b, 0px)) 0 0 var(--nota-sel-frame),
+    inset var(--sel-l, 0) 0 0 0 var(--nota-sel-frame), inset calc(-1 * var(--sel-r, 0px)) 0 0 0 var(--nota-sel-frame);
+}
+.doc .tbl .sel.e-t { --sel-t: 2px; }
+.doc .tbl .sel.e-b { --sel-b: 2px; }
+.doc .tbl .sel.e-l { --sel-l: 2px; }
+.doc .tbl .sel.e-r { --sel-r: 2px; }
+/* the corners of the table: the frame and the layer follow the arc of the table, inside its 1 px border */
+.doc .tbl .sel.c-tl { border-top-left-radius: calc(var(--nota-tbl-radius) - 1px); }
+.doc .tbl .sel.c-tr { border-top-right-radius: calc(var(--nota-tbl-radius) - 1px); }
+.doc .tbl .sel.c-bl { border-bottom-left-radius: calc(var(--nota-tbl-radius) - 1px); }
+.doc .tbl .sel.c-br { border-bottom-right-radius: calc(var(--nota-tbl-radius) - 1px); }
+/* two cells or more: no caret and no blue selection of the text in them; while dragging, the pointer is an arrow */
+.doc.cells-on { caret-color: transparent; }
+.doc.cells-on ::selection { background: transparent; }
+.doc.cells-drag, .doc.cells-drag .tbl td, .doc.cells-drag .tbl th { cursor: default; user-select: none; -webkit-user-select: none; }
+
+/* the layer over the tables: the grips of the columns and of the rows stand outside the frame (a band of 10 px over it and at its left, 8 px for a
+   table in a cell), the borders between the columns are over the grid; the layer is fixed to the window and clipped to the scroll of the document */
+.nota-grips { position: fixed; inset: 0; z-index: 4; pointer-events: none; --g-on: var(--ap-accent); }
+.nota-grips .cg, .nota-grips .rg, .nota-grips .bd { position: absolute; pointer-events: auto; }
+.nota-grips .cg, .nota-grips .rg { cursor: pointer; touch-action: manipulation; --gl: 100%; }
+.nota-grips .cg::after, .nota-grips .rg::after { content: ""; position: absolute; border-radius: 2px; background: var(--ap-rule-strong); transition: background-color 0.12s, transform 0.12s; }
+.nota-grips .cg::after { left: 0; right: 0; margin-inline: auto; width: var(--gl); bottom: 3px; height: 3px; }
+.nota-grips .rg::after { top: 0; bottom: 0; margin-block: auto; height: var(--gl); right: 3px; width: 3px; }
+.nota-grips .cg:hover::after, .nota-grips .rg:hover::after { background: color-mix(in srgb, var(--g-on) 60%, transparent); }
+.nota-grips .cg:hover::after { transform: scaleY(1.67); transform-origin: bottom; }
+.nota-grips .rg:hover::after { transform: scaleX(1.67); transform-origin: right; }
+.nota-grips .cg.on::after, .nota-grips .rg.on::after { background: var(--g-on); }
+.nota-grips .bd { cursor: col-resize; touch-action: none; }
+.nota-grips .bd::after { content: ""; position: absolute; top: 0; bottom: 0; left: 4px; width: 2px; background: var(--g-on); opacity: 0; transition: opacity 0.1s; }
+.nota-grips .bd:hover::after, .nota-grips .bd.live::after { opacity: 1; }
+.nota-grips .bd.limit::after { background: var(--ap-warning); }
+.nota-grips .wtag { position: absolute; transform: translateX(-50%); padding: 2px 8px; border-radius: 9px; background: var(--ap-ink); color: var(--ap-canvas); font: 600 11.5px/18px var(--ap-font-ui); font-variant-numeric: tabular-nums; white-space: nowrap; pointer-events: none; }
+.nota-grips .wtag.limit { background: var(--ap-warning); color: #1f1300; }
+.doc.col-drag, .doc.col-drag * { cursor: col-resize !important; user-select: none; -webkit-user-select: none; }
+/* the caption steps 10 px from the frame, so the band of the grips of the columns does not lie on it */
+.doc .tbl-cap { margin-bottom: 10px; }
+body[data-nota-theme="dark"] .nota-grips { --g-on: var(--ap-accent-hover); }
+
+/* the bar of three buttons at a grip (add before, add after, delete) and the hint of its button; both are in the layer of the grips, so that
+   they do not change the size of the document or of the table. The bar comes up by opacity alone (160 ms) and goes in 120 ms; a hint is a card. */
+.nota-grips .gbar { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.nota-grips .gb { position: absolute; box-sizing: border-box; display: flex; padding: 2px; border-radius: 13px; background: var(--layer-bg); color: var(--layer-ink); box-shadow: 0 0 0 1px var(--layer-border), var(--layer-shadow-capsule); pointer-events: auto; opacity: 0; transition: opacity 0.16s cubic-bezier(0.2, 0, 0, 1); }
+.nota-grips .gb[hidden], .nota-grips .gtip[hidden] { display: none; }
+.nota-grips .gb.col { flex-direction: row; width: 71px; height: 26px; }
+.nota-grips .gb.row { flex-direction: column; width: 26px; height: 71px; }
+.nota-grips .gb.on { opacity: 1; }
+.nota-grips .gb.leaving { opacity: 0; pointer-events: none; transition-duration: 0.12s; }
+.nota-grips .gbtn { position: relative; box-sizing: border-box; width: 22px; height: 22px; flex: none; margin: 0; padding: 0; border: 0; border-radius: 9px; background: transparent; color: inherit; display: grid; place-items: center; cursor: pointer; font: inherit; }
+.nota-grips .gb.col .gbtn.del { margin-left: 1px; }
+.nota-grips .gb.row .gbtn.del { margin-top: 1px; }
+.nota-grips .gbtn.del::before { content: ""; position: absolute; background: var(--ap-rule-strong); }
+.nota-grips .gb.col .gbtn.del::before { left: -1px; top: 4px; bottom: 4px; width: 1px; }
+.nota-grips .gb.row .gbtn.del::before { top: -1px; left: 4px; right: 4px; height: 1px; }
+.nota-grips .gbtn:hover { background: var(--ap-accent-soft); }
+.nota-grips .gbtn:focus-visible { outline: 2px solid var(--g-on); outline-offset: -1px; }
+.nota-grips .gbtn.off { opacity: 0.5; }
+.nota-grips .gbtn .cnt { position: absolute; top: -3px; right: -3px; min-width: 13px; height: 13px; box-sizing: border-box; padding: 0 3px; border-radius: 7px; background: var(--g-on); color: var(--ap-canvas); font: 700 9px/13px var(--ap-font-ui); text-align: center; pointer-events: none; }
+.nota-grips .gtip { position: absolute; box-sizing: border-box; width: max-content; padding: 2px 7px; border-radius: 7px; background: var(--layer-bg); color: var(--layer-ink); box-shadow: 0 0 0 1px var(--layer-border), var(--layer-shadow-capsule); font: 500 11.5px/14px var(--ap-font-ui); pointer-events: none; opacity: 0; transition: opacity 0.12s; }
+.nota-grips .gtip.on { opacity: 1; }
+.nota-grips .gtip.card { padding: 4px 8px; }
+.nota-grips .gtip .n, .nota-grips .gtip .r { display: block; }
+.nota-grips .gtip.dim .n { color: var(--ap-ink-muted); }
+.nota-grips .gtip.card .r { margin-top: 3px; padding-top: 3px; border-top: 1px solid var(--ap-rule-strong); }
+.nota-grips .gtip .r { color: var(--ap-warning); }
+.nota-grips .cg:focus-visible, .nota-grips .rg:focus-visible { outline: 2px solid var(--g-on); outline-offset: -1px; border-radius: 3px; }
+/* a hint that lies on its own lines: the borders between the columns of the table are out of its way meanwhile */
+.nota-grips.gtip-own .bd { display: none; }
+/* while the bar of a row stands in the margin, the handle of the block is not there to compete for it */
+body.nota-gbar-row .blk-handle { visibility: hidden; }
+/* a table that is the first block of the document stands lower by the height of the bar of a column (26 px) and 18 px more: the bar of its columns stands over the grip
+   under the capsule of the tab, also while the caret is in the table and the capsule has its second row (71 px). The room is always there (the caret does not change it)
+   and lies in the margin of the document, which does not widen the scroll. */
+.doc > .tbl:first-child { margin-top: 44px; }
+
+/* the motion: the cards, the windows and the lists come with a shift of 4 px; only transform, opacity, visibility, grid-template-rows */
+.card { animation: nota-pop-in 0.18s ease-out; }
+.card[hidden] { animation: none; }
+/* a card or a window that was closed stays for 0.12 s, hidden with visibility, and fades out */
+.is-leaving > .pop, .is-leaving > .card { animation: none; opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-4px) scale(0.985); transition: opacity 0.12s ease-in, transform 0.12s ease-in, visibility 0s 0.12s; }
+.card-item { position: relative; isolation: isolate; border-radius: var(--layer-card-item-radius); }
+.mode-in { animation: nota-mode-in 0.22s ease-out; }
+@keyframes nota-mode-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.ed-visual.smooth { scroll-behavior: smooth; }
+.sec-flash { position: relative; }
+.sec-flash::after { content: ""; position: absolute; inset: -2px -8px; border-radius: 6px; background: var(--ap-accent-soft); z-index: -1; animation: nota-flash 0.85s ease-out forwards; pointer-events: none; }
+@keyframes nota-flash { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .card, .is-leaving > .pop, .is-leaving > .card, .tl-table, .tl-table.is-back, .tl-table.is-leaving, .mode-in, .sec-flash::after, .notice.again, .doc .coll-head svg { transition: none; animation: none; }
+  .tl-table.is-leaving { visibility: hidden; }
+  .ed-visual.smooth { scroll-behavior: auto; }
+}
+
+/* the width of the page in a wide tab and in a narrow one (at the end: the other rules of the file look for their own first @container) */
+@container (min-width: 761px) {
+  .page { width: min(clamp(var(--nota-page-min), var(--nota-page), var(--nota-page-max)), 100cqw - 2 * var(--nota-gutter)); max-width: none; }
+  /* the gutter holds the handle here, so the fields are equal (36 px, as the left one) and the scrollbar is reserved on both sides: the page stands exactly in the middle of the tab */
+  .scroll { padding-right: 36px; scrollbar-gutter: stable both-edges; }
+  .big-strip { max-width: min(clamp(var(--nota-page-min), var(--nota-page), var(--nota-page-max)), 100cqw - 2 * var(--nota-gutter)); }
+}
+@container (max-width: 650px) {
+  .page { width: auto; max-width: none; }
+}
+/* the outline «Разделы» as a column left of the text (the view `side`, set by the setting; the default is the capsule). It stands still at the left edge of the tab: 240 px wide, 14 px from the edge, 10 px under its top (level with the row of capsules: the left island «Разделы» is not there in this view; where the capsule of tools would lie on it, `--side-top` puts it under the capsule), 16 px above its bottom;
+   the list in it scrolls by itself. It has no frame and no background: a list on the field of the editor, in the fonts and the colours of the interface. */
+.sections-side { display: none; }
+@container (min-width: 1022px) {
+  body[data-outline-view="side"] .sections-side { position: absolute; z-index: 30; left: 14px; top: var(--side-top, 10px); bottom: 16px; width: 240px; display: flex; flex-direction: column; color: var(--layer-ink, var(--ap-ink)); font: 13px/1.4 var(--nota-font-ui); }
+  body[data-outline-view="side"] .sections-side[hidden] { display: none; }
+  /* the view `side` of the visual editor (the column is there, or there is nothing to list yet): no strokes and no capsule «Разделы» */
+  body[data-outline-view="side"] .ed-main:has(.sections-side[data-lane]) :is(.isle-strokes, .isle-sections) { display: none; }
+  /* the page stands 334 px from the left edge (14 + the column 240 + 80 px for the handles and the strips of rows; 36 px of them are the padding of .scroll, 298 px the margin of the page) and does not get narrower than it must: it is the less of the page width and «the tab less 414 px» (80 on the right too), 38rem at least */
+  body[data-outline-view="side"] .ed-main:has(.sections-side[data-lane]) .page { width: max(var(--nota-page-min), min(clamp(var(--nota-page-min), var(--nota-page), var(--nota-page-max)), 100cqw - 414px)); margin: 0 0 0 298px; }
+  body[data-outline-view="side"] .ed-main:has(.sections-side[data-lane]) .scroll { padding-left: 36px; scrollbar-gutter: stable; }
+}
+.side-head { flex: none; padding: 4px 8px 6px; color: var(--ap-ink-faint); font-size: 11.5px; line-height: 1.3; }
+.sections-side .tree-list { padding: 0 2px 6px; }
+.tree-fold, .tree-fold-gap { flex: none; width: 20px; height: 24px; }
+.tree-fold { display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 6px; background: none; color: var(--ap-ink-faint); }
+.tree-fold:hover { background: var(--ap-chrome-hover); color: var(--ap-ink); }
+.tree-fold .i-fold { width: 14px; height: 14px; transition: transform 0.12s; }
+.tree-fold.closed .i-fold { transform: rotate(-90deg); }
+/* the windows and the lists under the capsule are of its family: the tokens of the layer base above and nothing of their own. The colours are not a window: they stand in a row in place of the row they were opened from (`.cr`). */
+.fmtpop, .linkpop, .imagepop, .dd-list.pop { background: var(--layer-bg); color: var(--layer-ink); border-color: var(--layer-border); border-radius: var(--layer-radius); box-shadow: var(--layer-shadow); }
+.dd-list.pop { min-width: 188px; padding: var(--layer-pad); }
+.dd-list.pop .dd-head { padding: var(--layer-head-pad); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+.dd-list.pop .dd-opt { min-height: var(--layer-opt-h); padding: var(--layer-opt-pad); border-radius: var(--layer-opt-radius); color: var(--layer-ink); }
+.dd-list.pop.kb .dd-opt.is-active { outline: 1px solid var(--ap-accent); outline-offset: -1px; }
+/* the row of colours: «‹», the label, the circles, the name of the one chosen or under the mouse, how it is written. It is as high as the row it replaces (30 px buttons) and as the row of the panel, so the capsule does not grow */
+.cr { display: flex; align-items: center; gap: 8px; min-width: 0; min-height: 30px; padding: 0 5px; color: var(--layer-ink); font: 12.5px/1.2 var(--nota-font-ui); white-space: nowrap; }
+.cr-back { flex: none; display: inline-flex; align-items: center; gap: 5px; height: 26px; min-width: 26px; padding: 0 7px; border: 0; border-radius: 13px; background: none; color: var(--ap-ink-muted); font-size: 13px; }
+.cr-back:hover { background: var(--ap-chrome-hover); color: var(--layer-ink); }
+.cr-back-t { font-size: 12.5px; }
+/* the label has one width for the row, so nothing moves when the name of a circle takes its place: 58 px, 64 px, 116 px for the cells */
+.cr-title { flex: none; box-sizing: border-box; width: 58px; overflow: hidden; text-overflow: ellipsis; color: var(--ap-ink-faint); }
+.cr[data-kind="fill"] .cr-title { width: 64px; }
+.cr[data-kind="cell"] .cr-title { width: 116px; }
+.cr-sep { flex: none; width: 1px; height: 16px; background: var(--ap-rule-strong); }
+.cr-t-hov { display: none; }
+.cr-sw { display: flex; align-items: center; gap: 6px; flex: none; }
+/* the circles (.dot of the design): no letters; the colour of the letters, or the fill, is the circle itself */
+.cr .sw-b.dot { flex: none; width: 22px; height: 22px; padding: 0; border-radius: 50%; border: 1px solid transparent; background: var(--c); color: inherit; }
+.cr .sw-b.dot::before { display: none; }
+.cr .sw-b.dot:hover { background-color: var(--c); transform: scale(1.12); }
+.cr .sw-b.dot.none:hover { background-color: var(--layer-bg); }
+.cr .sw-b.dot[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--layer-bg), 0 0 0 3.5px var(--ap-accent); }
+.cr .sw-b.dot.fill { border-color: transparent; background: var(--sw); box-shadow: inset 0 0 0 1.5px var(--swr); }
+.cr .sw-b.dot.none { border-color: var(--ap-ink-muted); background: var(--layer-bg) linear-gradient(to top right, transparent calc(50% - 0.75px), var(--ap-ink-muted) calc(50% - 0.75px), var(--ap-ink-muted) calc(50% + 0.75px), transparent calc(50% + 0.75px)); }
+.cr .sw-b.dot.fill:hover { background-color: var(--sw); }
+.cr .sw-b.dot.fill[aria-pressed="true"] { box-shadow: inset 0 0 0 1.5px var(--swr), 0 0 0 2px var(--layer-bg), 0 0 0 3.5px var(--ap-accent); }
+/* each circle of a fill is bright and has a ring of its own (the circle or the ring is 3:1 and more to the panel); the fills of the document are not these */
+.cr .sw-b.dot[data-role="hl-yellow-bg"], .cr .sw-b.dot[data-role="cell-yellow"] { --sw: var(--ap-sw-yellow); --swr: var(--ap-swr-yellow); }
+.cr .sw-b.dot[data-role="hl-red-bg"] { --sw: var(--ap-sw-red); --swr: var(--ap-swr-red); }
+.cr .sw-b.dot[data-role="hl-orange-bg"] { --sw: var(--ap-sw-orange); --swr: var(--ap-swr-orange); }
+.cr .sw-b.dot[data-role="hl-green-bg"], .cr .sw-b.dot[data-role="cell-green"] { --sw: var(--ap-sw-green); --swr: var(--ap-swr-green); }
+.cr .sw-b.dot[data-role="hl-teal-bg"] { --sw: var(--ap-sw-teal); --swr: var(--ap-swr-teal); }
+.cr .sw-b.dot[data-role="hl-blue-bg"], .cr .sw-b.dot[data-role="cell-blue"] { --sw: var(--ap-sw-blue); --swr: var(--ap-swr-blue); }
+.cr .sw-b.dot[data-role="hl-pink-bg"], .cr .sw-b.dot[data-role="cell-pink"] { --sw: var(--ap-sw-pink); --swr: var(--ap-swr-pink); }
+.cr .sw-b.dot[data-role="hl-purple-bg"], .cr .sw-b.dot[data-role="cell-purple"] { --sw: var(--ap-sw-purple); --swr: var(--ap-swr-purple); }
+.cr .sw-b.dot[data-role="hl-gray-bg"], .cr .sw-b.dot[data-role="cell-gray"] { --sw: var(--ap-sw-gray); --swr: var(--ap-swr-gray); }
+/* the focus ring of a chosen circle stands outside the ring «chosen» (it ends 3.5 px off), with a gap */
+.kb .sw-b.dot.is-active[aria-pressed="true"] { outline-offset: 5.5px; }
+@media (prefers-reduced-motion: reduce) { .cr .sw-b.dot:hover { transform: none; } }
+/* the block of the name has one width in all the rows and states: the invisible copies of every name stand in the one cell with the visible one, so the width is that of the longest name in this font and language */
+.cr-name { flex: none; display: inline-grid; font-weight: 600; }
+.cr-name > * { grid-area: 1 / 1; white-space: nowrap; }
+.cr-ghost { visibility: hidden; height: 0; overflow: hidden; pointer-events: none; }
+.cr-ghost::after { content: attr(data-t); }
+/* the capsule of selected cells is the capsule of the selected text (`.fl.bubble`: the same height, buttons, radius, animation and row), with its own buttons; its popups hang on the side far from the selection */
+.fl.cellbar .tb-b.danger:hover { color: var(--ap-danger, #d1453b); }
+.fl.cellbar .cr-al { display: flex; align-items: center; gap: 1px; flex: none; }
+.fl.cellbar .cr-sep { width: 1px; height: 16px; background: var(--layer-border, var(--ap-rule-strong)); flex: none; }
+.cr[data-kind="align"] .cr-title { width: 82px; }
+.cr[data-kind="align"] .cr-name { min-width: 118px; }
+.cr-al .al-b { flex: none; min-width: 30px; padding: 0; }
+/* the list «⋯»: under the capsule, or over it when the capsule stands over the selection; its right edge is that of the capsule */
+.cm-list.pop { position: absolute; right: 0; top: calc(100% + 6px); display: grid; gap: 1px; min-width: 220px; max-width: calc(100vw - 16px); padding: var(--layer-pad); white-space: normal; }
+.cm-list.pop[data-above] { top: auto; bottom: calc(100% + 6px); }
+.cm-list.pop button { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 4px 8px; height: auto; min-height: 30px; padding: 3px 8px; border-radius: 8px; text-align: left; color: var(--layer-ink); font-size: 13px; }
+.cm-list.pop button[aria-disabled="true"] { opacity: 0.38; }
+.cm-list.pop .cm-ico { display: inline-flex; flex: none; }
+.cm-list.pop .cm-why { flex: 1 1 100%; padding-left: 24px; color: var(--ap-warning); font-size: 11.5px; }
+@container (max-width: 400px) { .cr[data-kind="align"] .cr-title { display: none; } }
+/* the panel over the selection: the row makes it wider, not higher */
+.ed-main .bubble { z-index: 39; }
+/* the panel is of the shape of the capsule over the document: its radius, its fields, a row of 34 px, buttons of 30 px (28 px in a narrow tab); it stays inside the tab */
+.fl.bubble { gap: 1px; padding: 0 var(--layer-pad); min-height: 34px; box-sizing: border-box; max-width: calc(100% - 16px); border-radius: var(--layer-radius-capsule); }
+.fl.bubble button:not(.dot) { height: 30px; min-width: 30px; border-radius: 15px; }
+.fl.bubble .cr .sw-b.dot { min-width: 22px; }
+.fl.bubble .fl-sep { margin: 0 5px; }
+.bubble .cr { min-height: 32px; padding: 0; }
+.bubble .cr-back { height: 30px; min-width: 30px; border-radius: 15px; }
+/* the row of colours and the buttons of the panel are two layers of one panel. The panel goes from the width of now to the width of what it shows next (the script sets the
+   widths, `data-morph` is on it while it moves); the content stands in the middle of it, so the panel opens around it, and the layer that goes lies over it, `inert`, and fades out. */
+.fl.bubble { justify-content: center; }
+.fl.bubble[data-morph] { overflow: hidden; }
+.fl.bubble[data-morph="open"] { transition: width 0.22s cubic-bezier(0.2, 0, 0, 1), left 0.22s cubic-bezier(0.2, 0, 0, 1); }
+.fl.bubble[data-morph="close"] { transition: width 0.17s cubic-bezier(0.4, 0, 1, 1), left 0.17s cubic-bezier(0.4, 0, 1, 1); }
+.bb-layer.is-out { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; animation: bb-out 0.09s linear forwards; }
+.fl.bubble[data-morph="close"] .bb-layer.bar:not(.is-out) { animation: bb-fade 0.12s linear 0.04s backwards; }
+/* the circles come one by one, left to right, then the name; the folding row fades out whole, with no queue */
+.bb-layer.row:not(.is-out) .cr .sw-b.dot, .tl-colors .cr .sw-b.dot { animation: bb-dot 0.14s cubic-bezier(0.2, 0, 0, 1) backwards; animation-delay: calc(40ms + var(--i, 0) * 16ms); }
+.bb-layer.row:not(.is-out) .cr-name, .tl-colors .cr-name { animation: bb-fade 0.124s linear 0.2s backwards; }
+.bb-layer.row:not(.is-out) .cr-back, .bb-layer.row:not(.is-out) .cr-title, .bb-layer.row:not(.is-out) .cr-sep,
+.tl-colors .cr-back, .tl-colors .cr-title, .tl-colors .cr-sep { animation: bb-fade 0.12s linear 0.02s backwards; }
+/* the selection moved while the row was open: the old panel (a copy of it) fades out where it stood, the new one comes up at the new word in the same time */
+.fl.bubble.bb-ghost { pointer-events: none; animation: bb-out 0.12s linear forwards; }
+.fl.bubble.bb-in-fast { animation-duration: 0.12s; }
+@keyframes bb-out { to { opacity: 0; } }
+@keyframes bb-fade { from { opacity: 0; } }
+@keyframes bb-dot { from { opacity: 0; transform: translateX(-6px) scale(0.55); } }
+@media (prefers-reduced-motion: reduce) {
+  .tl-colors-out { display: none; }
+  .fl.bubble, .fl.bubble[data-morph], .fl.bubble.bb-ghost, .bb-layer, .cr, .cr *, .cm-list.pop { transition-duration: 0s !important; animation: none !important; }
+}
+.dd-list.pop:focus-visible { outline: none; }
+/* the cell that gets the fill is framed while the colours are open (the cells of Shift-click have their own frame) */
+.doc td.fill-target, .doc th.fill-target { outline: 2px solid var(--ap-accent); outline-offset: -2px; }
+/* a narrow tab (the row «Таблица» wraps in the same width): one line, no block of the name; the name of the circle under the mouse or the keys stands in place of the label */
+@container (max-width: 650px) {
+  .cr { gap: 5px; }
+  .cr-sw { gap: 3px; }
+  .fl.bubble button:not(.dot), .bubble .cr-back { height: 28px; min-width: 28px; border-radius: 14px; }
+  .cr-name { display: none; }
+  .cr-back-t { display: none; }
+  .cr[data-hover] .cr-t-def { display: none; }
+  .cr[data-hover] .cr-t-hov { display: inline; }
+  .cr-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+}
+/* the capsule with the colours of the cells is as wide as the tab (the row of seven circles does not fit between the two small capsules); it lies over them while the row is open.
+   All three stay in the one row of the grid by explicit areas (else the two small ones go to a second row and the text moves); a grid item takes z-index without `position`, so the cards keep their anchor */
+@container (max-width: 650px) {
+  .ed-isles:has(.tl-colors) .isle-left { grid-area: 1 / 1; }
+  .ed-isles:has(.tl-colors) .isle-right { grid-area: 1 / 3; }
+  .ed-isles:has(.tl-colors) .isle-mid { grid-area: 1 / 1 / 2 / -1; z-index: 2; }
+}

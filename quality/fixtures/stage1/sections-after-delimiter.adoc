@@ -1,0 +1,8 @@
+= Section After a Block
+
+----
+listing content
+----
+== Section right after the closing delimiter
+
+Text.

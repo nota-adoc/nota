@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+.corpus-private/
+*.log
+.DS_Store
+.corpus-open/
+.tck/
+.quality-reports/
+*.tsbuildinfo
+demo/dist/
+*.vsix
+.vscode-test/
+packages/vscode/dist-e2e/
+packages/vscode/src/webview/*-e
+packages/vscode/LICENSE
+packages/vscode/THIRD_PARTY_NOTICES.md

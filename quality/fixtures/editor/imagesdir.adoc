@@ -1,0 +1,13 @@
+= Картинки с папкой
+
+:imagesdir: img
+
+Путь картинки считается от папки `img`.
+
+.Квадрат из папки img
+image::square.png[]
+
+image::pixel.png[Пиксель]
+
+.Файла нет на диске
+image::missing.png[]

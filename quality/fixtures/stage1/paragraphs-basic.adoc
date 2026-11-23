@@ -1,0 +1,29 @@
+= Paragraphs
+
+== Multi-line paragraph
+
+First line of a paragraph,
+second line,
+third line.
+
+== Literal paragraphs
+
+ Indented by one space.
+ Second literal line.
+
+	Indented by a tab.
+
+== Admonition paragraphs
+
+NOTE: A note.
+
+TIP: A tip,
+on two lines.
+
+IMPORTANT: Important.
+
+WARNING: A warning.
+
+CAUTION: Caution.
+
+NOTE:Not an admonition without a space.

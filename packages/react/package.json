@@ -1,0 +1,44 @@
+{
+  "name": "@nota-adoc/react",
+  "version": "0.1.0",
+  "description": "The formatting toolbar, the bubble menu, the field of a link and the colour picker for the visual AsciiDoc editor of @nota-adoc/prosemirror, in React, with strings in Russian and English",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./style.css": "./src/style.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src/style.css",
+    "README.md"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nota-adoc/nota.git",
+    "directory": "packages/react"
+  },
+  "dependencies": {
+    "@nota-adoc/core": "^0.1.0",
+    "@nota-adoc/prosemirror": "^0.1.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "prosemirror-model": "^1.19.0",
+    "prosemirror-state": "^1.4.0",
+    "prosemirror-view": "^1.42.6"
+  }
+}

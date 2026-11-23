@@ -1,0 +1,27 @@
+= Includes
+
+Text before.
+
+include::part.adoc[]
+
+include::part.adoc[leveloffset=+1]
+
+Paragraph with an
+include::inside.adoc[lines=1..3]
+include in the middle.
+
+----
+include::code.rb[tag=main]
+----
+
+* item
+include::in-item.adoc[]
+* next item
+
+\include::escaped.adoc[]
+
+ifdef::missing[]
+include::hidden.adoc[]
+endif::[]
+
+Text after.

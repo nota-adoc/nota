@@ -1,0 +1,25 @@
+= Macros with references
+
+:imagesdir: images
+
+image::{imagesdir}/diagram.png[]
+
+image::a.png[{alt-text}]
+
+image::b.png[Text,{width}]
+
+[{style}]
+image::c.png[]
+
+== Breaks around text
+
+Word
+---
+
+Paragraph line
+---
+
+abc
+---
+
+'''

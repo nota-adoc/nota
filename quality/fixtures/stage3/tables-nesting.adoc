@@ -1,0 +1,176 @@
+= Nested tables and documents in cells
+
+An `a` cell holds blocks:
+
+[cols="1a,1"]
+|===
+|
+Paragraph in a cell.
+
+* item one
+* item two
+
+----
+listing in a cell
+----
+|plain cell
+|===
+
+Four levels of tables:
+
+|===
+a|
+Level one.
+
+!===
+a!
+Level two.
+
+[cols="a"]
+,===
+"Level three.
+
+[cols=1]
+:===
+Level four
+:==="
+,===
+!===
+|===
+
+A passthrough block in a cell of the fourth level:
+
+|===
+a|
+!===
+a!
+[cols="a"]
+,===
+"[cols=a,format=psv,separator=¦]
+:===
+¦++++
+<span>raw html</span>
+++++
+:==="
+,===
+!===
+|===
+
+An outer table cuts an inner one written with bars:
+
+|===
+a|
+before
+|====
+|inner
+|====
+after
+|===
+
+A table in a cell of a CSV table:
+
+[cols="a,a",format=csv]
+|===
+"* item",plain
+"!===
+!x !y
+!===",z
+|===
+
+A table in a cell of a DSV table:
+
+[cols="a,1",format=dsv]
+|===
+* item:plain
+|===
+
+A table in a cell with the format written out:
+
+|===
+a|
+[cols="2*",format=psv]
+!===
+!a !b
+!===
+|===
+
+An attribute set in a cell is not seen after the table:
+
+:outer: visible
+
+|===
+a|
+:inner: hidden
+
+Inner sees {outer} and {inner}.
+|===
+
+After the table: {outer} and {inner}.
+
+An entry in a cell cannot change an attribute of the document:
+
+|===
+a|
+:outer: changed
+
+Inner sees {outer}.
+|===
+
+A title and sections in a cell:
+
+|===
+a|
+= Cell title
+
+Cell preamble.
+
+== Cell section
+
+Text of the section.
+|===
+
+An escaped bar in a cell of style `a`:
+
+|===
+a|one \| two
+|===
+
+A cell with a list, a quote and an admonition:
+
+|===
+a|
+NOTE: an admonition
+
+____
+a quote
+____
+
+. one
+. two
+|===
+
+Empty cells of style `a`:
+
+[cols="2*a"]
+|===
+| |x
+|===
+
+A header row with style `a` columns:
+
+[cols="2*a",options="header"]
+|===
+|* one |* two
+|* three |* four
+|===
+
+A footnote and a cross reference in a cell:
+
+|===
+a|See <<target>>.footnote:[A note.]
+|===
+
+[[target]]
+== Target
+
+Closing paragraph.

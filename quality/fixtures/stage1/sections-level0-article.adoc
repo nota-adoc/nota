@@ -1,0 +1,9 @@
+= Article With a Part
+
+== Section
+
+Text.
+
+= A level 0 section in an article
+
+Text.

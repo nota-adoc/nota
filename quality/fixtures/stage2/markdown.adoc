@@ -1,0 +1,78 @@
+= Markdown legacy
+
+== Fences
+
+```
+fence without a language
+```
+
+```ruby
+puts 'ruby'
+```
+
+``` javascript
+console.log('spaced language')
+```
+
+```ruby,linenums
+puts 'with linenums'
+```
+
+````
+four backticks are text
+````
+
+```
+* not a list
+== not a section
+```
+
+== Quotes
+
+> A Markdown quote
+> spanning two lines
+
+> First quote paragraph
+>
+> Second quote paragraph
+
+> Quote with a list
+>
+> * one
+> * two
+
+> Outer
+> > Inner
+> > more inner
+> back in the outer
+
+> Outer paragraph
+>
+> > Inner paragraph
+> > second line of the inner
+>
+> back in the outer
+> -- Somebody, A Book
+
+> Three levels
+>
+> > Two
+> >
+> > > Three
+> > > -- Inner author
+>
+> after the levels
+
+> Quote with attribution
+> -- Somebody
+
+> Quote with attribution and title
+> -- Somebody, A Book
+
+>not a quote
+
+== Markdown titles
+
+## A Markdown section
+
+### A deeper one

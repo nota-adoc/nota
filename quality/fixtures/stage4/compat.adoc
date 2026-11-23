@@ -1,0 +1,30 @@
+= Compat mode
+:compat-mode:
+
+== Old quotes
+
+`monospaced` and +monospaced+ and ++mono++spaced and 'emphasis' and _also emphasis_ and __un__constrained and *strong* and **st**rong and #mark# and ^super^ and ~sub~.
+
+``double quoted'' and `single quoted' and "`not curved`" and '`not curved`' and it's, don't, 'it's'.
+
+`monospace *strong*` and +plus *not strong*+ and `+both+` and \`escaped' and \+escaped+ and [role]`role mono` and [role]+role plus+.
+
+[.role]#mark# and [.role]'emphasis role' and [.role]`mono role` and `mono
+across lines` and 'emphasis
+across lines'.
+
+:compat-mode!:
+
+== New quotes
+
+`monospaced` and +literal *not bold*+ and 'quote text' and "`double`" and '`single`'.
+
+:compat-mode:
+
+== Compat again
+
+'emphasis' and `mono` and ``double'' and +literal+.
+
+Macros in compat: https://example.com[Link,role=x] and link:a.html[a=b] and mailto:a@b.co[Jane,Subj] and xref:x[Text=1] and <<x,Y>>.
+
+Passthroughs in compat: +++<b>raw</b>+++ and $$<b>x</b>$$ and pass:[<b>y</b>] and ++<b>not raw</b>++.

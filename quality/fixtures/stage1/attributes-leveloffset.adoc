@@ -1,0 +1,25 @@
+= Level Offsets
+
+:leveloffset: 1
+
+= Absolute offset: level one
+
+Text.
+
+:leveloffset: +1
+
+= Relative plus one: level two
+
+Text.
+
+:leveloffset: -1
+
+== Relative minus one: level two
+
+Text.
+
+:leveloffset!:
+
+== Unset: level one again
+
+Text.

@@ -1,0 +1,41 @@
+= Styled Paragraphs
+
+[NOTE]
+A note from a style.
+
+[source,json]
+{"key": "value"}
+// a comment line is content here
+
+[literal]
+Literal from a style.
+
+[verse]
+A verse line,
+another verse line.
+
+[quote, Автор Цитаты]
+A quoted paragraph.
+
+[quote, Someone, A Work]
+Another quote.
+
+[sidebar]
+A sidebar paragraph.
+
+[example]
+An example paragraph.
+
+[pass]
+<b>passed through</b>
+
+[normal]
+ Normal style over an indented paragraph.
+
+[listing]
+A listing paragraph.
+
+[comment]
+This paragraph is dropped.
+
+After the comment paragraph.

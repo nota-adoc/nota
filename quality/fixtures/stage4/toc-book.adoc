@@ -1,0 +1,30 @@
+= Book title
+:doctype: book
+:toc:
+:sectnums:
+:partnums:
+:part-signifier: Part
+:chapter-signifier: Chapter
+
+= Part One
+
+[partintro]
+Part intro text.
+
+== Chapter A
+
+Text.
+
+=== Section A1
+
+== Chapter B
+
+= Part Two
+
+== Chapter C
+
+[appendix]
+== Appendix X
+
+[preface]
+== Preface Y

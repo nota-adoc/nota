@@ -1,0 +1,15 @@
+= Appendix Style
+
+== Main Section
+
+Text.
+
+[appendix]
+== The Appendix
+
+Appendix text.
+
+[appendix]
+=== Nested in appendix
+
+Text.

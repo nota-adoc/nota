@@ -1,0 +1,89 @@
+= Tables with mistakes
+
+A first cell without a separator:
+
+|===
+a |b
+|c |d
+|===
+
+Cells that do not fill the last row:
+
+[cols="3*"]
+|===
+|a |b |c
+|d |e
+|===
+
+A cell that is too wide for the row it starts:
+
+[cols="2*"]
+|===
+|a |b
+3+|too wide
+|c |d
+|===
+
+A cell with a span that runs over the end of the first row:
+
+|===
+|a 3+|b
+|===
+
+A format that does not exist:
+
+[format=xsv]
+|===
+|a |b
+|===
+
+A span written in a way that is not a span:
+
+[cols="4*"]
+|===
+2*2+|pair |x |y
+|===
+
+An unclosed CSV quote, closed by the end of the table:
+
+,===
+"a,b
+c,d
+,===
+
+A single quote as a whole cell:
+
+,===
+",x
+,===
+
+Text before the first separator, and a blank line after it:
+
+|===
+before
+
+|a |b
+|===
+
+A DSV table whose lines have no separator:
+
+:===
+no separators here
+still none
+:===
+
+A table that holds only blank lines:
+
+|===
+
+
+|===
+
+A table cut short by a container:
+
+====
+|===
+|a |b
+====
+
+Text after.

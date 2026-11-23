@@ -1,0 +1,15 @@
+= Hard breaks with blanks after the plus
+
+A paragraph of one line, a blank after the plus: aa + 
+
+A paragraph of two lines, a tab after the plus:
+first line +	
+second line
+
+Blanks and a tab, then the last line of the paragraph:
+first line +  	
+last line +  
+
+== Le + 
+
+The next paragraph.

@@ -1,0 +1,180 @@
+= Inline markup in blocks
+:product: Nota
+
+== Admonitions
+
+NOTE: A *strong* note with `code` and {product}.
+
+TIP: A tip with a footnote:[in a tip].
+
+[WARNING]
+A warning paragraph with _emphasis_
+across two lines.
+
+[IMPORTANT]
+====
+An important block with *strong*.
+
+Second paragraph with https://example.com[a link].
+====
+
+[CAUTION,caption="Careful"]
+====
+Custom caption.
+====
+
+.Titled *note*
+[NOTE]
+====
+Content.
+====
+
+== Quotes and verse
+
+[quote,Author,Source *title*]
+A quote paragraph with *strong*.
+
+[quote, Jane *Roe*, "A ""quoted"" book"]
+____
+A quote block with *strong* and _emphasis_.
+
+A second paragraph.
+____
+
+"A quote paragraph with an attribution and *strong*."
+-- Jane Roe, The Book
+
+> A markdown quote with *strong*
+> and a second line
+> -- Author, Source
+
+____
+A quote without attribution.
+____
+
+[verse,Poet,"A *verse*"]
+____
+Roses are *red*,
+  violets are _blue_.
+____
+
+== Sidebars and examples
+
+****
+A sidebar with *strong*.
+
+.Sidebar title
+* and a list
+****
+
+.Sidebar with a title
+****
+Content.
+****
+
+====
+An example with *strong*.
+====
+
+.Example title with *strong*
+====
+Titled example.
+====
+
+[%collapsible]
+.Collapsible
+====
+Hidden *content*.
+====
+
+[%collapsible%open]
+====
+Open by default.
+====
+
+== Open blocks
+
+--
+An open block with *strong* and a link https://example.com[here].
+--
+
+[abstract]
+--
+An abstract with *strong*.
+--
+
+[.role]
+--
+Open block with a role.
+--
+
+.Titled open
+--
+Content.
+--
+
+== Literal and listing
+
+ literal paragraph with *not bold* and {product}
+
+[literal]
+....
+literal block *not bold*
+....
+
+[source,ruby]
+----
+puts "*not bold* #{name}"
+----
+
+.Listing with a title
+----
+title listing
+----
+
+[source,ruby,linenums]
+----
+puts 1
+----
+
+[source%nowrap,ruby]
+----
+long line
+----
+
+== Images
+
+image::sample.png[Sample,200]
+
+.Image with a title
+image::sample.png[Sample image,role=thumb,link=https://example.com]
+
+[#img-id.center]
+image::sample.png[Alt with *markup*]
+
+image::sample.png[float=left,align=center]
+
+video::clip.mp4[width=640,height=360,poster=poster.png]
+
+video::abc123[youtube]
+
+video::12345[vimeo,start=10,options="autoplay,loop"]
+
+audio::sound.mp3[opts=autoplay]
+
+== Breaks and misc
+
+'''
+
+<<<
+
+* * *
+
+[.role]
+'''
+
+[discrete]
+=== A discrete heading with *strong*
+
+.A titled break?
+'''

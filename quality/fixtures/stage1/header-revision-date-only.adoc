@@ -1,0 +1,5 @@
+= Revision With Date
+First Middle Last <first.last@example.com>
+2026-09-25: only a date and a remark
+
+Text.

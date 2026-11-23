@@ -1,0 +1,43 @@
+= Table widths
+
+The width of a table and of its columns, written as a style by Ruby and as an attribute by Asciidoctor.js.
+
+[cols="30%,70%"]
+|===
+|a |b
+|c |d
+|===
+
+[width=75%,cols="1,2,3"]
+|===
+|a |b |c
+|===
+
+[cols="30%,~"]
+|===
+|a |b
+|===
+
+[%autowidth,cols="~,~"]
+|===
+|a |b
+|===
+
+[%autowidth.stretch]
+|===
+|a |b
+|===
+
+[cols="<.<30%,>.^70%",options="header"]
+|===
+|h1 |h2
+|a |b
+|===
+
+[cols="1a,2a",width=60%]
+|===
+|
+* one
+|
+* two
+|===

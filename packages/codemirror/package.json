@@ -1,0 +1,42 @@
+{
+  "name": "@nota-adoc/codemirror",
+  "version": "0.1.0",
+  "description": "AsciiDoc for CodeMirror 6 on the Nota syntax tree: highlighting, folding, diagnostics, completion and a source editor with one undo history",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nota-adoc/nota.git",
+    "directory": "packages/codemirror"
+  },
+  "dependencies": {
+    "@lezer/common": "^1.5.3",
+    "@lezer/highlight": "^1.2.5",
+    "@nota-adoc/core": "^0.1.0"
+  },
+  "peerDependencies": {
+    "@codemirror/autocomplete": "^6.11.1",
+    "@codemirror/commands": "^6.3.0",
+    "@codemirror/language": "^6.10.0",
+    "@codemirror/lint": "^6.5.0",
+    "@codemirror/state": "^6.4.0",
+    "@codemirror/view": "^6.26.0"
+  }
+}

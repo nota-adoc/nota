@@ -1,0 +1,216 @@
+= Attribute references
+Jane Roe <jane@example.com>
+v1.2, 2026-09-29: A remark
+:product: Nota
+:url-project: https://example.com/nota
+:with-markup: *bold* and _italic_ and https://example.com[a link] and (C)
+:with-special: a & b < c
+:empty-value:
+:multi: first \
+second \
+third
+
+== Simple references
+
+{product}, {Product}, {PRODUCT}, and {product-missing}, {empty-value}(empty), and {url-project}[the project], {url-project}, <{url-project}>.
+
+Value with markup: {with-markup}. Special: {with-special}.
+
+Multi line value: {multi}.
+
+Escaped: \{product} and {product\} and \{missing}.
+
+Header attributes: {author}, {firstname}, {lastname}, {authorinitials}, {email}, {revnumber}, {revdate}, {revremark}, {authorcount}, {doctitle}, {doctype}, {backend}, {basebackend}, {outfilesuffix}, {safe-mode-name}, {notitle}, {sectids}.
+
+== Built-in characters
+
+{nbsp}|{empty}|{sp}|{zwsp}|{wj}|{deg}|{plus}|{pp}|{cpp}|{amp}|{lt}|{gt}|{lsquo}|{rsquo}|{ldquo}|{rdquo}|{quot}|{apos}|{brvbar}|{vbar}|{startsb}|{endsb}|{caret}|{asterisk}|{tilde}|{backslash}|{backtick}|{two-colons}|{two-semicolons}|{blank}
+
+Constructs from built-ins: {startsb}not a link{endsb}, {asterisk}not strong{asterisk}, {plus}not literal{plus}.
+
+== Counters and set
+
+{counter:hits} {counter:hits} {counter:hits}, {counter2:silent} then {counter:silent}, {counter:letter:a} {counter:letter} {counter:letter}, {counter:num:10} {counter:num}.
+
+{set:flag:on}Flag is {flag}. {set:flag!}Flag now: {flag}.
+
+{set:a:1}{set:b:2}Both set: {a} {b}.
+
+Line with a drop {set:gone!}
+Next line stays.
+
+{set:x:y} at the start of a line and more text.
+
+{set:site:https://example.com/a:b}{site}[The site] and {counter:visits:5}{counter:visits}.
+
+{set:experimental:}
+
+The set entry above turns on kbd:[Ctrl+S] and btn:[OK].
+
+{set:experimental!}
+
+Off again: kbd:[Ctrl+S].
+
+== Missing and drop
+
+Missing: {no-such-attribute}, and {another-missing}.
+
+:attribute-missing: drop
+
+Dropped: {no-such-attribute}.
+And a line with {no-such-attribute} in the middle.
+
+:attribute-missing: drop-line
+
+Dropped line {no-such-attribute}
+Kept line.
+
+:attribute-missing: warn
+
+Warn: {no-such-attribute}.
+
+:attribute-missing: skip
+
+Skip: {no-such-attribute}.
+
+:attribute-undefined: drop
+
+Undefined: {set:zzz!}kept.
+
+== Attributes in attribute lists and titles
+
+[.{product}]
+A paragraph with a role from an attribute.
+
+.Title with {product}
+[{product}]
+Text with a title from an attribute.
+
+[#id-{product}]
+Paragraph with an id from an attribute.
+
+== Changing attributes
+
+:product: Changed
+
+Now {product}.
+
+:product!:
+
+Now unset: {product}.
+
+:product: Again
+
+And again {product}.
+
+:!product:
+
+Unset differently: {product}.
+
+== Attributes set outside a paragraph
+
+* {set:item-a:from-item}The text of an item reads {item-a}.
+* {counter:item-n} and {item-n} in the text of an item.
+* {set:item-url:https://example.com/item}{item-url}[The link of an item]
+* {set:item-b:from-text} an item with a block
++
+The block reads {item-b}.
+* {set:item-c:from-text} an item with a nested list
+** {item-c}
+
+{item-a}
+
+Term {set:term-a:from-term}:: The description reads {term-a}.
+Second term:: {term-a}
+Third term {set:term-b:b}::
++
+The block reads {term-b}.
+
+.Title {set:title-a:from-title}
+The block reads {title-a}.
+
+.Title {title-b}
+:title-b: from-entry
+The title reads the entry after it.
+
+.Overwritten {set:title-c:c}
+.Title of the block
+{title-c}
+
+=== Section title {set:title-d:from-section}
+
+{title-d}
+
+[discrete]
+==== Discrete title {set:title-e:from-discrete}
+
+{title-e}
+
+== A set in text does not move the sections
+
+{set:lo-a:1}{set:leveloffset:1}
+
+== Section after a set
+
+:leveloffset: +1
+
+{set:leveloffset:1}
+
+== Section after a relative entry
+
+:leveloffset: 0
+
+* {set:a:text}item
++
+:a: block
++
+The block.
+
+{a}
+
+* {set:b:text}item
++
+:b: block
+The second block.
+
+{b}
+
+== Variants of a set in text
+
+{set:leveloffset:+1}
+
+== Section after a relative set
+
+:leveloffset: 0
+
+* {set:leveloffset:1}item
+more
+
+== Section after a trial read
+
+.T1 {set:leveloffset:1}
+.T2
+A titled paragraph.
+
+== Section after an overridden title
+
+:leveloffset: 1
+
+{set:leveloffset!}
+
+== Section after an unset in text
+
+:leveloffset: 0
+
+{set:leveloffset:1}
+
+|===
+a|
+== In a cell
+|===
+
+== Section after a table
+
+include::p.adoc[leveloffset=+1]
+
+== Section after an include

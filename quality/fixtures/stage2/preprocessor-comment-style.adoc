@@ -1,0 +1,34 @@
+= Comment style reads its lines raw
+
+[comment]
+text
+ifdef::x[]
+more
+endif::[]
+
+after the paragraph comment
+
+[comment]
+--
+ifdef::x[]
+inside
+endif::[]
+--
+
+after the open comment
+
+[comment]
+comment text
+ifndef::x[]
+endif::[]
+
+visible text
+
+[comment]
+text
+ifdef::x[]
+more
+endif::[]
+swallowed line
+
+visible again

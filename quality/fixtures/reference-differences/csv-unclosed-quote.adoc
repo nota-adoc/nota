@@ -1,0 +1,9 @@
+= CSV cell with an unclosed quote
+
+A CSV cell that opens a quote and never closes it: Ruby writes its text, Asciidoctor.js 4.1 makes the cell empty.
+
+[format=csv]
+|===
+a,"b
+c,d
+|===

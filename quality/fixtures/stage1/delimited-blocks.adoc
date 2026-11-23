@@ -1,0 +1,66 @@
+= Delimited Blocks
+
+----
+listing
+== not a section
+// not a comment
+:a: not an entry
+----
+
+....
+literal
+....
+
+====
+example
+====
+
+****
+sidebar
+****
+
+____
+quote
+____
+
+--
+open
+--
+
+++++
+<p>pass</p>
+++++
+
+|===
+| a | b
+|===
+
+!===
+| a | b
+!===
+
+,===
+a,b
+,===
+
+:===
+a:b
+:===
+
+```ruby
+fenced
+```
+
+======
+outer example
+====
+inner example of the same kind
+====
+======
+
+[source,json]
+----
+{"k": 1}
+----
+
+Text after the blocks.

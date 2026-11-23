@@ -1,0 +1,13 @@
+= Заливка в CSV и DSV
+
+[format=csv]
+|===
+"[.cell-yellow]##{empty}##один, два",[.cell-mint]##{empty}##три
+четыре,пять
+|===
+
+[format=dsv]
+|===
+[.cell-yellow]##{empty}##раз:[.cell-mint]##{empty}##два
+три:четыре
+|===

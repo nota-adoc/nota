@@ -1,0 +1,45 @@
+= Hard breaks
+
+A line with a break +
+the next line +
+and another.
+
+A line ending with a space plus + at the end +
+
+Only a plus + in the middle and a trailing plus+
+
+[%hardbreaks]
+Each line
+is a break
+in this paragraph
+with *strong* text.
+
+[%hardbreaks]
+Trailing plus + and
+normal line.
+
+:hardbreaks:
+
+Document level
+hard breaks
+everywhere.
+
+* an item
+that continues
+on more lines
+
+term:: a description
+that continues
+
+[listing]
+listing lines
+stay as they are
+
+:hardbreaks!:
+
+Back to normal
+lines here.
+
+Line with +
+break and *strong +
+across* two lines.

@@ -1,0 +1,37 @@
+= Colors in text
+
+Text colors: [.hl-red]#red#, [.hl-blue]#blue#, [.hl-green]#green#, [.hl-gray]#gray#, [.hl-orange]#orange#, [.hl-purple]#purple#, [.hl-pink]#pink#, [.hl-teal]#teal#.
+
+Roles that are not in the registry: [.hl-yellow]#a#, [.hl-cyan]#b#, [.hl-orange-bg]#c#.
+
+== A heading [.hl-orange]#orange# [.hl-purple]#purple# [.hl-pink]#pink# [.hl-teal]#teal#
+
+* an item [.hl-orange]#orange#, [.hl-purple]#purple#, [.hl-pink]#pink#, [.hl-teal]#teal#
+
+|===
+|Cell
+
+|[.hl-orange]#orange# [.hl-purple]#purple# [.hl-pink]#pink# [.hl-teal]#teal#
+|===
+
+Fills: [.hl-yellow-bg]#yellow#, [.hl-red-bg]#red#, [.hl-orange-bg]#orange#, [.hl-green-bg]#green#, [.hl-teal-bg]#teal#, [.hl-blue-bg]#blue#, [.hl-pink-bg]#pink#, [.hl-purple-bg]#lilac#, [.hl-gray-bg]#gray#.
+
+== Color and pass:q[…]
+
+Text [.hl-red]#before pass:q[*bold* and _italic_] after#.
+
+Color inside: Text pass:q[[.hl-red\]#red text#] further on.
+
+== Color and ((an index term))
+
+Text [.hl-red]#before ((term)) after#.
+
+== A section [.hl-red]#((term))#
+
+A link: https://example.com[[.hl-red]#pass:q[one]#] and another https://example.com[[.hl-blue]#((two))#].
+
+== What stays a plate
+
+All of them inside a color: [.hl-red]#pass:[<b>one</b>] pass:c[two] pass:q,c[three] +four+ ++five++ +++<i>six</i>+++ $$seven$$#.
+
+Index terms: [.hl-blue]#(((hidden))) indexterm:[second] indexterm2:[third] ((*bold*))#.

@@ -1,0 +1,83 @@
+= Код в документе
+
+Абзац перед кодом.
+
+[source,javascript]
+----
+const total = items.reduce((sum, item) => sum + item.price, 0) // сумма
+console.log(`Итого: ${total}`)
+----
+
+Синонимы читаются так же, как полные названия.
+
+[source,js]
+----
+let x = 1
+----
+
+[source,sh]
+----
+echo "привет" | grep -c п
+----
+
+[source,yml]
+----
+name: пример
+items:
+  - один
+  - два
+----
+
+[source,python]
+----
+def greet(name):
+    return f"Привет, {name}"
+----
+
+[source,kotlin]
+----
+fun main() = println("язык не из списка показывается как написан")
+----
+
+----
+код без языка
+----
+
+Строка из дефисов внутри кода удлиняет рамку:
+
+-----
+----
+вложенная строка
+-----
+
+[source]
+----
+блок source без языка
+----
+
+[source,text]
+----
+блок с языком text
+----
+
+[listing]
+----
+листинг без подсветки
+----
+
+[source,json]
+----
+{"имя": "значение", "список": [1, 2, 3]}
+----
+
+[source,sql]
+----
+SELECT id, title FROM docs WHERE title LIKE 'Код%';
+----
+
+[source,xml]
+----
+<root><item id="1">один</item></root>
+----
+
+Абзац после кода.

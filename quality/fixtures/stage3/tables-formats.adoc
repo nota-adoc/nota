@@ -1,0 +1,136 @@
+= Table formats
+
+CSV:
+
+,===
+"a,b",c
+"say ""hi""",d
+,===
+
+A quoted CSV cell over lines:
+
+,===
+"first
+second",x
+y,z
+,===
+
+CSV with spaces, quotes in the middle and empty cells:
+
+,===
+a , b ,c
+ "q" ,"r",
+,,e
+he said "no",f,g
+,===
+
+CSV, by the format attribute:
+
+[format=csv]
+|===
+a,b
+c,d
+|===
+
+Tabs, by the format:
+
+[format=tsv]
+|===
+a	b
+c	d
+|===
+
+A custom separator on a CSV table:
+
+[format=csv,separator=;]
+|===
+a;b
+c;"d;e"
+|===
+
+A custom separator on a table with bars:
+
+[separator=¦]
+|===
+¦a ¦b
+¦c ¦d
+|===
+
+Tabs, by the separator:
+
+[separator=\t]
+|===
+x	y
+z	w
+|===
+
+DSV:
+
+:===
+a:b\:c
+d:e
+:===
+
+DSV, by the format attribute:
+
+[format=dsv]
+|===
+a:b
+c:d
+|===
+
+DSV, a line that is short:
+
+:===
+a:b:c
+d
+e:f
+:===
+
+DSV with an empty separator attribute:
+
+[format=dsv,separator=]
+|===
+a:b
+|===
+
+The bar with a backslash in front:
+
+|===
+|a\|b |c
+|d |e\|f\|g
+|===
+
+A backslash that escapes nothing:
+
+|===
+|a\b |c\
+|d |e
+|===
+
+An escaped bar at the end of a line:
+
+|===
+|text\|
+more |c
+|===
+
+`!===` at the top level is read with bars:
+
+!===
+|a |b
+|c |d
+!===
+
+A separator with characters that are special in regular expressions:
+
+[separator=.]
+|===
+.a .b
+.c .d
+|===
+
+[separator=$$]
+|===
+$$a $$b
+|===

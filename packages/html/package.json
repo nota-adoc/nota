@@ -1,0 +1,32 @@
+{
+  "name": "@nota-adoc/html",
+  "version": "0.1.0",
+  "description": "HTML for Nota documents: the embedded html5 output of Asciidoctor, from the Nota syntax tree",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nota-adoc/nota.git",
+    "directory": "packages/html"
+  },
+  "dependencies": {
+    "@nota-adoc/core": "^0.1.0"
+  }
+}

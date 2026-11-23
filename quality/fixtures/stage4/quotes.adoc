@@ -1,0 +1,64 @@
+= Quotes
+
+== Constrained and unconstrained
+
+*strong*, _emphasis_, `mono`, #mark#, and **un**constrained __un__constrained ``un``constrained ##un##constrained.
+
+^super^ and ~sub~ scripts: E=mc^2^, H~2~O, and ^many words^ with spaces stay text.
+
+A word*with*stars and a_word_with_underscores and w#i#th hashes stay plain text, but wo**rd**s work.
+
+*strong at the start* and at the end *strong*
+
+Punctuation: (*strong*), [*strong*], "*strong*", '*strong*', _emphasis_, `mono`. *strong*; *strong*: *strong*!
+
+Nested: *_strong emphasis_*, _*emphasis strong*_, `*mono strong*`, *`strong mono`*, #*mark strong*#, *#strong mark#*.
+
+Deep: *_`#four levels#`_*.
+
+== Roles and ids
+
+[.role]*strong role*, [.two.roles]_emphasis_, [#id]`mono id`, [#id.role]#mark id and role#, [.line-through]#struck#, [big red]**styled**.
+
+[#unconstrained-id.a.b]**un**constrained with the id and roles.
+
+[.role]^sup^ and [.role]~sub~ and [.role]"`quoted`".
+
+== Curved quotes
+
+"`double quoted`" and '`single quoted`', "`nested '`single`' inside`", and `"`not curved`"` in monospace.
+
+She said "`hello`", it's '`ok`', and 90's are fine.
+
+== Spanning lines
+
+*strong that
+spans two lines* and _emphasis
+that spans
+three lines_ and `mono
+across` lines.
+
+A paragraph with *unclosed strong and
+a second line without a closing marker.
+
+== Escapes
+
+\*not strong* and \*\*not strong** and \_not emphasis_ and \`not mono` and \#not mark# and \^not super^ and \~not sub~.
+
+\[.role]*escaped role* and [.role]\*escaped marker*.
+
+\\*strong after a backslash* and a trailing backslash \
+
+== Odd cases
+
+* alone, _ alone, ` alone, # alone, ^ alone, ~ alone.
+
+**, __, ``, ##, ^^, ~~ and ****, ____, ````.
+
+a*b*c a_b_c a`b`c a#b#c, a**b**c a__b__c a``b``c a##b##c.
+
+* strong *, _ emphasis _, ` mono `.
+
+*strong*text and text*strong* and *strong*_emphasis_ and _emphasis_*strong*.
+
+The end

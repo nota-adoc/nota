@@ -1,0 +1,32 @@
+= Directives that are wrong
+
+Text.
+
+ifdef::[]
+missing target
+endif::[]
+
+ifeval::[]
+missing expression
+endif::[]
+
+ifeval::[nonsense]
+bad expression
+endif::[]
+
+ifeval::x[1 == 1]
+target not allowed
+endif::[]
+
+endif::[]
+
+ifdef::x[]
+text
+endif::y[]
+
+ifdef::x[]
+text
+endif::[text]
+
+ifdef::never[]
+never closed

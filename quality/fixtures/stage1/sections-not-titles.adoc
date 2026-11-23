@@ -1,0 +1,9 @@
+= Not Section Titles
+
+==Text without a space
+
+======= Seven equal signs
+
+.Not a title either
+
+Text.

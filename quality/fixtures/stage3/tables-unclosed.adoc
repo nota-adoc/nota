@@ -1,0 +1,11 @@
+= A table without a closing line
+
+Text before.
+
+.Caption
+[cols="1,2"]
+|===
+|a |b
+|c |d
+
+The text after the last cell is part of the table, as the table is not closed.

@@ -1,0 +1,97 @@
+= Document with attributes
+Jane Roe <jane@example.org>
+v1.2, 2026-09-29: Remark
+:custom: yes
+:number: 5
+:text: hello
+:doctype: book
+
+Attributes set in the header decide later conditions.
+
+ifdef::custom[]
+* custom is set
+endif::[]
+
+ifdef::author[]
+* author is set
+endif::[]
+
+ifdef::email[]
+* email is set
+endif::[]
+
+ifdef::revnumber[]
+* revnumber is set
+endif::[]
+
+ifdef::revdate,revremark[]
+* revision date or remark is set
+endif::[]
+
+ifdef::doctitle[]
+* doctitle is set
+endif::[]
+
+ifdef::doctype-book[]
+* doctype is book
+endif::[]
+
+ifdef::doctype-article[]
+* doctype is article
+endif::[]
+
+ifdef::authorcount[]
+* authorcount is set
+endif::[]
+
+ifeval::[{authorcount} == 1]
+* one author
+endif::[]
+
+== Body entries
+
+:later: set in the body
+
+ifdef::later[]
+* later is set
+endif::[]
+
+:later!:
+
+ifdef::later[]
+* later is still set
+endif::[]
+
+ifndef::later[]
+* later is unset
+endif::[]
+
+:!custom:
+
+ifdef::custom[]
+* custom is still set
+endif::[]
+
+:appendix-caption: Annex
+
+ifeval::["{appendix-caption}" == "Annex"]
+* appendix caption changed
+endif::[]
+
+:short: {text}
+
+ifeval::["{short}" == "hello"]
+* reference in a value
+endif::[]
+
+:leveloffset: +1
+
+ifeval::[{leveloffset} == 1]
+* leveloffset is one
+endif::[]
+
+:leveloffset!:
+
+ifdef::leveloffset[]
+* leveloffset is set
+endif::[]

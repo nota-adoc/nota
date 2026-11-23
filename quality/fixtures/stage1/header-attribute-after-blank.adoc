@@ -1,0 +1,6 @@
+= Title
+:in-header: yes
+
+:in-body: yes
+
+Text.

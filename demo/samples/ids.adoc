@@ -1,0 +1,169 @@
+= Section identifiers
+Alex Doe <alex@example.com>
+:toc:
+
+A check of how the identifiers of sections are computed.
+
+== Hello, world
+
+== Hello, world
+
+== Hello, world
+
+=== Hello, world
+
+== Crème brûlée at the café: part 2
+
+== Step-by-step guide
+
+== Version 1.0 released
+
+== 1. Numbered title
+
+== Trailing dash -
+
+== --leading dashes
+
+== Under_score and   spaces
+
+== Tab	and NBSP here
+
+[[explicit-id]]
+== Explicit anchor
+
+[#shorthand]
+== Explicit shorthand
+
+[id=named-id]
+== Explicit attribute
+
+[[explicit-id]]
+== The same explicit id again
+
+== Explicit anchor
+
+[[_hello_world_4,Ref text]]
+== Collides with a generated id
+
+== Hello, world
+
+Setext title
+------------
+
+Another setext
+~~~~~~~~~~~~~~
+
+[discrete]
+=== Discrete heading
+
+[discrete]
+=== Discrete heading
+
+[float]
+==== Floating
+
+== *Bold* title
+
+== Title with `code`
+
+== Title with {attribute} reference
+
+== Title with (C) and --
+
+== Rock 'n' roll
+
+== Fish & chips
+
+== Link https://example.com here
+
+== Email alex@example.com here
+
+== Macro footnote:[note] title
+
+== Title: with colon
+
+== Emoji 😀 in title
+
+:idprefix: id-
+
+== Prefixed title
+
+== Prefixed title
+
+:idseparator: -
+
+== Dashed separator title
+
+== Dashed separator title
+
+:idprefix:
+
+== Empty prefix title
+
+== -Empty prefix with leading dash
+
+:idseparator: .
+
+== Dotted separator title
+
+:idseparator:
+
+== No separator title
+
+== No separator title
+
+:idseparator: ::
+
+== Multi character separator
+
+:idseparator!:
+:idprefix!:
+
+== Defaults are back
+
+:sectids!:
+
+== No id for this one
+
+[[given-when-off]]
+== Explicit id with sectids off
+
+:sectids:
+
+== Ids are on again
+
+[appendix]
+== Appendix title
+
+[appendix]
+== Appendix title
+
+[glossary]
+== Glossary
+
+[bibliography]
+== References
+
+== Trailing spaces in title   
+
+== Title with closing markers ==
+
+# Markdown title
+
+## Markdown level two
+
+////
+== Not a section
+////
+
+----
+== Not a section either
+----
+
+ifdef::never[]
+== Off by condition
+endif::[]
+
+ifndef::never[]
+== On by condition
+endif::[]

@@ -1,0 +1,46 @@
+= Checklists and callouts
+
+== Checklists
+
+* [x] done
+* [ ] not done
+* [*] starred
+** [x] nested done
+** [ ] nested open
+* plain item
+
+- [x] with hyphen
+- [ ] open
+
+* [x]
+* [X] upper case is text
+* [] empty box is text
+*[x] no space is not a list
+
+== Callouts
+
+----
+one <1>
+two <2>
+----
+<1> first callout
+<2> second callout
+
+----
+auto <.>
+next <.>
+----
+<.> first auto
+<.> second auto
+
+<1> orphan callout
+<3> out of order
+
+== Callouts with blocks
+
+----
+code <1>
+----
+<1> explained
++
+with an attached paragraph

@@ -1,0 +1,41 @@
+= Technical specification: customer portal
+
+== Goal
+
+Build a *customer portal* where a client sees their _orders_, their statuses and the `waybill numbers`.
+The deadline is **the end of the quarter**, the priority is high: without the portal, clients write to support.
+
+== Requirements
+
+The portal opens at https://portal.example.com and works in two modes: [.line-through]#sign-in by password# and #sign-in by code#.
+
+Details are in the section <<acceptance,Acceptance>>, in the document xref:glossary.adoc#terms[glossary] and on the page link:legal/privacy.html[data policy].
+Questions go to mailto:care@example.com[the support mailbox] or to <https://example.com/help>.
+
+=== Screens
+
+The first line of a paragraph
+the second line of the same paragraph +
+and the line after the break.
+
+* Sign-in
+* Order list
+* Order card
+
+=== Example request
+
+The request goes to the address *POST* `/api/orders`, and the answer carries the status of the order:
+
+[source,json]
+----
+{"order": 42, "status": "shipped"}
+----
+
+==== Fields of the answer
+
+The field `status` is one of the values _new_, _paid_, _shipped_ or __done__.
+
+[[acceptance]]
+== Acceptance
+
+The portal is accepted when a client from the test group sees the orders **and** can open the card of any of them.

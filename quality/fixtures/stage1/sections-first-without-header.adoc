@@ -1,0 +1,7 @@
+=== A document that starts with a deep section
+
+Text.
+
+== Then a higher one
+
+Text.

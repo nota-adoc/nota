@@ -1,0 +1,9 @@
+= Lines that a list drops
+
+*** gamma
+
+	literal text
+++++
+
+
+alpha:: alpha

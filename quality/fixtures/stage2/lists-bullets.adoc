@@ -1,0 +1,72 @@
+= Bulleted lists
+
+== Levels follow the order of appearance
+
+* one
+** two
+*** three
+**** four
+***** five
+* back to one
+
+** starts deep
+* then shallower
+
+- hyphen a
+- hyphen b
+
+* star
+- hyphen inside a star item
+
+== Text lines
+
+* an item
+continues on the next line
+* the next item
+
+* an item with
+  an indented second line
+* another item
+
+* an item
+
+  a literal paragraph after a blank line
+
+* an item
+
+== Blank lines between items
+
+* first
+
+* second
+
+
+* third
+
+== Nested lists of other kinds
+
+* bullet
+. ordered inside bullet
+.. deeper ordered
+* second bullet
+term:: description inside bullet
+
+== Unicode marker
+
+• dot marker item
+• another dot marker item
+
+== Separated by a comment
+
+* list one item
+
+//
+
+* list two item
+
+== Separated by an attribute line
+
+* first list
+
+[square]
+* second list

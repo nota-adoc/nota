@@ -1,0 +1,15 @@
+= Toc in the preamble
+:toc: preamble
+:toclevels: 3
+
+Preamble one.
+
+Preamble two.
+
+== One
+
+=== One A
+
+==== One A a
+
+== Two

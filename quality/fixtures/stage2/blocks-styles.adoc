@@ -1,0 +1,104 @@
+= Styles on open blocks and others
+
+== Open block styles
+
+[source,ruby]
+--
+puts 'a source block on an open block'
+--
+
+[listing]
+--
+a listing on an open block
+--
+
+[literal]
+--
+a literal on an open block
+--
+
+[pass]
+--
+a passthrough on an open block
+--
+
+[verse]
+--
+a verse on an open block
+--
+
+[quote, Author]
+--
+a quote on an open block
+--
+
+[example]
+--
+an example on an open block
+--
+
+[sidebar]
+--
+a sidebar on an open block
+--
+
+[NOTE]
+--
+an admonition on an open block
+--
+
+[abstract]
+--
+an abstract on an open block
+--
+
+[partintro]
+--
+a part intro on an open block
+--
+
+[comment]
+--
+a comment on an open block
+--
+
+Text after the comment block.
+
+== Unknown styles are ignored
+
+[unknown]
+--
+an open block with an unknown style
+--
+
+[unknown]
+====
+an example with an unknown style
+====
+
+[quote]
+====
+an example cannot be a quote
+====
+
+== Styles on other delimiters
+
+[source]
+....
+a source style on a literal block
+....
+
+[listing]
+....
+a listing style on a literal block
+....
+
+[verse]
+____
+a verse block
+____
+
+[TIP]
+====
+an admonition on an example
+====

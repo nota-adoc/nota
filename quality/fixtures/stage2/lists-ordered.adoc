@@ -1,0 +1,68 @@
+= Ordered lists
+
+== Dots
+
+. one
+. two
+.. nested a
+.. nested b
+... nested deeper
+.... four dots
+..... five dots
+.... four dots again
+... three dots again
+. three
+
+.. starts at two dots
+. then one dot
+
+== Numbers and letters
+
+1. arabic one
+2. arabic two
+
+a. lower alpha one
+b. lower alpha two
+
+A. upper alpha one
+B. upper alpha two
+
+i) lower roman one
+ii) lower roman two
+
+I) upper roman one
+II) upper roman two
+
+== Numbers out of order
+
+1. one
+3. three
+2. two
+
+7. starts at seven
+8. eight
+
+== Attributes
+
+[start=3]
+. third
+. fourth
+
+[loweralpha]
+. by style
+. second
+
+[%reversed]
+. reversed one
+. reversed two
+
+[arabic]
+.. dots with a style
+.. second
+
+== Mixed in bullets
+
+* bullet
+1. numbered inside
+2. numbered again
+* bullet again

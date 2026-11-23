@@ -1,0 +1,24 @@
+{
+  "name": "@nota-adoc/quality",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Quality bench for Nota: invariants, fuzzing, benchmarks, reference comparison, corpus runs",
+  "license": "MIT",
+  "dependencies": {
+    "@asciidoctor/core": "4.1.0",
+    "@codemirror/language": "^6.12.4",
+    "@codemirror/state": "^6.7.6",
+    "@lezer/common": "^1.5.3",
+    "@nota-adoc/codemirror": "*",
+    "@nota-adoc/core": "*",
+    "@nota-adoc/html": "*",
+    "@nota-adoc/prosemirror": "*",
+    "jsdom": "^27.4.0",
+    "prosemirror-keymap": "^1.2.3",
+    "prosemirror-model": "^1.25.12",
+    "prosemirror-state": "^1.4.4",
+    "prosemirror-transform": "^1.12.2",
+    "prosemirror-view": "^1.42.6"
+  }
+}

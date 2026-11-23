@@ -1,0 +1,14 @@
+= A Book
+:doctype: book
+
+= Part One
+
+== Chapter
+
+Text.
+
+= Part Two
+
+== Another Chapter
+
+Text.

@@ -1,0 +1,4 @@
+= Multi-word names
+Mary_Ann van_Dyke <mary@example.com>
+
+Text.

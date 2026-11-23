@@ -1,0 +1,68 @@
+= All constructs of stage 4
+Jane Roe <jane@example.org>
+v1.0, 2026-09-29: Inline markup
+:experimental:
+:url-home: https://example.com/home
+:product: Nota
+:toc:
+
+Introductory paragraph with {product} and a link to {url-home}[the home page].
+
+== Quotes
+
+*strong*, **st**rong, _emphasis_, __em__phasis, `mono`, ``mo``no, #highlight#, ##high##light.
+
+[.line-through]#struck through#, [.role]**styled** text, [#anchor.big]_id and role_.
+
+x^2^ and H~2~O, nested *_strong emphasis_*, "`double quoted`" and '`single quoted`'.
+
+Word boundaries: a*b*c and slice*d*x stay plain, but wo**rd**s and sli__ce__d work.
+
+*strong text
+across two lines* and `mono
+across lines`.
+
+\*not bold* and \_not emphasis_ and \`not mono` and \[.x]#not marked#.
+
+== Passthroughs
+
++literal *not bold* text+ and ++literal **not** bold++ and +++<span style="color:red">raw</span>+++.
+
+pass:[<b>raw</b>] and pass:q[*quoted* raw] and pass:c,a[<{product}>] and $$<i>dollar</i>$$.
+
+stem:[sqrt(4) = 2] and latexmath:[\sqrt{4} = 2] and asciimath:[a != b].
+
+== Macros
+
+https://example.com[site], https://example.com, <https://example.com>, link:pages/page.html[a page], mailto:jane@example.org[write], and jane@example.org.
+
+xref:guide/Страница.adoc#раздел[раздел], <<macros>>, <<macros,the macros section>>, xref:macros[Macros] and <<missing>>.
+
+[[inline-anchor]]Text with an anchor and anchor:other-anchor[reftext] in it.
+
+image:logo.png[Logo,20] and image:a_b-c.png[] and icon:heart[2x].
+
+Footnotes: first footnote:[The first note.], second footnote:sec[The second note.] and again footnote:sec[].
+
+Keys kbd:[Ctrl+S], kbd:[Ctrl,Alt,Del], buttons btn:[OK] and menu:File[Save As > Copy] and "File > New" too.
+
+indexterm:[Tigers,Big cats], indexterm2:[Tigers], ((Lions)) and (((Bears,Big cats))).
+
+A generic name:target[text] macro stays text.
+
+== Other
+
+Attribute {product} and {nbsp}{empty}{startsb}x{endsb}, again {product}, {counter:hits}, {counter:hits}, {set:flag:yes}flagged and \{escaped}.
+
+Special characters & < > are escaped; (C) (R) (TM) -- and ... and -> => <- <= it's, and foo--bar.
+
+A line with a hard break +
+continues here.
+
+[source,java]
+----
+int a = *b*; // <1>
+if (a < 1) { // <2>
+----
+<1> The first callout.
+<2> The second callout.

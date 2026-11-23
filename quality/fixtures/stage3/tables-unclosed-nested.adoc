@@ -1,0 +1,10 @@
+= A nested table without a closing line
+
+|===
+a|
+!===
+a!
+text in the inner table
+|===
+
+After the outer table.

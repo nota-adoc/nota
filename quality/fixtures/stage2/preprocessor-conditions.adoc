@@ -1,0 +1,154 @@
+= Conditional directives
+:a: 1
+:b: 2
+
+== Block forms
+
+ifdef::a[]
+* a is set
+endif::[]
+
+ifdef::missing[]
+* missing is set
+endif::[]
+
+ifndef::a[]
+* a is not set
+endif::[]
+
+ifndef::missing[]
+* missing is not set
+endif::[]
+
+ifdef::a,missing[]
+* a or missing
+endif::[]
+
+ifdef::a+missing[]
+* a and missing
+endif::[]
+
+ifdef::a+b[]
+* a and b
+endif::[]
+
+ifndef::a,missing[]
+* neither a nor missing (a is set)
+endif::[]
+
+ifndef::a+missing[]
+* not both a and missing
+endif::[]
+
+ifdef::A[]
+* names are case insensitive
+endif::[]
+
+== Nested
+
+ifdef::a[]
+Outside.
+
+ifdef::b[]
+Inside both.
+endif::[]
+
+ifdef::missing[]
+Inside a and missing.
+ifdef::b[]
+Deep and never shown.
+endif::[]
+endif::[]
+endif::[]
+
+== Named endif
+
+ifdef::a[]
+Text with a named end.
+endif::a[]
+
+== Eval
+
+ifeval::[{a} == 1]
+* a equals 1
+endif::[]
+
+ifeval::[{a} > 1]
+* a above 1
+endif::[]
+
+ifeval::[{b} >= 2]
+* b at least 2
+endif::[]
+
+ifeval::[{a} != {b}]
+* a differs from b
+endif::[]
+
+ifeval::["{a}" == "1"]
+* string compare
+endif::[]
+
+ifeval::['{a}' == '1']
+* single quotes
+endif::[]
+
+ifeval::[{a} < 0.5]
+* float compare
+endif::[]
+
+ifeval::[true == true]
+* booleans
+endif::[]
+
+ifeval::["x" < "y"]
+* strings order
+endif::[]
+
+== Escaped
+
+\ifdef::a[]
+Escaped opening is text.
+\endif::[]
+
+== Around blocks
+
+ifdef::a[]
+----
+listing shown
+----
+endif::[]
+
+ifndef::a[]
+----
+listing hidden
+endif::[]
+
+* item one
+ifdef::a[]
+* item two shown
+endif::[]
+ifndef::a[]
+* item two hidden
+endif::[]
+* item three
+
+----
+listing
+ifdef::a[]
+line shown
+endif::[]
+ifndef::a[]
+line hidden
+endif::[]
+after
+----
+
+Paragraph line one
+ifdef::a[]
+paragraph line shown
+endif::[]
+ifndef::a[]
+paragraph line hidden
+endif::[]
+paragraph last line

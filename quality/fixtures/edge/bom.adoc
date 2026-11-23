@@ -1,0 +1,3 @@
+﻿= Title After a Byte Order Mark
+
+Text.

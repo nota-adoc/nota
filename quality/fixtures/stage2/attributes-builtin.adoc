@@ -1,0 +1,229 @@
+= Built-in attributes
+
+Every attribute Asciidoctor sets by default, tested with a one-item list.
+
+ifdef::attribute-undefined[]
+* attribute-undefined is set
+endif::[]
+
+ifdef::attribute-missing[]
+* attribute-missing is set
+endif::[]
+
+ifdef::appendix-caption[]
+* appendix-caption is set
+endif::[]
+
+ifdef::appendix-refsig[]
+* appendix-refsig is set
+endif::[]
+
+ifdef::caution-caption[]
+* caution-caption is set
+endif::[]
+
+ifdef::chapter-refsig[]
+* chapter-refsig is set
+endif::[]
+
+ifdef::example-caption[]
+* example-caption is set
+endif::[]
+
+ifdef::figure-caption[]
+* figure-caption is set
+endif::[]
+
+ifdef::important-caption[]
+* important-caption is set
+endif::[]
+
+ifdef::last-update-label[]
+* last-update-label is set
+endif::[]
+
+ifdef::note-caption[]
+* note-caption is set
+endif::[]
+
+ifdef::part-refsig[]
+* part-refsig is set
+endif::[]
+
+ifdef::prewrap[]
+* prewrap is set
+endif::[]
+
+ifdef::sectids[]
+* sectids is set
+endif::[]
+
+ifdef::section-refsig[]
+* section-refsig is set
+endif::[]
+
+ifdef::table-caption[]
+* table-caption is set
+endif::[]
+
+ifdef::tip-caption[]
+* tip-caption is set
+endif::[]
+
+ifdef::toc-placement[]
+* toc-placement is set
+endif::[]
+
+ifdef::toc-title[]
+* toc-title is set
+endif::[]
+
+ifdef::untitled-label[]
+* untitled-label is set
+endif::[]
+
+ifdef::version-label[]
+* version-label is set
+endif::[]
+
+ifdef::warning-caption[]
+* warning-caption is set
+endif::[]
+
+ifdef::notitle[]
+* notitle is set
+endif::[]
+
+ifdef::embedded[]
+* embedded is set
+endif::[]
+
+ifdef::asciidoctor[]
+* asciidoctor is set
+endif::[]
+
+ifdef::asciidoctor-version[]
+* asciidoctor-version is set
+endif::[]
+
+ifdef::safe-mode-name[]
+* safe-mode-name is set
+endif::[]
+
+ifdef::safe-mode-secure[]
+* safe-mode-secure is set
+endif::[]
+
+ifdef::safe-mode-level[]
+* safe-mode-level is set
+endif::[]
+
+ifdef::max-include-depth[]
+* max-include-depth is set
+endif::[]
+
+ifdef::backend[]
+* backend is set
+endif::[]
+
+ifdef::max-attribute-value-size[]
+* max-attribute-value-size is set
+endif::[]
+
+ifdef::linkcss[]
+* linkcss is set
+endif::[]
+
+ifdef::doctype[]
+* doctype is set
+endif::[]
+
+ifdef::htmlsyntax[]
+* htmlsyntax is set
+endif::[]
+
+ifdef::backend-html5-doctype-article[]
+* backend-html5-doctype-article is set
+endif::[]
+
+ifdef::doctype-article[]
+* doctype-article is set
+endif::[]
+
+ifdef::backend-html5[]
+* backend-html5 is set
+endif::[]
+
+ifdef::outfilesuffix[]
+* outfilesuffix is set
+endif::[]
+
+ifdef::filetype[]
+* filetype is set
+endif::[]
+
+ifdef::filetype-html[]
+* filetype-html is set
+endif::[]
+
+ifdef::basebackend-html-doctype-article[]
+* basebackend-html-doctype-article is set
+endif::[]
+
+ifdef::basebackend-html[]
+* basebackend-html is set
+endif::[]
+
+ifdef::basebackend[]
+* basebackend is set
+endif::[]
+
+ifdef::authorcount[]
+* authorcount is set
+endif::[]
+
+== Not set by default
+
+ifndef::author[]
+* author is not set
+endif::[]
+
+ifndef::email[]
+* email is not set
+endif::[]
+
+ifndef::revnumber[]
+* revnumber is not set
+endif::[]
+
+ifndef::toc[]
+* toc is not set
+endif::[]
+
+ifndef::icons[]
+* icons is not set
+endif::[]
+
+ifndef::source-highlighter[]
+* source-highlighter is not set
+endif::[]
+
+ifndef::copycss[]
+* copycss is not set
+endif::[]
+
+ifndef::sectnums[]
+* sectnums is not set
+endif::[]
+
+ifndef::allow-uri-read[]
+* allow-uri-read is not set
+endif::[]
+
+ifndef::stylesheet[]
+* stylesheet is not set
+endif::[]
+
+ifndef::imagesdir[]
+* imagesdir is not set
+endif::[]

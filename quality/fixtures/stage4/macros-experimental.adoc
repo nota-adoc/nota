@@ -1,0 +1,22 @@
+= Experimental macros
+:experimental:
+
+kbd:[F3], kbd:[Ctrl+Shift+T], kbd:[Ctrl,Shift,T], kbd:[Ctrl+\]], kbd:[Ctrl++], kbd:[Ctrl,,], kbd:[+], kbd:[,], kbd:[ Ctrl + T ], kbd:[a+b,c], kbd:[].
+
+btn:[OK], btn:[Save & Close], btn:[A \] B], btn:[ spaced ].
+
+menu:File[], menu:File[Save], menu:File[Save As...], menu:Edit[Find > Replace], menu:View[Zoom, In], menu:Tools[Options > Advanced > Editor], menu:Fi&le[Open], menu:View[ Zoom ].
+
+"File > New > Project", "File > Save", "Edit > Copy", and "No menu here" and "a > b" and "> a".
+
+\kbd:[Ctrl+T] and \btn:[OK] and \menu:File[Save] and \"File > New".
+
+*kbd:[Ctrl+B]* and _btn:[OK]_ and `menu:File[Save]`.
+
+:experimental!:
+
+Without the attribute: kbd:[Ctrl+T], btn:[OK], menu:File[Save], "File > New".
+
+:experimental:
+
+And again with it: kbd:[Ctrl+T].

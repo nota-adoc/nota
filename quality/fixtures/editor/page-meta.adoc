@@ -1,0 +1,25 @@
+////
+page_id: 1000001
+title: Sample page
+space_key: DEMO
+confluence_url: https://wiki.example.test/pages/viewpage.action?pageId=1000001
+ancestors:
+  - Handbook
+  - Guides
+version: 14
+updated_at: 2026-10-03T11:20:00Z
+labels:
+  - sample
+renderer_version: 1
+////
+:toc:
+:source-highlighter: highlight.js
+
+= Sample page
+:relfilesuffix: .adoc
+
+The first paragraph of the page.
+
+== Section
+
+Text of the section.

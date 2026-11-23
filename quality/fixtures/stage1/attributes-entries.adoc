@@ -1,0 +1,50 @@
+= Attribute Entries
+
+== Empty value and trailing spaces
+
+:empty:
+:spaced:   value with leading spaces
+:trailing: value with trailing spaces   
+
+Text after the entries.
+
+== Unset
+
+:gone!:
+:!also-gone:
+
+Text.
+
+== Continuation with a backslash
+
+:long: first part \
+  second part \
+  third part
+
+Text.
+
+== Continuation keeping the line break
+
+:hard: first line + \
+second line + \
+third line
+
+Text.
+
+== Legacy continuation
+
+:legacy: one +
+two
+
+Text.
+
+== Entry directly under a paragraph line
+
+A paragraph line
+:not-an-entry: stays paragraph text
+
+== Names are sanitized
+
+:Mixed-Case_Name: value
+
+Text.

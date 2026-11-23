@@ -1,0 +1,78 @@
+= Numbering and outline
+:sectnums:
+:toc:
+:sectanchors:
+:sectlinks:
+
+Preamble text.
+
+== First
+
+=== First one
+
+==== First one deep
+
+===== Even deeper
+
+=== First two
+
+== Second
+
+=== Second one
+
+[discrete]
+=== Discrete inside
+
+== Third with *markup* and https://example.com[a link]
+
+[appendix]
+== Appendix section
+
+=== Nested in the appendix
+
+[appendix]
+== Another appendix
+
+[glossary]
+== Glossary
+
+[bibliography]
+== Bibliography
+
+* [[[knuth]]] Knuth. The Art of Computer Programming.
+* [[[fowler,Fowler 1997]]] Fowler. Refactoring.
+
+See <<knuth>> and <<fowler>>.
+
+:sectnums!:
+
+== Unnumbered after
+
+=== Also unnumbered
+
+:sectnums:
+
+== Numbered again
+
+:sectnumlevels: 1
+
+=== Not numbered by level
+
+:toclevels: 1
+
+:sectnumlevels: 3
+
+[abstract]
+== Abstract section
+
+[preface]
+== Preface
+
+[colophon]
+== Colophon
+
+[dedication]
+== Dedication
+
+[index]
+== Index

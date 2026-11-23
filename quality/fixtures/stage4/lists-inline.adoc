@@ -1,0 +1,117 @@
+= Inline markup in lists
+
+== Bulleted
+
+* *strong* item with `code` and https://example.com[link]
+* item with a footnote:[in a list] and {nbsp}an attribute
+** nested _emphasis_
+*** deeper with (C) and -- dash
+* item with a hard break +
+continued on the next line
+* an item
+  with an indented continuation line and *strong
+  across lines*
+* [[item-anchor]]item with an anchor and <<item-anchor,a reference>>
+* item with a literal +not *bold*+ and pass:[<b>raw</b>]
+
+== Ordered
+
+. *first* item
+. second with `code`
+.. nested {product}
+. third
+
+[loweralpha]
+. alpha *one*
+. alpha two
+
+[start=4]
+. starts at four
+
+[%reversed]
+. reversed one
+. reversed two
+
+[arabic]
+. explicit arabic
+
+[upperalpha,start=3]
+. third letter
+
+== Checklists
+
+* [x] checked *bold*
+* [ ] unchecked _emphasis_
+* [*] also checked
+* not a checkbox
+
+[%interactive]
+* [x] interactive checked
+* [ ] interactive unchecked
+
+== Description lists
+
+term *strong*:: definition with `code`
+another term:: definition +
+with a break
+term with a footnote:[fn]:: text
+plain::
++
+attached paragraph with *strong*
+
+[horizontal]
+*h1*:: horizontal definition
+h2:: another one with https://example.com[link]
+
+[horizontal,labelwidth=20,itemwidth=80]
+one:: first
+two:: second
+
+[qanda]
+What is *this*?:: An answer with _emphasis_.
+And that?:: Another answer.
+
+[glossary]
+term:: glossary definition
+
+Term with two names::
+Second name:: A shared definition.
+
+first:: one
++
+--
+An open block with *strong*.
+--
+second:: two
+
+== Callout lists
+
+[source,c]
+----
+int a; // <1>
+int b; // <2>
+----
+<1> The *first* callout.
+<2> The `second` callout.
+
+== Attached blocks
+
+* item
++
+....
+literal *not bold*
+....
++
+attached paragraph with `mono`
+
+* another
++
+[NOTE]
+====
+Admonition with *strong*.
+====
+
+1. numbered
++
+attached
+2. numbered again

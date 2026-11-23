@@ -1,0 +1,147 @@
+= All constructs of stage 2
+Jane Roe <jane@example.org>
+v1.0, 2026-09-29: All of it
+:toc:
+:flavor: plain
+:doctype: article
+
+Introductory paragraph.
+
+== Lists
+
+* bullet one
+** nested bullet
+*** deeper bullet
+* bullet two
++
+attached paragraph
++
+----
+attached listing
+----
+
+. first
+. second
+.. nested ordered
+
+1. numbered
+2. numbered again
+
+a. letter
+b. letter again
+
+term:: definition
+other:: another definition
+* [x] done
+* [ ] open
+
+== Blocks
+
+====
+An example with a paragraph.
+
+* and a list
+====
+
+****
+A sidebar.
+****
+
+____
+A quote.
+____
+
+[NOTE]
+====
+An admonition block.
+====
+
+--
+An open block.
+--
+
+----
+A listing.
+----
+
+[source,ruby]
+----
+puts 'source'
+----
+
+....
+A literal block.
+....
+
+++++
+<b>pass</b>
+++++
+
+////
+A block comment.
+////
+
+====
+outer
+======
+inner
+======
+====
+
+== Macros and breaks
+
+image::picture.png[Alt,200,100]
+
+video::clip.mp4[]
+
+audio::sound.mp3[]
+
+toc::[]
+
+'''
+
+<<<
+
+---
+
+- - -
+
+***
+
+== Markdown
+
+```ruby
+puts 'markdown fence'
+```
+
+> a Markdown quote
+> -- Somebody
+
+== Conditions and attributes
+
+ifdef::flavor[]
+Text for the flavor.
+endif::[]
+
+ifndef::flavor[]
+Text without the flavor.
+endif::[]
+
+ifeval::["{flavor}" == "plain"]
+Plain flavor.
+endif::[]
+
+include::part.adoc[]
+
+:body-attribute: set in the body
+
+ifdef::body-attribute[]
+* body attribute is set
+endif::[]
+
+== Callouts
+
+----
+code <1>
+----
+<1> explained

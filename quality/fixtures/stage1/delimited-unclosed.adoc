@@ -1,0 +1,7 @@
+= Unclosed Block
+
+Text.
+
+----
+never closed
+== Not a section

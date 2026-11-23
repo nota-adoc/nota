@@ -1,0 +1,61 @@
+:doctype: book
+= Tables in a book
+
+A document in a cell is an article, whatever the document that holds the table is: no preamble, no parts,
+`{doctype}` in it is the article one.
+
+[cols="1,3"]
+|===
+|Text
+a|
+Text in a cell, with {doctype}.
+
+* item
+
+|Anchor
+a|
+[#anchor-one]
+Text with an anchor.
+
+[[anchor-two]]
+====
+An example.
+====
+
+|Table
+a|
+!===
+!one !two
+!===
+
+|Abstract
+a|
+[abstract]
+The abstract of a cell.
+
+More text.
+
+|Title
+a|
+= A title in a cell
+
+Text under it.
+
+|Image
+a|
+[[above]]
+image::pic.png[Alt,id=own]
+
+image::pic.png[id=other]
+
+|Counters
+a|
+[#item-{counter:cell-item}]
+First.
+
+[#item-{counter:cell-item}]
+Second.
+|===
+
+[#item-{counter:cell-item}]
+After the table.

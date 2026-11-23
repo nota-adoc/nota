@@ -1,0 +1,9 @@
+= Symmetric Titles
+
+== Closed title ==
+
+=== Closed deeper ===
+
+== Mismatched closing ===
+
+Text.

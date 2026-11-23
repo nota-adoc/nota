@@ -1,0 +1,94 @@
+= List edge cases
+
+== Continuation with lists
+
+* one
++
+** nested after a plus
+* two
+
+* item
++
+. ordered after a plus
++
+term:: description after a plus
+
+== Metadata between items
+
+* first
+[.role]
+* second
+
+* first
+.Title above an item
+* second
+
+== Comments in lists
+
+* item
+// a comment between the text and the next item
+* next
+
+* item
+text after
+// a comment inside
+more text
+
+== Description list next to a paragraph
+
+term:: definition
+
+A paragraph after.
+
+Paragraph before.
+term:: not a list? (after a text line)
+
+== Numbers that look like lists
+
+2026. is a year, not a list start? Actually a list
+
+1990: a colon is not a marker
+
+== Tabs
+
+*	tab after the marker
+*	second
+
+	tab indented literal
+
+== Empty item text with only a checkbox
+
+* [x] 
+* [ ]
+
+== Deep nesting
+
+* 1
+** 2
+*** 3
+**** 4
+***** 5
+****** 6
+******* 7
+
+== Long dlist
+
+alpha::
+beta::
+gamma::
+delta:: all four
+
+== Dlist with quotes and links
+
+https://example.org:: a link term
+"quoted term":: text
+a::b:: colons inside the term
+
+== The blank line that a verbatim paragraph takes
+
+- beta
+[literal]
+beta::::
+
+the item
+** [x] more text

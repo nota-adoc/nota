@@ -1,0 +1,103 @@
+= Cell specs
+
+Column spans:
+
+[cols="1,1,1"]
+|===
+2+|wide |x
+|a |b |c
+3+|all three
+|===
+
+Row spans:
+
+[cols="1,1,1"]
+|===
+.3+|tall |a |b
+|c |d
+|e |f
+|===
+
+Both:
+
+[cols="1,1,1,1"]
+|===
+2.2+|block |a |b
+|c |d
+|e |f |g |h
+|===
+
+Repeats of a cell:
+
+[cols="3*"]
+|===
+3*|x
+2*|y |z
+|===
+
+A repeat with an alignment and a style:
+
+[cols="4*"]
+|===
+2*^m|pair |x |y
+|===
+
+Horizontal alignments:
+
+[cols="3*"]
+|===
+<|left ^|center >|right
+|===
+
+Vertical alignments:
+
+[cols="3*"]
+|===
+.<|top .^|middle .>|bottom
+|===
+
+Both alignments:
+
+[cols="3*"]
+|===
+<.>|a ^.^|b >.<|c
+|===
+
+Styles, one cell each:
+
+[cols="8*"]
+|===
+a|asciidoc d|default e|emphasis h|header l|literal m|monospace s|strong v|verse
+|===
+
+Alignment and style together:
+
+[cols="3*"]
+|===
+2+^.>s|bold and centered |x
+>e|right emphasized ^m|centered mono .>l|bottom literal
+|===
+
+A style over the column style:
+
+[cols="1s,1e"]
+|===
+|column strong d|plain
+e|emphasis in column strong |column emphasis
+|===
+
+Spec with whitespace and specs that are not specs:
+
+[cols="2*"]
+|===
+|not a spec 2+ text |b
+|x | 2+ |c |d
+|===
+
+A rowspan that reaches past the end of the table:
+
+[cols="2*"]
+|===
+.5+|tall |a
+|b
+|===

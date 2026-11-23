@@ -1,0 +1,17 @@
+= Discrete Headings
+
+== Section
+
+[discrete]
+=== A discrete heading
+
+Text after it stays in the section.
+
+[float]
+==== A float heading
+
+[discrete]
+Setext discrete
+~~~~~~~~~~~~~~~
+
+Text.

@@ -1,0 +1,18 @@
+= Interrupted Paragraphs
+
+Paragraph text
+----
+a listing interrupts it
+----
+
+Paragraph text
+[NOTE]
+An attribute line interrupts it too.
+
+Paragraph text
+[[not-an-anchor-break]]
+still paragraph text
+
+Paragraph text
++
+continuation marker

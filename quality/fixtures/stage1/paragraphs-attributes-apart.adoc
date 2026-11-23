@@ -1,0 +1,11 @@
+= Attributes Apart From the Block
+
+[#spaced.role]
+
+A blank line between the attribute line and the paragraph.
+
+.A title
+
+[source]
+
+code line

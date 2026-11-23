@@ -1,0 +1,30 @@
+= Section Anchors
+
+[[first-id]]
+== With a block anchor
+
+Text.
+
+[[second-id,Второй раздел]]
+== With an anchor and reftext
+
+Text.
+
+[#third-id]
+== With a shorthand id
+
+Text.
+
+[#fourth-id.role-a.role-b%unnumbered]
+== With id, roles and an option
+
+Text.
+
+== With an inline anchor [[inline-id]]
+
+Text.
+
+[[outer-id]]
+== Block anchor wins over inline [[ignored-id]]
+
+Text.

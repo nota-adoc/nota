@@ -1,0 +1,23 @@
+= Заливка ячеек
+
+Выдуманная таблица: заливка в ячейках разных стилей.
+
+|===
+|[.cell-yellow]##{empty}##текст
+|[.cell-yellow]#{empty}# текст
+|[.cell-mint]##{empty}##
+|обычная
+
+d|[.cell-yellow]##{empty}##d
+m|[.cell-yellow]##{empty}##m
+e|[.cell-yellow]##{empty}##e
+s|[.cell-yellow]##{empty}##s
+
+h|[.cell-yellow]##{empty}##h
+a|[.cell-yellow]##{empty}##абзац
+
+второй абзац
+|[.cell-yellow]##{empty}##первый
+
+второй
+|===

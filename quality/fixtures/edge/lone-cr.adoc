@@ -1,0 +1,5 @@
+= Lone CR
+
+line onestill line one
+starts with CR
+==not a title

@@ -1,0 +1,89 @@
+// every construct of the first stage in one document; parses without diagnostics
+:doctype: book
+= Every Construct
+Maria Lopez <maria@example.org>; Tom Baker
+v1.2, 2026-09-25: the combined sample
+:description: A document with every construct of the first stage
+:long-value: first part \
+  second part
+// a comment in the header
+
+An opening paragraph
+// with a comment inside
+on two lines.
+
+= Part One
+
+== Chapter With Metadata
+
+[[chapter-anchor]]
+[#chapter-id.lead%unnumbered]
+.A block title
+=== Section With Anchors
+
+An ordinary paragraph.
+
+ A literal paragraph.
+
+NOTE: An admonition paragraph.
+
+[TIP]
+An admonition from a style.
+
+[source,json,title="Example, with a comma"]
+{"key": "value"}
+
+[quote, Someone]
+Quoted words.
+
+.A titled paragraph
+Text under a block title.
+
+[[para-anchor,Anchor Text]]
+A paragraph with an anchor.
+
+==== Level Three
+
+===== Level Four
+
+====== Level Five
+
+Deep text.
+
+[discrete]
+==== A Discrete Heading
+
+Markdown and two-line titles
+----------------------------
+
+## Markdown Section ##
+
+:leveloffset: +1
+
+= Offset Section
+
+:leveloffset!:
+
+:body-multi: first line \
+  second line
+
+:unset-me!:
+:!unset-me-too:
+
+// consecutive
+// comments
+
+////
+a block comment
+////
+
+----
+a listing block
+----
+
+====
+an example block
+== not a section inside
+====
+
+The last paragraph.

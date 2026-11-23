@@ -1,0 +1,56 @@
+= Passthroughs
+
+== Inline passthroughs
+
++literal *not bold* and {not-an-attribute}+ and ++literal **not bold**++ and +++<span style="color: red">raw</span>+++.
+
+pass:[<b>raw</b> *not bold*] and pass:q[*bold* and <b>raw</b>] and pass:c[<b>escaped</b>] and pass:a,c[{empty}<b>x</b>] and pass:n[*x* (C)] and pass:r[(C)] and pass:m[https://example.com[link]] and pass:[].
+
+$$<b>dollars</b> *not bold*$$ and $$ spaced $$.
+
+Escapes: \+not literal+ and \++not literal++ and \+++not raw+++ and \pass:[not a pass] and \$$not dollars$$.
+
+Old syntax: [x-]+literal *bold*+ and [x-]`literal *bold*` and [role x-]+role literal+ and [.role]+role text+.
+
+The plus in prose: a + b, 1+1=2, C++ and c++ and a+b+c and +not closed.
+
+Line +
+breaks around +++raw+++ and pass:[raw].
+
+Multi-line +literal
+spanning lines+ and ++literal
+spanning++ and pass:[raw
+spanning].
+
+== Stem
+
+stem:[sqrt(4) = 2] and latexmath:[\sqrt{4} = 2] and asciimath:[a != b] and latexmath:[$x$] and stem:[x^2 \] end] and stem:c[<x>] and stem:[].
+
+\stem:[not math] and \latexmath:[not math].
+
+[stem]
+++++
+sqrt(4) = 2
+++++
+
+[latexmath]
+++++
+\sqrt{4} = 2
+++++
+
+[asciimath]
+++++
+a != b
+sqrt(9) = 3
+
+x^2
+++++
+
+:stem: latexmath
+
+stem:[\alpha] with the document stem set to latexmath.
+
+[stem]
+++++
+\beta
+++++

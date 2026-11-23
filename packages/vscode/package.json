@@ -1,0 +1,285 @@
+{
+  "name": "nota-vscode",
+  "displayName": "%displayName%",
+  "description": "%description%",
+  "version": "0.1.0",
+  "private": true,
+  "publisher": "nota-adoc",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nota-adoc/nota.git",
+    "directory": "packages/vscode"
+  },
+  "type": "module",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": true
+  },
+  "contributes": {
+    "configuration": {
+      "title": "Nota",
+      "properties": {
+        "nota.language": {
+          "type": "string",
+          "enum": [
+            "ru",
+            "en",
+            "auto"
+          ],
+          "enumDescriptions": [
+            "%config.language.ru%",
+            "%config.language.en%",
+            "%config.language.auto%"
+          ],
+          "default": "auto",
+          "description": "%config.language.description%"
+        },
+        "nota.pageWidth": {
+          "type": "number",
+          "default": 85,
+          "minimum": 50,
+          "maximum": 100,
+          "description": "%config.pageWidth.description%"
+        },
+        "nota.outlineView": {
+          "type": "string",
+          "enum": [
+            "capsule",
+            "side"
+          ],
+          "enumItemLabels": [
+            "%config.outlineView.capsule%",
+            "%config.outlineView.side%"
+          ],
+          "enumDescriptions": [
+            "%config.outlineView.capsuleDescription%",
+            "%config.outlineView.sideDescription%"
+          ],
+          "default": "capsule",
+          "description": "%config.outlineView.description%"
+        },
+        "nota.showAnchors": {
+          "type": "boolean",
+          "default": false,
+          "description": "%config.showAnchors.description%"
+        },
+        "nota.blocksInCapsule": {
+          "type": "string",
+          "enum": ["all", "frequent"],
+          "enumItemLabels": ["%config.blocksInCapsule.all%", "%config.blocksInCapsule.frequent%"],
+          "enumDescriptions": ["%config.blocksInCapsule.allDescription%", "%config.blocksInCapsule.frequentDescription%"],
+          "default": "all",
+          "description": "%config.blocksInCapsule.description%"
+        }
+      }
+    },
+    "customEditors": [
+      {
+        "viewType": "nota.visual",
+        "displayName": "%customEditor.displayName%",
+        "selector": [
+          {
+            "filenamePattern": "*.adoc"
+          },
+          {
+            "filenamePattern": "*.asciidoc"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
+    "commands": [
+      {
+        "command": "nota.mark.strong",
+        "title": "%command.strong%"
+      },
+      {
+        "command": "nota.mark.em",
+        "title": "%command.em%"
+      },
+      {
+        "command": "nota.mark.code",
+        "title": "%command.code%"
+      },
+      {
+        "command": "nota.mark.strike",
+        "title": "%command.strike%"
+      },
+      {
+        "command": "nota.mark.highlight",
+        "title": "%command.highlight%"
+      },
+      {
+        "command": "nota.style.paragraph",
+        "title": "%command.stylePara%"
+      },
+      {
+        "command": "nota.style.heading2",
+        "title": "%command.styleH2%"
+      },
+      {
+        "command": "nota.style.heading3",
+        "title": "%command.styleH3%"
+      },
+      {
+        "command": "nota.toggleMode",
+        "title": "%command.toggleMode%"
+      },
+      {
+        "command": "nota.toggleOutlineView",
+        "title": "%command.toggleOutlineView%"
+      },
+      {
+        "command": "nota.toggleMode.toText",
+        "title": "%command.toText%"
+      },
+      {
+        "command": "nota.toggleMode.toVisual",
+        "title": "%command.toVisual%"
+      },
+      {
+        "command": "nota.openSettings",
+        "title": "%command.openSettings%"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "nota.toggleMode.toText",
+          "group": "navigation",
+          "when": "activeCustomEditorId == 'nota.visual' && !nota.textMode"
+        },
+        {
+          "command": "nota.toggleMode.toVisual",
+          "group": "navigation",
+          "when": "activeCustomEditorId == 'nota.visual' && nota.textMode"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "nota.openSettings",
+          "when": "activeCustomEditorId == 'nota.visual'"
+        },
+        {
+          "command": "nota.toggleMode",
+          "when": "activeCustomEditorId == 'nota.visual'"
+        },
+        {
+          "command": "nota.toggleOutlineView",
+          "when": "activeCustomEditorId == 'nota.visual'"
+        },
+        {
+          "command": "nota.toggleMode.toText",
+          "when": "false"
+        },
+        {
+          "command": "nota.toggleMode.toVisual",
+          "when": "false"
+        },
+        {
+          "command": "nota.mark.strong",
+          "when": "activeCustomEditorId == 'nota.visual'"
+        },
+        {
+          "command": "nota.mark.em",
+          "when": "activeCustomEditorId == 'nota.visual'"
+        },
+        {
+          "command": "nota.mark.code",
+          "when": "activeCustomEditorId == 'nota.visual'"
+        },
+        {
+          "command": "nota.mark.strike",
+          "when": "activeCustomEditorId == 'nota.visual'"
+        },
+        {
+          "command": "nota.mark.highlight",
+          "when": "activeCustomEditorId == 'nota.visual'"
+        },
+        {
+          "command": "nota.style.paragraph",
+          "when": "activeCustomEditorId == 'nota.visual'"
+        },
+        {
+          "command": "nota.style.heading2",
+          "when": "activeCustomEditorId == 'nota.visual'"
+        },
+        {
+          "command": "nota.style.heading3",
+          "when": "activeCustomEditorId == 'nota.visual'"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "nota.mark.strong",
+        "key": "ctrl+b",
+        "mac": "cmd+b",
+        "when": "activeCustomEditorId == 'nota.visual'"
+      },
+      {
+        "command": "nota.mark.em",
+        "key": "ctrl+i",
+        "mac": "cmd+i",
+        "when": "activeCustomEditorId == 'nota.visual'"
+      },
+      {
+        "command": "nota.mark.code",
+        "key": "ctrl+e",
+        "mac": "cmd+e",
+        "when": "activeCustomEditorId == 'nota.visual'"
+      },
+      {
+        "command": "nota.mark.strike",
+        "key": "ctrl+shift+x",
+        "mac": "cmd+shift+x",
+        "when": "activeCustomEditorId == 'nota.visual'"
+      },
+      {
+        "command": "nota.mark.highlight",
+        "key": "ctrl+shift+h",
+        "mac": "cmd+shift+h",
+        "when": "activeCustomEditorId == 'nota.visual'"
+      },
+      {
+        "command": "nota.style.paragraph",
+        "key": "cmd+alt+0",
+        "when": "isMac && activeCustomEditorId == 'nota.visual'"
+      },
+      {
+        "command": "nota.style.heading2",
+        "key": "cmd+alt+2",
+        "when": "isMac && activeCustomEditorId == 'nota.visual'"
+      },
+      {
+        "command": "nota.style.heading3",
+        "key": "cmd+alt+3",
+        "when": "isMac && activeCustomEditorId == 'nota.visual'"
+      }
+    ]
+  },
+  "dependencies": {
+    "@nota-adoc/react": "*",
+    "mermaid": "^11.17.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "vsix": "node build.mjs && vsce package --no-dependencies",
+    "test:vscode": "node build.mjs --e2e && node dist-e2e/run.cjs",
+    "test:vsix": "npm run vsix && node build.mjs --e2e && node dist-e2e/install.cjs"
+  }
+}

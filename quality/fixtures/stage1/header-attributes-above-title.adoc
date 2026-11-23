@@ -1,0 +1,10 @@
+:doctype: book
+:author: Someone Else
+= Book Title
+:toc: left
+
+Preface text.
+
+== Chapter
+
+Chapter text.

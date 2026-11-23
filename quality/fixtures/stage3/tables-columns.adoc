@@ -1,0 +1,106 @@
+= Table columns
+
+Two columns by proportions:
+
+[cols="1,2"]
+|===
+|a |b
+|c |d
+|===
+
+Three equal columns and a count:
+
+[cols="3*"]
+|===
+|one |two |three
+|four |five |six
+|===
+
+[cols=2]
+|===
+|left |right
+|===
+
+Repeats mixed with a single width:
+
+[cols="2*,1"]
+|===
+|a |b |c
+|d |e |f
+|===
+
+Percentages, and a semicolon between the specs:
+
+[cols="30%;70%"]
+|===
+|narrow |wide
+|===
+
+Alignments and styles in the column specs:
+
+[cols="^.>2,<1m,>.^1e"]
+|===
+|first |second |third
+|x |y |z
+|===
+
+Automatic width for a column:
+
+[cols="~,1"]
+|===
+|short |the rest
+|===
+
+[cols="1,1,~"]
+|===
+|a |b |c
+|===
+
+Columns of style `a` and `l` and `s` and `v` and `h`:
+
+[cols="1a,1l,1s,1v,1h"]
+|===
+|* item |literal   text |strong |verse
+text |header
+|===
+
+Without cols, the first line of text gives the count:
+
+|===
+|a |b |c
+
+|d |e |f
+|===
+
+|===
+|a
+|b
+|c
+|===
+
+A row of the first line that is broken in two lines:
+
+|===
+|a |b
+|c
+|d |e |f
+|===
+
+Widths that do not divide: one third, one seventh:
+
+[cols="1,1,1"]
+|===
+|a |b |c
+|===
+
+[cols="1,2,4"]
+|===
+|a |b |c
+|===
+
+A column count that leaves the last cells short:
+
+[cols="1,1,1,1,1,1,1"]
+|===
+|a |b |c |d |e |f |g
+|===

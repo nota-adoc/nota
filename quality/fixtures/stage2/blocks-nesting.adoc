@@ -1,0 +1,77 @@
+= Nested blocks with delimiters
+
+== Same kind, different length
+
+====
+outer
+======
+inner
+======
+back in the outer
+====
+
+****
+outer sidebar
+******
+inner sidebar
+******
+****
+
+== Different kinds
+
+====
+outer example
+****
+inner sidebar
+****
+____
+inner quote
+____
+--
+inner open
+--
+====
+
+== Deeper
+
+====
+one
+======
+two
+========
+three
+========
+======
+====
+
+== A list in a block in a list
+
+* item
++
+====
+example in an item
+
+* list in the example
++
+--
+open in the list item
+--
+====
+
+== Unclosed inner block
+
+====
+--
+text in the open block
+====
+
+After the example.
+
+== Unclosed inner listing
+
+====
+----
+listing text
+====
+
+After the second example.

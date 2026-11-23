@@ -1,0 +1,28 @@
+{
+  "sources": [
+    {
+      "name": "asciidoctor-docs",
+      "repo": "https://github.com/asciidoctor/asciidoctor.git",
+      "commit": "edf57ea1eaba0911ac55e363395021713ae7055f",
+      "ref": "v2.0.26",
+      "paths": ["docs"],
+      "license": "MIT"
+    },
+    {
+      "name": "antora-docs",
+      "repo": "https://gitlab.com/antora/antora.git",
+      "commit": "5673513e6e1795db6965d1938b4e12a7bc33f37a",
+      "ref": "v3.1.9",
+      "paths": ["docs"],
+      "license": "MPL-2.0"
+    },
+    {
+      "name": "asciidoc-lang",
+      "repo": "https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-lang.git",
+      "commit": "68ed0b22e8d9b919897542d8ae14f03e7dbdd2e4",
+      "ref": "main",
+      "paths": ["docs", "spec"],
+      "license": "EPL-2.0"
+    }
+  ]
+}

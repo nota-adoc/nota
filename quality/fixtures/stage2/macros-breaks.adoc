@@ -1,0 +1,92 @@
+= Macros and breaks
+
+== Media macros
+
+image::diagram.png[]
+
+image::diagram.png[A diagram]
+
+image::diagram.png[A diagram,200,100]
+
+image::diagram.png[alt=Named alt,width=300]
+
+image::sub/dir/photo_file-name.jpg[]
+
+image::https://example.org/pic.svg[Remote,title=A title]
+
+[#fig-1.framed]
+.Figure title
+image::with-metadata.png[Described]
+
+video::intro[youtube]
+
+video::clip.mp4[]
+
+video::clip.mp4[poster.png,640,480]
+
+audio::sound.mp3[]
+
+audio::sound.mp3[opts=autoplay]
+
+toc::[]
+
+toc::[levels=2]
+
+== Custom macros are text
+
+foo::bar[]
+
+foo::bar[with attributes]
+
+thing::[]
+
+== Not macros
+
+image::no-brackets.png
+
+image:inline.png[]
+
+Some text image::inside.png[]
+
+  image::indented.png[]
+
+== Breaks
+
+'''
+
+<<<
+
+---
+
+- - -
+
+***
+
+* * *
+
+___
+
+_ _ _
+
+[.role]
+'''
+
+.Titled break
+---
+
+Text right before
+---
+
+== Not breaks
+
+-- text after two dashes
+
+''
+
+<<
+
+---- text after four dashes
+
+* * * *
+
+-- -- --

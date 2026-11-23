@@ -1,0 +1,46 @@
+= Attribute entries and conditions
+:x: set
+
+Text under the header.
+
+ifdef::x[]
+:y: set inside a condition
+endif::[]
+
+ifdef::y[]
+* y was set inside
+endif::[]
+
+ifndef::x[]
+:z: not reached
+endif::[]
+
+ifdef::z[]
+* z is set
+endif::[]
+
+text
+:not: an entry inside a paragraph
+
+ifdef::not[]
+* not is set
+endif::[]
+
+== In blocks
+
+====
+:in-block: set in an example
+====
+
+ifdef::in-block[]
+* in-block leaked out
+endif::[]
+
+* item
++
+:in-item: set in a list item
+* next
+
+ifdef::in-item[]
+* in-item leaked out
+endif::[]

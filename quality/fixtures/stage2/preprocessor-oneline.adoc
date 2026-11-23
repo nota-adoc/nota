@@ -1,0 +1,16 @@
+= One-line conditions
+:a: 1
+
+ifdef::a[A paragraph line from a one-line condition.]
+
+ifdef::missing[Not shown.]
+
+ifndef::missing[* A list item from a one-line condition]
+
+ifdef::a[ifdef::a[Nested one-line condition.]]
+
+ifdef::a[include::part.adoc[]]
+
+Text between the conditions.
+ifdef::a[a line in the same paragraph]
+the last line

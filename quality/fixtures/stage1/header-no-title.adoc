@@ -1,0 +1,6 @@
+:icons: font
+:experimental:
+
+// no document title: these entries are the whole header
+
+A paragraph right after the header attributes.

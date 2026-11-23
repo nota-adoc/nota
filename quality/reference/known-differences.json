@@ -1,0 +1,622 @@
+{
+  "differences": [
+    {
+      "id": "js-unknown-style-indented-paragraph",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "paragraph",
+      "field": "context",
+      "a": "^\"literal\"$",
+      "b": "^\"paragraph\"$",
+      "description": "An indented paragraph under an unknown block style (for example [unknown-style]) is a literal paragraph in Ruby Asciidoctor, which drops an unknown paragraph style before checking the indent; Asciidoctor.js 4.1 keeps the style and builds a normal paragraph. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/parser.rb#L742-L753"
+    },
+    {
+      "id": "js-unknown-style-indented-paragraph-blocks",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "document",
+      "file": "unknown-style-indented",
+      "a": "^\"blocks: literal\"$",
+      "b": "^\"blocks: paragraph\"$",
+      "description": "An indented paragraph under an unknown block style is a literal block in Ruby Asciidoctor and a normal paragraph in Asciidoctor.js 4.1 (see js-unknown-style-indented-paragraph), so the blocks around it do not pair, and the HTML of the document differs with them. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/parser.rb#L742-L753"
+    },
+    {
+      "id": "js-special-section-level-0",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "section",
+      "field": "level",
+      "style": "^\"(abstract|appendix|bibliography|colophon|dedication|glossary|index|preface|partintro)\"$",
+      "a": "^1$",
+      "b": "^0$",
+      "description": "A level 0 section title with a special style (for example [appendix] = Appendix) becomes a level 1 section in Ruby Asciidoctor whatever the doctype; Asciidoctor.js 4.1 does this only for the book doctype and keeps level 0 in an article. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/parser.rb#L1611-L1620"
+    },
+    {
+      "id": "js-fenced-linenums-option",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "attributes",
+      "field": "options",
+      "a": "^\\[\\]$",
+      "b": "^\\[\"linenums\"\\]$",
+      "description": "A fenced code block whose first line gives linenums (```ruby,linenums) gets only the linenums attribute in Ruby Asciidoctor; Asciidoctor.js 4.1 also sets the linenums option. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/parser.rb#L842-L866"
+    },
+    {
+      "id": "js-one-line-condition-paragraph-presence",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "paragraph",
+      "field": "presence",
+      "file": "^preprocessor-oneline\\.adoc$",
+      "description": "A one-line conditional directive (ifdef::attr[text]) makes Asciidoctor.js 4.1 count one line too many for it: every block after it is reported one line late for each such directive (Ruby Asciidoctor pushes the dummy line that stands in for the directive back with unshift, which counts it back; Asciidoctor.js pushes it onto the stack without counting it back), and a paragraph whose lines come from such a directive is read shorter. Every difference in this fixture between Asciidoctor.js and the other two is one of the two. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/reader.rb#L992-L1001"
+    },
+    {
+      "id": "js-one-line-condition-paragraph-lines",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "paragraph",
+      "field": "lines",
+      "file": "^preprocessor-oneline\\.adoc$",
+      "description": "A one-line conditional directive (ifdef::attr[text]) makes Asciidoctor.js 4.1 count one line too many for it: every block after it is reported one line late for each such directive (Ruby Asciidoctor pushes the dummy line that stands in for the directive back with unshift, which counts it back; Asciidoctor.js pushes it onto the stack without counting it back), and a paragraph whose lines come from such a directive is read shorter. Every difference in this fixture between Asciidoctor.js and the other two is one of the two. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/reader.rb#L992-L1001"
+    },
+    {
+      "id": "js-one-line-condition-paragraph-context",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "paragraph",
+      "field": "context",
+      "file": "^preprocessor-oneline\\.adoc$",
+      "description": "A one-line conditional directive (ifdef::attr[text]) makes Asciidoctor.js 4.1 count one line too many for it: every block after it is reported one line late for each such directive (Ruby Asciidoctor pushes the dummy line that stands in for the directive back with unshift, which counts it back; Asciidoctor.js pushes it onto the stack without counting it back), and a paragraph whose lines come from such a directive is read shorter. Every difference in this fixture between Asciidoctor.js and the other two is one of the two. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/reader.rb#L992-L1001"
+    },
+    {
+      "id": "js-one-line-condition-list-presence",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "list",
+      "field": "presence",
+      "file": "^preprocessor-oneline\\.adoc$",
+      "description": "A one-line conditional directive (ifdef::attr[text]) makes Asciidoctor.js 4.1 count one line too many for it: every block after it is reported one line late for each such directive (Ruby Asciidoctor pushes the dummy line that stands in for the directive back with unshift, which counts it back; Asciidoctor.js pushes it onto the stack without counting it back), and a paragraph whose lines come from such a directive is read shorter. Every difference in this fixture between Asciidoctor.js and the other two is one of the two. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/reader.rb#L992-L1001"
+    },
+    {
+      "id": "js-one-line-condition-item-presence",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "item",
+      "field": "presence",
+      "file": "^preprocessor-oneline\\.adoc$",
+      "description": "A one-line conditional directive (ifdef::attr[text]) makes Asciidoctor.js 4.1 count one line too many for it: every block after it is reported one line late for each such directive (Ruby Asciidoctor pushes the dummy line that stands in for the directive back with unshift, which counts it back; Asciidoctor.js pushes it onto the stack without counting it back), and a paragraph whose lines come from such a directive is read shorter. Every difference in this fixture between Asciidoctor.js and the other two is one of the two. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/reader.rb#L992-L1001"
+    },
+    {
+      "id": "js-olist-start",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "attributes",
+      "field": "named",
+      "extraKey": "start",
+      "extraValue": "^\"[0-9]+\"$",
+      "description": "An ordered list whose first item is numbered with a number other than 1 (7. seven) gets a start attribute in Asciidoctor.js 4.1 (listBlock.attributes.start, set from the first marker), next to any other named attributes of the list; Ruby Asciidoctor sets no such attribute and leaves the numbering to the converter. The entry is only that one extra `start`: if the named attributes differ in anything else, it is a new difference. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/parser.rb#L1337-L1345"
+    },
+    {
+      "id": "js-olist-implicit-type-attribute",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "fold": "olist-type",
+      "description": "The style of an ordered list that comes from its first marker (`a.`, `A.`, `ii)`, `I)`) is a Ruby symbol in Ruby Asciidoctor, which the list marker keyword table (string keys) does not know, so the `ol` has no `type` attribute; Asciidoctor.js 4.1 writes `type=\"a\"` (`A`, `i`, `I`) for these lists as it does for an explicit style. The comparison takes a `type` that the other side does not write at the same `ol` out of the Asciidoctor.js HTML of any block that holds the list (a table cell with the asciidoc style too) before it looks for the first difference of the block. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/parser.rb#L1343"
+    },
+    {
+      "id": "js-page-break-class",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "page_break",
+      "b": "page-break",
+      "description": "A page break is `<div style=\"page-break-after: always;\"></div>` in Ruby Asciidoctor; Asciidoctor.js 4.1 writes `<div class=\"page-break\"></div>`. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/converter/html5.rb#L781-L783"
+    },
+    {
+      "id": "js-thematic-break-role",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "thematic_break",
+      "b": "hr class",
+      "description": "A thematic break with a role is a plain `<hr>` in Ruby Asciidoctor; Asciidoctor.js 4.1 writes the role as the class of the `hr`. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/converter/html5.rb#L847-L849"
+    },
+    {
+      "id": "js-olist-start-attribute",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "fold": "olist-start",
+      "description": "An ordered list whose first marker is a number that is not 1 (`2026.`) has no `start` attribute in Ruby Asciidoctor; Asciidoctor.js 4.1 writes `start` from the marker. The comparison takes a `start` that the other side does not write at the same `ol` out of the Asciidoctor.js HTML of any block that holds the list (a table cell with the asciidoc style too) before it looks for the first difference of the block. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/parser.rb#L1338-L1345"
+    },
+    {
+      "id": "js-include-attributes-in-secure-mode",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "listing",
+      "b": "tag=",
+      "description": "In secure mode an include directive is read as the link `link:target[role=include]`; Ruby Asciidoctor keeps only the role in the brackets, Asciidoctor.js 4.1 keeps the attributes of the directive (`tag=main`) too.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/reader.rb#L868-L890"
+    },
+    {
+      "id": "js-one-line-condition-blocks",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "document",
+      "file": "preprocessor-oneline",
+      "a": "^\"blocks:",
+      "b": "^\"blocks:",
+      "description": "The blocks Asciidoctor.js 4.1 builds around one-line conditions differ from those of Ruby Asciidoctor (see the structure entries js-one-line-condition-*); the HTML around them differs with them. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/reader.rb#L993-L1000"
+    },
+    {
+      "id": "js-stem-block-break-count",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "stem",
+      "b": "<br> <br>",
+      "description": "In an AsciiMath block, a run of blank lines becomes one `<br>` per blank line minus one in Ruby Asciidoctor; Asciidoctor.js 4.1 writes one more. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/converter/html5.rb#L699-L719"
+    },
+    {
+      "id": "js-compat-double-plus-monospace",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "paragraph",
+      "file": "compat",
+      "b": "undefined<code>",
+      "description": "In compat mode, `++text++` (unconstrained monospace) is written with the word `undefined` in front of the `<code>` element by Asciidoctor.js 4.1 (the escape group of its pattern is not set); Ruby Asciidoctor writes the element alone. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/substitutors.rb#L1129-L1135"
+    },
+    {
+      "id": "js-horizontal-dlist-colgroup",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "dlist",
+      "b": "col width",
+      "description": "The `col` elements of a horizontal description list with a label or item width carry `style=\"width: N%;\"` in Ruby Asciidoctor; Asciidoctor.js 4.1 writes a `width` attribute (and closes them with `</col>`). nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/converter/html5.rb#L558-L566"
+    },
+    {
+      "id": "js-nested-xref-text",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "file": "content-edit-url",
+      "b": "edit_url placeholders",
+      "description": "A cross reference inside the text that another cross reference takes from a title is written `[id]` in Ruby Asciidoctor (it resolves one reference at a time); Asciidoctor.js 4.1 resolves the inner one too. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/converter/html5.rb#L1118-L1136"
+    },
+    {
+      "id": "js-authorinitials-attribute",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "paragraph",
+      "file": "reference-author",
+      "b": "\\{authorinitials\\}",
+      "description": "The attribute `authorinitials` is not defined by Asciidoctor.js 4.1 for an author line in the header of a document that is part of an include example; Ruby Asciidoctor defines it from the author name. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/parser.rb#L1974-L2008"
+    },
+    {
+      "id": "js-special-section-level-0-html",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "b": "sect(0|level0)",
+      "description": "A level 0 section with a special style (`[appendix]`) is written as a level 1 section in Ruby Asciidoctor; Asciidoctor.js 4.1 writes it as level 0 (`<h1 class=\"sect0\">`, `sectlevel0` in the table of contents; see js-special-section-level-0). nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/parser.rb#L1611-L1620"
+    },
+    {
+      "id": "js-one-line-condition-paragraph-text",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "paragraph",
+      "file": "preprocessor-oneline",
+      "description": "A paragraph next to a one-line condition holds other lines in Asciidoctor.js 4.1 than in Ruby Asciidoctor (see js-one-line-condition-*); its text differs with them. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/reader.rb#L993-L1000"
+    },
+    {
+      "id": "js-set-value-with-colon",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "paragraph",
+      "file": "attributes-refs",
+      "description": "`{set:name:value}` takes everything after the second colon as the value in Ruby Asciidoctor (`$2.split ':', 3`); Asciidoctor.js 4.1 cuts the value at the next colon (`{set:site:https://example.com}` sets `site` to `https`). nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/substitutors.rb#L219-L221",
+      "b": "https\\[The site\\]"
+    },
+    {
+      "id": "js-set-in-item-text-and-title",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "paragraph",
+      "file": "attributes-refs",
+      "b": "\\{(item-a|item-b|term-b|title-a)\\}",
+      "description": "`{set:name:value}` in the text of a list item (or a term) or in the title of a block defines the attribute for the blocks after it in Ruby Asciidoctor, which reads the text and the title when the block is converted (`ListItem#text` and `AbstractBlock#title` run the substitutions on first use, in the order of the document); Asciidoctor.js 4.1 reads them ahead of time while it loads the document (`ListItem.precomputeText`, https://github.com/asciidoctor/asciidoctor.js/blob/v4.1.0/packages/core/src/list.js#L173), and the blocks after them keep `{name}` as it is. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/list.rb#L78-L80"
+    },
+    {
+      "id": "js-table-width-attribute",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "table",
+      "fold": "table-width",
+      "description": "The width of a table and of its columns is written as `style=\"width: N%;\"` in Ruby Asciidoctor (on the `table` element and on each `col`); Asciidoctor.js 4.1 writes a `width=\"N%\"` attribute (and may close the `col` elements with `</col>`). The comparison takes this form out of the Asciidoctor.js HTML (it writes it the Ruby way) before it looks for the first difference of the block, so a table that differs in anything else is a new difference. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/converter/html5.rb#L869-L892"
+    },
+    {
+      "id": "js-toc-link-of-section-without-id",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "document",
+      "a": "href=\\\\\"#\\\\\"",
+      "b": "href=\\\\\"#null\\\\\"",
+      "description": "A section without an id (the `sectids` attribute is unset and no id is given) in the table of contents: Ruby Asciidoctor writes the link as `href=\"#\"` (the empty id), Asciidoctor.js 4.1 writes `href=\"#null\"` (the missing id is turned into the text `null`). nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/converter/html5.rb"
+    },
+    {
+      "id": "js-csv-unclosed-quote-cell-text",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "table",
+      "field": "text",
+      "a": "^\"\\\\\"",
+      "b": "^\"\"$",
+      "description": "A CSV cell that opens a quote and never closes it keeps its text as read, the quote included, in Ruby Asciidoctor (only a cell that is a lone quote is set to empty); Asciidoctor.js 4.1 makes such a cell empty. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/table.rb#L632-L647"
+    },
+    {
+      "id": "js-csv-unclosed-quote-cell-html",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "html",
+      "field": "table",
+      "a": "<p class=\\\\\"tableblock\\\\\">\\\\\"",
+      "b": "valign-top\\\\\"></td>",
+      "description": "A CSV cell that opens a quote and never closes it is written with its text, the quote included, in Ruby Asciidoctor; Asciidoctor.js 4.1 makes such a cell empty, so its `td` has no paragraph (see js-csv-unclosed-quote-cell-text for the structure). nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/table.rb#L632-L647"
+    },
+    {
+      "id": "js-secure-include-in-cell-keeps-attributes",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "table",
+      "field": "text",
+      "a": "^\"link:.*\\[role=include\\]\"$",
+      "b": "^\"link:.*\\[role=include,tag=[^\\]]*\\]\"$",
+      "description": "An include directive in a cell with the asciidoc style, in the secure mode (the includes are not allowed): Ruby Asciidoctor turns it into a link `link:target[role=include]` and drops the attributes of the directive; Asciidoctor.js 4.1 keeps them (`role=include,tag=name`). nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/reader.rb"
+    },
+    {
+      "id": "js-cell-document-line",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "kind": "table",
+      "field": "line",
+      "inCell": true,
+      "a": "^[0-9]+$",
+      "b": "^[0-9]+$",
+      "order": "b<a",
+      "description": "The cells of a table inside a cell with the asciidoc style: Ruby Asciidoctor numbers the lines of the document of a cell from the line it reports for the cell (a cell is reported on the line where the cell before it was closed, so for CSV and DSV the first cell of a line is one line behind; the lines of the table reader have no comment lines), and nota does the same; Asciidoctor.js 4.1 numbers them from the start of the cell text, so the line is that inside the cell. nota follows Ruby.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/table.rb#L265-L309"
+    },
+    {
+      "id": "set-leveloffset-in-section-title",
+      "between": [
+        [
+          "nota",
+          "ruby"
+        ],
+        [
+          "nota",
+          "js"
+        ]
+      ],
+      "file": "attributes-section-title-set",
+      "description": "`{set:leveloffset:N}` in the title of a section moves the levels of the sections after it in Ruby Asciidoctor and Asciidoctor.js 4.1, because both convert the title while they read the section (to make its id, and for a discrete title also the id), before the next title is read. nota reads the text of a title when it converts it, like the text of any other block, so `{set:}` in a title does not touch the parse state and the levels below stay. To follow it nota would have to know at the parse whether the title is converted, which is not done yet (a separate task). Asciidoctor.js: https://github.com/asciidoctor/asciidoctor.js/blob/v4.1.0/packages/core/src/parser.js#L2330-L2352",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/parser.rb#L1647"
+    },
+    {
+      "id": "js-set-leveloffset-in-discrete-title",
+      "between": [
+        [
+          "ruby",
+          "js"
+        ]
+      ],
+      "file": "attributes-section-title-set",
+      "kind": "section",
+      "description": "`{set:leveloffset:1}` in a discrete title: Ruby Asciidoctor changes the level of the sections after it in the HTML only (the discrete title is converted for its id, parser.rb L717), but its ASG keeps the level; Asciidoctor.js 4.1 moves the level in the ASG too. nota keeps the level in both (see set-leveloffset-in-section-title for the HTML).",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/parser.rb#L717"
+    },
+    {
+      "id": "nota-cell-fill-role",
+      "between": [
+        [
+          "ruby",
+          "nota"
+        ],
+        [
+          "js",
+          "nota"
+        ]
+      ],
+      "kind": "html",
+      "field": "table",
+      "fold": "cell-fill",
+      "description": "A filled cell of a table (a label `[.cell-<name>]##{empty}##` at the start of its text) is written by nota with the role as a class of the `td`/`th`, so that the whole cell is filled, and no empty `span`; Ruby Asciidoctor and Asciidoctor.js write the label as an empty `span` with the role at the start of the content of the cell (in the first paragraph of a cell with the `a` style, inside the `code`, `em` or `strong` of the `m`, `e` and `s` styles) and the cell `<p class=\"tableblock\"><span class=\"cell-yellow\"></span></p>` for a cell that holds nothing else. The comparison takes the role off the cell in the nota HTML and writes the `span` where the reference writes it, before it looks for the first difference of the block, so everything else in the table is still compared. This is a deliberate extension of the nota format, not an error of Asciidoctor.",
+      "link": "https://github.com/asciidoctor/asciidoctor/blob/v2.0.26/lib/asciidoctor/converter/html5.rb"
+    }
+  ]
+}

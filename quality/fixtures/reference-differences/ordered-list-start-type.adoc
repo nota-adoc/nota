@@ -1,0 +1,47 @@
+= Ordered list start and type
+
+An ordered list whose first marker is a number other than 1 gets a start attribute in Asciidoctor.js, and a list whose first marker is a letter or a roman numeral gets a type.
+
+12. first
+. second
+
+[role=big]
+7. seven, with a role
+. eight
+
+[#anchor.other]
+4. four, with an id and roles
+. five
+
+3. three, with a nested list
+.. alpha
+... roman
+. four
+
+a. letter
+b. letter
+
+[role=wide]
+A. capital letter
+B. capital letter
+
+i) roman
+ii) roman
+
+I) capital roman
+II) capital roman
+
+[start=5]
+5. explicit start, the same on all sides
+. six
+
+[loweralpha]
+. explicit style, the same on all sides
+. two
+
+[cols="1a"]
+|===
+|
+8. in a cell
+. next
+|===

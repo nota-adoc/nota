@@ -1,0 +1,142 @@
+# GitHub Actions workflow for Nota: build, types, lint, tests, fuzz, the comparison of the stage 1, stage 2,
+# stage 3 and stage 4 fixtures with both references (Ruby Asciidoctor in a container, Asciidoctor.js) by structure and
+# by HTML, the TCK of the Eclipse AsciiDoc project, the editor's tree against Nota's on the fixtures and the build of the demo page. The benchmarks
+# (`npm run bench`, see CONTRIBUTING.md) run locally only.
+# To save Actions minutes: a branch with a pull request runs once (pull_request, not push as well), a newer
+# push cancels the run in progress, and the full check runs on Node 22 only; Node 20 and 24 run on main.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: build, test, fuzz, compare (Node 22)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+        env:
+          NOTA_CHROME_MAX: 4
+      - run: npm run check:browser
+      - name: TCK of the Eclipse AsciiDoc project (pinned commit, adapter of Nota)
+        run: npm run tck
+      - name: fuzz (10 000 cases per property, random seed printed below)
+        run: npm run fuzz -- --runs 10000
+      - name: reference versions (Ruby Asciidoctor in Docker, Asciidoctor.js)
+        run: |
+          npm run ref -- build
+          npm run ref -- versions
+      - name: compare stage 1 fixtures with both references
+        run: npm run compare -- --dir quality/fixtures/stage1
+      - name: compare stage 2 fixtures with both references
+        run: npm run compare -- --dir quality/fixtures/stage2
+      - name: compare stage 3 fixtures (tables) with both references (structure and HTML)
+        run: npm run compare -- --dir quality/fixtures/stage3
+      - name: compare stage 4 fixtures with both references (structure and HTML)
+        run: npm run compare -- --dir quality/fixtures/stage4
+      - name: lossless on all fixtures
+        run: npm run corpus -- identity --dir quality/fixtures
+      - name: the tree of the editor equals the tree of Nota on all fixtures, after edits
+        run: npm run corpus -- editor --dir quality/fixtures
+      - name: the notices of third-party packages are up to date
+        run: npm run notices -- --check
+      - name: build the demo page
+        run: npm run demo:build
+
+  # Build and install the VSIX in a clean VS Code, then run the e2e suite.
+  vscode:
+    name: VS Code
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: version of the stable VS Code (the key of the cache)
+        id: vscode-version
+        run: echo "version=$(curl -fsSL https://update.code.visualstudio.com/api/releases/stable | node -e 'process.stdin.on("data", d => console.log(JSON.parse(d)[0]))')" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        with:
+          path: packages/vscode/.vscode-test
+          key: vscode-test-${{ runner.os }}-${{ steps.vscode-version.outputs.version }}
+      - name: .vsix contents and installation in a clean VS Code
+        run: xvfb-run -a npm run test:vsix
+      - name: e2e in a real VS Code
+        run: xvfb-run -a npm run test:vscode
+      - name: Archive the verified VSIX
+        if: github.repository == 'nota-adoc/nota' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: nota-vscode-${{ github.sha }}
+          path: packages/vscode/*.vsix
+          if-no-files-found: error
+          overwrite: true
+
+  compat:
+    name: build and test (Node ${{ matrix.node }})
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+        env:
+          NOTA_CHROME_MAX: 4
+
+  node20:
+    name: runtime on Node 20
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: import the built packages on Node 20
+        run: >
+          node --input-type=module -e "import {parse} from '@nota-adoc/core'; import {renderHtml} from '@nota-adoc/html';
+          import {readFileSync} from 'node:fs';
+          const t=readFileSync('quality/fixtures/stage4/all-constructs.adoc','utf8'); const d=parse(t);
+          const html=renderHtml(d);
+          const ok = d.text===t && d.tree.length===t.length && !d.diagnostics.some(x=>x.severity==='error') && html.length>0;
+          console.log(d.text===t, d.tree.length===t.length, d.diagnostics.filter(x=>x.severity==='error').length, html.length>0); if (!ok) process.exit(1)"

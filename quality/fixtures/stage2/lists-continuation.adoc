@@ -1,0 +1,136 @@
+= List continuation and attached blocks
+
+== Continuation
+
+* item
++
+attached paragraph
+* next item
+
+* item with a listing
++
+----
+code
+----
+* after the listing
+
+* item with an open block
++
+--
+open block content
+
+second paragraph in the open block
+--
+* after the open block
+
+== Nested lists and continuation
+
+* parent
+** child
++
+attached to the child
++
+attached to the child too
+* second parent
+
+* parent
+** child
+
++
+attached to the parent (blank line before the plus)
+* second parent
+
+* parent
+** child
+** second child
++
+attached to the second child
+
++
+attached to the parent
+
+== Adjacent plus lines
+
+* item
++
++
+attached after two plus lines
+* next
+
+* item
++
++
++
+attached after three plus lines
+
+== Trailing plus
+
+* item
++
+
+* next item
+
+* item
++
+* next after a plus
+
+== Blocks after a blank line
+
+* item with a blank line
+
+[source,ruby]
+----
+puts "not attached"
+----
+
+* another item
+
+== Literal paragraphs
+
+* item
++
+  literal paragraph attached with a plus
+* next item
+
+* item
+
+  literal after a blank line
+* next item
+
+term::
+  literal like text
+
+* item
+  indented text right after the item text
+
+== Continuation placeholders in nested lists
+
+delta::
+
+** beta
+text
++
+more text
+[square]
+** [ ] text
+
+* outer
+** inner
++
+attached to inner (the plus is passed down)
++
+another
+* outer again
+
+== Plus lines around blank lines
+
+A. text
++
+
++
+
+* item
++
+
++
+attached after two detached plus lines

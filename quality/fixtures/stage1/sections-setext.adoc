@@ -1,0 +1,28 @@
+Setext Document Title
+=====================
+:doctype: book
+
+Level 0 Part
+============
+
+Level 1 Chapter
+---------------
+
+Level 2 Section
+~~~~~~~~~~~~~~~
+
+Level 3 Section
+^^^^^^^^^^^^^^^
+
+Level 4 Section
++++++++++++++++
+
+Text under a two-line title.
+
+Underline one longer
+---------------------
+
+Underline one shorter
+--------------------
+
+Text.

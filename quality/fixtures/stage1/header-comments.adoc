@@ -1,0 +1,15 @@
+////
+title: Neutral metadata block
+version: 3
+tags: [example, header]
+////
+// a line comment above the title
+= Title With Comments
+// a comment inside the header
+Jane Roe <jane@example.org>
+// between author and revision
+v2.1, 2026-01-15
+:status: draft
+// the last comment of the header
+
+Body.

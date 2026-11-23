@@ -1,0 +1,52 @@
+= Styles over several attribute lines
+
+An empty first positional in a later attribute line (`[,ruby]`) wipes the style of the lines above: the block takes
+the default of its delimiter or of its kind, and the `style` attribute keeps what it was for the blocks that do not
+take the style for their context.
+
+[quote]
+[,ruby]
+A paragraph, which stays a paragraph.
+
+[quote]
+[,ruby]
+****
+A sidebar.
+****
+
+[source,ruby]
+[,]
+----
+A listing, which is no source block.
+----
+
+[verse]
+[,,x]
+* A bullet list.
+
+[NOTE]
+[,ruby]
+. An ordered list, whose style is its marker's.
+
+[qanda]
+[,ruby]
+== A section
+
+[horizontal]
+[,ruby]
+image::x.png[]
+
+[small]
+// a comment between the lines of attributes
+[quote]
+|===
+|A table with a style that is none of a table's
+|===
+
+[bibliography]
+* [x] A bibliography list has no checklist.
+* [ ] The box stays in the text.
+
+[quote]
+[.role]
+A paragraph: a line without a first positional keeps the style.

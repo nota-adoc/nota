@@ -1,0 +1,36 @@
+{
+  "name": "@nota-adoc/core",
+  "version": "0.1.0",
+  "description": "Lossless AsciiDoc parser: a concrete syntax tree (Lezer) that keeps every character of the source, with incremental reparsing",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./internal": {
+      "types": "./dist/internal.d.ts",
+      "import": "./dist/internal.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nota-adoc/nota.git",
+    "directory": "packages/core"
+  },
+  "dependencies": {
+    "@lezer/common": "^1.5.3"
+  }
+}

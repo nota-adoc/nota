@@ -1,0 +1,111 @@
+= Blocks without parsing
+
+== Listing
+
+----
+* not a list
+== not a section
+:not: an entry
+// not a comment
+----
+
+[source,ruby]
+----
+def hello
+  puts 'hello'
+end
+----
+
+[source]
+----
+no language
+----
+
+[,python]
+----
+a listing with a language and no style
+----
+
+[listing]
+----
+explicit listing style
+----
+
+== Literal
+
+....
+literal *block*
+  with indentation
+....
+
+[literal]
+....
+explicit literal style
+....
+
+== Passthrough
+
+++++
+<div>raw *html*</div>
+++++
+
+[pass]
+++++
+explicit pass style
+++++
+
+== Stem
+
+[stem]
+++++
+sqrt(4) = 2
+++++
+
+[latexmath]
+++++
+\sqrt{4} = 2
+++++
+
+[stem,latexmath]
+++++
+x^2
+++++
+
+== Verse
+
+[verse, Author, Source]
+____
+Roses are red
+  Violets are blue
+____
+
+== Comments
+
+////
+a block comment
+* not a list
+////
+
+Text after the comment.
+
+== Longer delimiters
+
+------
+a longer listing
+----
+still inside
+------
+
+.....
+a longer literal
+.....
+
+== Blank lines inside
+
+----
+
+blank line first
+
+blank line last
+
+----

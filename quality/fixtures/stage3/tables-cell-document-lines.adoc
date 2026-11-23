@@ -1,0 +1,56 @@
+= Lines in the document of a cell
+
+The document in a cell of the `a` style is numbered from the line Ruby gives the cell, whatever line the text of it starts at.
+
+A quoted CSV cell, a line break after the quote.
+
+[cols="1a"]
+,===
+"
+:===
+x:y
+:===
+"
+,===
+
+A PSV cell, two blank lines, then the nested table.
+
+[cols="1a"]
+|===
+a|
+
+
+!===
+!x !y
+!===
+|===
+
+A PSV cell, blanks after the separator up to the end of the line.
+
+[cols="1a"]
+|===
+a|
+!===
+!x !y
+!===
+|===
+
+A quoted CSV cell, the nested table starts on the line of the quote.
+
+[cols="1a"]
+,===
+"!===
+!x !y
+!==="
+,===
+
+A quoted CSV cell in the second column, a line break after the quote.
+
+[cols="1,1a"]
+,===
+x,"
+:===
+x:y
+:===
+"
+,===

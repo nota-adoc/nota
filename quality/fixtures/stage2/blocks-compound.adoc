@@ -1,0 +1,110 @@
+= Blocks with parsed content
+
+== Example
+
+====
+A paragraph inside an example.
+
+* a list
+* inside the example
+
+Another paragraph.
+====
+
+== Sidebar
+
+****
+A sidebar with a title-less paragraph.
+
+.Inner title
+[source,ruby]
+----
+puts "listing inside a sidebar"
+----
+****
+
+== Quote
+
+____
+A quoted paragraph.
+
+A second quoted paragraph.
+____
+
+[quote, Someone, A Book]
+____
+A quote with an attribution.
+____
+
+== Open block
+
+--
+An open block.
+
+. with
+. an ordered list
+--
+
+== Admonition blocks
+
+[NOTE]
+====
+An admonition block with a paragraph.
+
+* and a list
+====
+
+[WARNING]
+====
+Careful.
+====
+
+[TIP]
+====
+A tip with a nested example.
+
+======
+Nested example of another length.
+======
+====
+
+== Metadata inside and above
+
+[.role#the-id]
+====
+[[inner-anchor]]
+Paragraph with an anchor.
+
+.A title
+Paragraph with a block title.
+
+// a comment inside
+:inner-attribute: value
+
+Paragraph after an attribute entry.
+====
+
+== Section title lines inside a block
+
+====
+== Not a section
+
+Text after the pseudo title.
+====
+
+== Empty blocks
+
+====
+====
+
+****
+
+****
+
+== Blank lines around content
+
+====
+
+Padded paragraph.
+
+====

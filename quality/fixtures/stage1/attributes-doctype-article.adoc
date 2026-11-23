@@ -1,0 +1,12 @@
+= An Article
+:doctype: article
+
+== Section
+
+Text.
+
+:doctype: book
+
+== Entry in the body does not change the doctype
+
+Text.

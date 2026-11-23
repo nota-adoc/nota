@@ -1,0 +1,7 @@
+= References Disagree: Unknown Style Over an Indented Paragraph
+
+// Ruby Asciidoctor: literal paragraph; Asciidoctor.js 4.1: normal paragraph.
+// Registered in quality/reference/known-differences.json (js-unknown-style-indented-paragraph).
+
+[unknown-style]
+ Indented under an unknown style.

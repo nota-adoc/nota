@@ -1,0 +1,30 @@
+# Nota
+
+> Nota is lossless AsciiDoc for TypeScript: a parser that keeps every byte of the source, an HTML converter compatible with Asciidoctor, and visual and source editors on top of them.
+
+Alpha (0.x), packages `@nota-adoc/*`. Paths are relative to the root of the repository.
+
+## Start here
+
+- [AGENTS.md](AGENTS.md): commands, layout, rules and pitfalls for an AI assistant
+- [README.md](README.md): what Nota is, the packages, a first example
+- [CONTRIBUTING.md](CONTRIBUTING.md): requirements, build, tests by group, quality tools
+
+## Packages
+
+- [packages/core/README.md](packages/core/README.md): the parser, tree, diagnostics, ASG, sessions and edit operations
+- [packages/html/README.md](packages/html/README.md): the HTML converter, what it writes and what it leaves to the host
+- [packages/codemirror/README.md](packages/codemirror/README.md): AsciiDoc for CodeMirror 6
+- [packages/prosemirror/README.md](packages/prosemirror/README.md): the visual editor on ProseMirror
+- [packages/react/README.md](packages/react/README.md): React controls for the visual editor
+- [packages/vscode/README.md](packages/vscode/README.md): the VS Code extension
+
+## Comparison with Asciidoctor
+
+- [docs/asciidoctor-differences.md](docs/asciidoctor-differences.md): what is supported, what is not, and where the behaviour differs
+
+## Examples
+
+- [examples/parse.ts](examples/parse.ts): parse a text without loss and read the diagnostics
+- [examples/walk.ts](examples/walk.ts): walk the syntax tree and list the outline
+- [examples/render.ts](examples/render.ts): render a document to HTML

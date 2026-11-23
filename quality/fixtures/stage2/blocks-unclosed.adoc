@@ -1,0 +1,11 @@
+= An unclosed block
+
+Text before.
+
+====
+The example is never closed.
+
+* the list belongs to the example
+
+--
+an open block in the example

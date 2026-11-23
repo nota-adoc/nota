@@ -1,0 +1,21 @@
+= Replacements
+
+(C) (R) (TM) and \(C) and \(R) and \(TM) and (c) and (tm).
+
+foo -- bar, foo --bar, foo-- bar, foo--bar, --bar, bar--, and \-- escaped and foo \-- bar.
+
+Ellipsis... and \... escaped and .... four.
+
+Arrows: -> => <- <= and \-> and \=> and \<- and \<= and -->, ==>, <--, <==.
+
+Apostrophes: it's, don't, 'quoted', rock 'n' roll, 90's, a'b, x`'y, and \'escaped.
+
+Entities: &copy; &amp; &lt; &gt; &#169; &#x263A; &nbsp; &notanentity; and \&copy; and &copy and &;.
+
+Specials: a & b, a < b, a > b, <b>tag</b>, AT&T, "quotes" and 'quotes'.
+
+Combined: (C) 2026 -- All rights... reserved -> yes.
+
+Line--
+break -- and
+-- start.

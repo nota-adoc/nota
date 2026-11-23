@@ -1,0 +1,46 @@
+= Nota diagnostics
+Alex Doe <alex@example.com>
+:flavor: plain
+
+Every section below triggers one diagnostic of Nota: a line under the text and a hint on hover.
+Delete or add the closing line of a block and watch the line disappear or appear.
+
+== Blocks
+
+====
+An example with a listing inside that has no closing line (warning unterminated-block):
+
+----
+code that nobody closed
+====
+
+== A skipped level
+
+==== A heading that skips a level (warning section-level-skipped)
+
+Text after the heading.
+
+== Lists
+
+A paragraph, and right after it a line that looks like a list item (message list-item-as-text):
+* this line is part of the paragraph, the list starts after an empty line
+
+1. first
+3. third (warning list-item-index)
+
+== Block macros
+
+custom::target[width=10]
+
+== Preprocessor
+
+endif::flavor[]
+
+ifdef::[]
+A condition without a name (error malformed-directive).
+endif::[]
+
+= Another level 0 heading (error level-0-section-in-article)
+
+ifdef::flavor[]
+Nobody closed this condition (warning unterminated-conditional).

@@ -1,0 +1,39 @@
+{
+  "name": "@nota-adoc/prosemirror",
+  "version": "0.1.0",
+  "description": "A visual AsciiDoc editor on ProseMirror over the Nota syntax tree: the text of the document is the truth, the ProseMirror document is its projection, and every edit is an operation on the text",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nota-adoc/nota.git",
+    "directory": "packages/prosemirror"
+  },
+  "dependencies": {
+    "@nota-adoc/core": "^0.1.0"
+  },
+  "peerDependencies": {
+    "prosemirror-keymap": "^1.2.0",
+    "prosemirror-model": "^1.19.0",
+    "prosemirror-state": "^1.4.0",
+    "prosemirror-transform": "^1.8.0",
+    "prosemirror-view": "^1.42.6"
+  }
+}

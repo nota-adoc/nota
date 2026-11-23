@@ -1,0 +1,7 @@
+= An unclosed listing
+
+Text before.
+
+----
+The listing is never closed.
+== not a section

@@ -1,0 +1,199 @@
+= Table attributes
+
+.Totals
+[cols="1,1",options="header"]
+|===
+|A |B
+|1 |2
+|===
+
+Frames:
+
+[frame=all]
+|===
+|a |b
+|===
+
+[frame=ends]
+|===
+|a |b
+|===
+
+[frame=topbot]
+|===
+|a |b
+|===
+
+[frame=sides]
+|===
+|a |b
+|===
+
+[frame=none]
+|===
+|a |b
+|===
+
+Grids:
+
+[grid=all]
+|===
+|a |b
+|===
+
+[grid=rows]
+|===
+|a |b
+|===
+
+[grid=cols]
+|===
+|a |b
+|===
+
+[grid=none]
+|===
+|a |b
+|===
+
+Stripes:
+
+[stripes=even]
+|===
+|a |b
+|c |d
+|===
+
+[stripes=odd]
+|===
+|a |b
+|c |d
+|===
+
+[stripes=hover]
+|===
+|a |b
+|===
+
+[stripes=all]
+|===
+|a |b
+|===
+
+[stripes=none]
+|===
+|a |b
+|===
+
+Widths:
+
+[width=50%]
+|===
+|a |b
+|===
+
+[width=75]
+|===
+|a |b
+|===
+
+[width=0]
+|===
+|a |b
+|===
+
+[width=250%]
+|===
+|a |b
+|===
+
+[width=abc]
+|===
+|a |b
+|===
+
+[%autowidth]
+|===
+|a |b
+|===
+
+[%autowidth,width=40%]
+|===
+|a |b
+|===
+
+[cols="1,~"]
+|===
+|a |b
+|===
+
+Identity, role and title:
+
+[#tbl-one.wide.striped]
+.A table with an id
+|===
+|a |b
+|===
+
+[[tbl-two]]
+.Another caption
+|===
+|a |b
+|===
+
+[caption="Chart A. "]
+.Own caption
+|===
+|a |b
+|===
+
+[caption=]
+.No caption label
+|===
+|a |b
+|===
+
+.Second numbered table
+|===
+|a |b
+|===
+
+[float=right]
+|===
+|a |b
+|===
+
+Options and their spelling:
+
+[options="header,autowidth"]
+|===
+|a |b
+|c |d
+|===
+
+[%header]
+|===
+|a |b
+|c |d
+|===
+
+[%footer]
+|===
+|a |b
+|c |d
+|===
+
+Attribute references in the attribute list:
+
+:sep: ,
+:cols: 1,3
+
+[cols="{cols}"]
+|===
+|a |b
+|===
+
+[format=csv,separator={sep}]
+|===
+x,y
+|===

@@ -1,0 +1,63 @@
+= Links and macros
+
+== URLs
+
+https://example.com, https://example.com/path?a=1&b=2, https://example.com/a_b_c_d, and http://example.com/*not-bold*.
+
+https://example.com[Example], https://example.com[Example^], https://example.com[Example,role=nav], https://example.com[Example,window=_blank,opts=nofollow], https://example.com[], and https://example.com[Ex\]ample].
+
+link:https://example.com[Link macro], link:relative/page.html[relative], link:pages/with%20space.html[encoded], link:file.html[], link:a.html[a *strong* link].
+
+<https://example.com>, (https://example.com), "https://example.com", 'https://example.com', [https://example.com], https://example.com; https://example.com: https://example.com. https://example.com, and https://example.com!
+
+file:///path/to/file, irc://irc.example.com/room, ftp://ftp.example.com/file.zip, and https:// alone.
+
+\https://example.com is not linked, but \link:page.html[neither] and <\https://example.com>.
+
+mailto:jane@example.com[Jane], mailto:jane@example.com[Jane,Subject,Body text], mailto:jane@example.com[], and plain jane.doe@example.com, or a@b.c and x@y.museum.
+
+== Cross references
+
+[[target-one]]
+== Target One
+
+[#target-two]
+== Target Two
+
+[[target-three,Third Target]]
+== Target Three
+
+See <<target-one>>, <<target-one,custom text>>, <<target-two>>, <<target-three>>, <<target-three,other>>, <<missing>>, <<missing,text>>, and <<Target One>>.
+
+See xref:target-one[], xref:target-one[custom], xref:target-two[Two], xref:missing[], and xref:doc.adoc[a document], xref:doc.adoc#frag[a fragment], xref:path/to/doc.adoc#frag[], xref:doc.html[html], and xref:other#frag[].
+
+<<doc.adoc#,doc>> and <<doc.adoc#frag,frag>> and <<#target-one>> and <<path/doc.adoc>> and <<a.b>>.
+
+Anchors: [[inline-a]]here, [[inline-b,Inline B]]there, anchor:inline-c[]and anchor:inline-d[Inline D]. Refs: <<inline-a>>, <<inline-b>>, <<inline-c>>, <<inline-d>>, <<Inline B>>.
+
+== Images
+
+image:logo.png[], image:logo.png[Alt text], image:logo.png[Alt text,100], image:logo.png[Alt text,100,50], image:logo.png[Alt text,width=100,height=50,title=Title], image:a_b-c.png[], image:path/to/my_image-2.png[], image:https://example.com/x.png[Remote], image:logo.png[link=https://example.com], image:logo.png[role=thumb,float=left], image:logo.png[Alt with a \] bracket].
+
+icon:heart[], icon:heart[2x], icon:heart[size=2x,title=Love], icon:heart[role=red].
+
+Inline image with a role: image:logo.png[Logo,role=big].
+
+\image:logo.png[not an image] and \icon:heart[not an icon].
+
+== Footnotes
+
+First footnote:[The first note.] and second footnote:[The *second* note with https://example.com[a link].] and a named one footnote:named[The named note.] then footnote:named[] again and footnote:unknown[] and footnoteref:legacy[The legacy note] and footnoteref:legacy[].
+
+Escaped \footnote:[not a note] and an empty footnote:[] and footnote: nothing.
+
+== Index terms
+
+indexterm:[Tigers,Big cats,Bengal], indexterm2:[Lions], ((Bears)), (((Wolves,Canines))), and \((not indexed)).
+
+((Bears)) and a (((Hidden))) term, with (parentheses (inside)) and ((Multi
+line)).
+
+== General macros
+
+A generic name:target[text] macro, name:target[], and name:[text] stay text; so do email:[text] and word:[].

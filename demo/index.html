@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Nota — AsciiDoc playground</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./src/style.css">
+  </head>
+  <body>
+    <div class="app" id="app">
+      <header class="head">
+        <h1 class="brand"><span class="brand-name">Nota</span><span class="brand-sub" data-i18n="brand.sub">AsciiDoc playground</span></h1>
+        <label class="sample">
+          <span class="sample-label" data-i18n="sample.label">Sample</span>
+          <span class="select-wrap">
+            <select id="sample" aria-label="Sample" data-i18n-aria-label="sample.label"></select>
+            <svg class="ico chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </label>
+        <button type="button" class="btn" id="open" aria-label="Open file" data-tip="Open an .adoc file from your computer" data-i18n-aria-label="open.label" data-i18n-tip="open.tip">
+          <svg class="ico" viewBox="0 0 24 24"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
+          <span class="btn-text" data-i18n="open.label">Open file</span>
+        </button>
+        <input type="file" id="file" accept=".adoc,.asciidoc,.asc,.txt,text/plain" hidden>
+        <button type="button" class="btn" id="download" aria-label="Download" data-tip="Download spec.adoc" data-i18n-aria-label="download.label">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>
+          <span class="btn-text" data-i18n="download.label">Download</span>
+        </button>
+        <span class="spacer"></span>
+        <span class="head-break"></span>
+        <div class="seg" role="radiogroup" aria-label="View" data-i18n-aria-label="view.label">
+          <button type="button" role="radio" aria-checked="false" data-view="visual" data-i18n="view.visual">Visual</button>
+          <button type="button" role="radio" aria-checked="true" data-view="split" data-i18n="view.split">Split</button>
+          <button type="button" role="radio" aria-checked="false" data-view="source" data-i18n="view.source">Source</button>
+        </div>
+        <div class="seg seg-lang" id="lang" role="radiogroup" aria-label="Language" data-i18n-aria-label="lang.label">
+          <button type="button" role="radio" aria-checked="true" tabindex="0" data-lang="en" lang="en">EN</button>
+          <button type="button" role="radio" aria-checked="false" tabindex="-1" data-lang="ru" lang="ru">RU</button>
+        </div>
+        <button type="button" class="btn icon-btn" id="theme" aria-pressed="false" aria-label="Dark theme" data-tip="Dark theme">
+          <svg class="ico moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg class="ico sun" viewBox="0 0 24 24" hidden><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+      </header>
+
+      <main class="work" id="work" data-view="split">
+        <section class="pane pane-visual" aria-label="Visual" data-i18n-aria-label="view.visual">
+          <div class="toolbar" role="toolbar" aria-label="Text formatting" data-i18n-aria-label="toolbar.label" id="toolbar">
+            <button type="button" class="tb" data-cmd="undo" aria-label="Undo" data-i18n-aria-label="undo" data-keys="mod+Z" aria-disabled="true">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>
+            </button>
+            <button type="button" class="tb" data-cmd="redo" aria-label="Redo" data-i18n-aria-label="redo" data-keys="mod+shift+Z" aria-disabled="true">
+              <svg class="ico" viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg>
+            </button>
+            <span class="tb-sep"></span>
+            <span class="select-wrap tb-select" data-tip="Paragraph style" data-keys="mod+alt+0:text|mod+alt+2…6:headings" data-i18n-tip="style.label" data-i18n-keys="style.keys">
+              <select id="style" aria-label="Paragraph style" data-i18n-aria-label="style.label">
+                <option value="h1" disabled data-i18n="style.h1">Document title</option>
+                <option value="p" data-i18n="style.p">Text</option>
+                <option value="h2" data-i18n="style.h2">Heading 2</option>
+                <option value="h3" data-i18n="style.h3">Heading 3</option>
+                <option value="h4" data-i18n="style.h4">Heading 4</option>
+                <option value="h5" data-i18n="style.h5">Heading 5</option>
+                <option value="h6" data-i18n="style.h6">Heading 6</option>
+              </select>
+              <svg class="ico chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+            <span class="tb-sep"></span>
+            <button type="button" class="tb" data-cmd="strong" aria-pressed="false" aria-label="Bold" data-i18n-aria-label="strong" data-keys="mod+B">
+              <svg class="ico" viewBox="0 0 24 24" style="stroke-width: 2.4"><path d="M6 12h8a4 4 0 0 1 0 8H6z"/><path d="M6 4h7a4 4 0 0 1 0 8H6z"/></svg>
+            </button>
+            <button type="button" class="tb" data-cmd="em" aria-pressed="false" aria-label="Italic" data-i18n-aria-label="em" data-keys="mod+I">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M19 4h-9M14 20H5M15 4 9 20"/></svg>
+            </button>
+            <button type="button" class="tb" data-cmd="code" aria-pressed="false" aria-label="Monospace" data-i18n-aria-label="code" data-keys="mod+E">
+              <svg class="ico" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg>
+            </button>
+            <button type="button" class="tb" data-cmd="s" aria-pressed="false" aria-label="Strikethrough" data-i18n-aria-label="s" data-keys="mod+shift+X">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M16 4H9a3 3 0 0 0-2.83 4"/><path d="M14 12a4 4 0 0 1 0 8H6"/><path d="M4 12h16"/></svg>
+            </button>
+            <button type="button" class="tb" data-cmd="mark" aria-pressed="false" aria-label="Highlight" data-i18n-aria-label="mark" data-keys="mod+shift+H">
+              <svg class="ico" viewBox="0 0 24 24"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg>
+            </button>
+            <span class="tb-sep"></span>
+            <button type="button" class="tb" data-cmd="link" id="link-btn" aria-pressed="false" aria-label="Link" data-i18n-aria-label="link" aria-haspopup="dialog" aria-expanded="false">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </button>
+            <button type="button" class="tb" data-cmd="unlink" aria-label="Remove link" data-i18n-aria-label="unlink">
+              <svg class="ico" viewBox="0 0 24 24"><path d="m18.84 12.25 1.72-1.71a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="m5.17 11.75-1.71 1.71a5 5 0 0 0 7.07 7.07l1.71-1.71"/><path d="M8 2v3M2 8h3M16 19v3M19 16h3"/></svg>
+            </button>
+          </div>
+
+          <div class="pop linkpop" id="linkpop" role="dialog" aria-label="Link" data-i18n-aria-label="link" hidden>
+            <label for="link-url" data-i18n="link.address">Link address</label>
+            <div class="row">
+              <input id="link-url" type="text" spellcheck="false" autocomplete="off" value="https://">
+              <button type="button" class="btn-primary" id="link-apply" data-i18n="link.apply">Apply</button>
+            </div>
+            <p class="hint" data-i18n-html="link.hint">Use <code>https://…</code>, <code>#section</code>, <code>document.adoc#section</code> or a path. Enter — apply, Esc — close.</p>
+          </div>
+
+          <div class="vis-scroll" id="vis-scroll">
+            <div id="visual"></div>
+          </div>
+          <div aria-live="polite" id="notice-live">
+            <div class="notice" id="notice" hidden>
+              <svg class="ico" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg>
+              <span class="notice-text" id="notice-text"></span>
+              <button type="button" class="notice-x" id="notice-x" aria-label="Hide" data-i18n-aria-label="notice.hide">
+                <svg class="ico" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane pane-source" aria-label="Source" data-i18n-aria-label="view.source">
+          <div class="pane-head"><span data-i18n="pane.source">Source</span> <span class="muted">AsciiDoc</span></div>
+          <div id="source"></div>
+        </section>
+      </main>
+
+      <footer class="status" id="status">
+        <span class="counts">
+          <span class="count" data-sev="error" data-n="0" data-tip="Errors" data-i18n-tip="count.error"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></svg><span class="n">0</span></span>
+          <span class="count" data-sev="warning" data-n="0" data-tip="Warnings" data-i18n-tip="count.warning"><svg class="ico" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg><span class="n">0</span></span>
+          <span class="count" data-sev="info" data-n="0" data-tip="Messages" data-i18n-tip="count.info"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg><span class="n">0</span></span>
+        </span>
+        <span class="path" id="path"></span>
+        <span class="len" id="len" data-tip="Length of the text in characters" data-i18n-tip="len.tip"></span>
+      </footer>
+    </div>
+
+    <div class="tip" id="tip" role="tooltip" hidden></div>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

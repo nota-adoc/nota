@@ -1,0 +1,25 @@
+{
+  "name": "@nota-adoc/demo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Pages to try the source editor of @nota-adoc/codemirror and the visual editor of @nota-adoc/prosemirror; not published",
+  "license": "MIT",
+  "dependencies": {
+    "@codemirror/autocomplete": "^6.11.1",
+    "@codemirror/commands": "^6.3.0",
+    "@codemirror/language": "^6.10.0",
+    "@codemirror/lint": "^6.5.0",
+    "@codemirror/state": "^6.4.0",
+    "@codemirror/view": "^6.26.0",
+    "@lezer/common": "^1.5.3",
+    "@nota-adoc/codemirror": "*",
+    "@nota-adoc/core": "*",
+    "@nota-adoc/prosemirror": "*",
+    "prosemirror-keymap": "^1.2.0",
+    "prosemirror-model": "^1.19.0",
+    "prosemirror-state": "^1.4.0",
+    "prosemirror-transform": "^1.8.0",
+    "prosemirror-view": "^1.42.6"
+  }
+}

@@ -1,0 +1,70 @@
+= Cells left out with their row
+
+A row with more cells than the table has columns is left out with its cells, and so is a last row that is not full.
+Asciidoctor has read those cells before: what they hold (ids, anchors) is taken, and the lines it reports for the
+cells after them count them.
+
+[cols="2*"]
+|===
+|first
+|second
+a|
+== Shared title
+
+x
+|third
+|===
+
+[cols="3*"]
+|===
+|one
+|two
+|three
+a|
+== Shared title
+
+y
+
+a|
+== Shared title
+
+z
+|===
+
+== Shared title
+
+[cols=2*]
+|===
+2*|copied
+|next
+|===
+
+[cols=2*]
+|===
+2*a|copied
+|next
+|===
+
+[cols=2*]
+|===
+2*|copied
+|next
+2+a|wide
+|===
+
+[options="header"]
+|===
+<a|first
+
+2*<a|last
+|===
+
+[cols="2*"]
+|===
+[[lost-anchor]]a|
+Left out with its row.
+|x
+2*|y
+|===
+
+See <<lost-anchor>>.

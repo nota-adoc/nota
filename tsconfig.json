@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "types": ["node"],
+    "paths": {
+      "@nota-adoc/core": ["./packages/core/src/index.ts"],
+      "@nota-adoc/core/internal": ["./packages/core/src/internal.ts"],
+      "@nota-adoc/html": ["./packages/html/src/index.ts"],
+      "@nota-adoc/codemirror": ["./packages/codemirror/src/index.ts"],
+      "@nota-adoc/prosemirror": ["./packages/prosemirror/src/index.ts"],
+      "@nota-adoc/react": ["./packages/react/src/index.ts"]
+    }
+  },
+  "include": ["examples", "packages/*/src", "packages/*/test", "packages/*/e2e", "quality", "demo/src", "demo/test", "demo/vite.config.ts", "vitest.config.ts", "eslint.config.js"],
+  "exclude": ["**/dist", "**/node_modules", ".corpus-open", ".tck"]
+}

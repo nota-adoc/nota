@@ -1,0 +1,8 @@
+dist/
+node_modules/
+.corpus-open/
+.tck/
+.quality-reports/
+quality/fixtures/
+package-lock.json
+design/

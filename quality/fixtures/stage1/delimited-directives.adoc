@@ -1,0 +1,28 @@
+Intro paragraph.
+
+----
+include::part.adoc[]
+----
+
+== Listing with include
+
+After the listing.
+
+```ruby
+include::example.rb[]
+```
+
+== Fence with include
+
+After the fence.
+
+----
+code for every environment
+ifdef::env-example[]
+code for the example environment
+endif::[]
+----
+
+== Listing with a condition
+
+After the condition.

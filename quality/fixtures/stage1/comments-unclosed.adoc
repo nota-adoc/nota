@@ -1,0 +1,8 @@
+= Unclosed Comment
+
+Text.
+
+////
+This comment is never closed.
+
+== Not a section

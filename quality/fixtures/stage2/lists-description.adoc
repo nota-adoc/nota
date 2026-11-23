@@ -1,0 +1,65 @@
+= Description lists
+
+== Delimiters
+
+term:: definition
+other term:: another definition
+
+first;; semicolon definition
+second;; another semicolon definition
+
+deep::: three colons definition
+deeper:::: four colons definition
+
+== Several terms
+
+alpha::
+beta::
+gamma:: shared definition
+
+first term::
+second term:: has its own text
+
+== Text on the next line
+
+term::
+  definition on the next line
+other::
+definition without indent
+
+term::
+
+blank line then text
+
+== Empty descriptions
+
+lonely term::
+
+next::
+
+== Attached blocks
+
+term::
++
+attached paragraph
++
+----
+attached listing
+----
+another:: text
++
+more text
+
+== Nested
+
+parent:: text
+child::: nested text
+grandchild:::: deeply nested text
+another child::: text
+sibling:: text
+
+== In a list item
+
+* bullet
+term in bullet:: description
+* next bullet

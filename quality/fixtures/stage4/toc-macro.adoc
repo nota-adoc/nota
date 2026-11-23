@@ -1,0 +1,23 @@
+= Table of contents in the body
+:toc: macro
+:toc-title: Contents
+:sectnums:
+
+Intro before.
+
+toc::[]
+
+== One
+
+=== One A
+
+== Two
+
+[[toc-here,levels=1]]
+toc::[levels=1]
+
+.The toc title
+[#my-toc.mine]
+toc::[]
+
+== Three
