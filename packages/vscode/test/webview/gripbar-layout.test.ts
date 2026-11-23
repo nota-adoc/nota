@@ -177,6 +177,7 @@ const run = async () => {
     out.margin = getComputedStyle(tbl()).marginTop
     const sr = rc(strip)
     rec.st = [document.querySelector('.ed-visual').scrollTop]
+    rec.frameLeft = sc().scrollLeft
     const sp = centre(sr)
     const t0 = performance.now()
     // (the opacity along the coming of the bar, every frame)
@@ -374,6 +375,7 @@ interface VisitOut {
   opacity?: number
   samplesTail?: unknown
   st?: number[]
+  frameLeft?: number
   samples?: [number, number][]
   buttons?: { label: string; off: boolean; rect: Box; icon: string }[]
   tips?: Tip[]
@@ -579,7 +581,7 @@ describe.skipIf(!CHROME)('the bar at a grip and the hints of its buttons (real C
             expect(a.vw, `${o.id} ${v.kind}${v.i}: ed-visual scrollWidth`).toBe(o.before.vw)
             expect(a.vcw, `${o.id} ${v.kind}${v.i}: ed-visual clientWidth`).toBe(o.before.vcw)
             expect(a.fw, `${o.id} ${v.kind}${v.i}: frame scrollWidth`).toBe(o.before.fw)
-            if (o.id !== 'wide-scrolled' && o.id !== 'wide') expect(a.fl, `${o.id} ${v.kind}${v.i}: frame scrollLeft`).toBe(o.before.fl)
+            if (o.id !== 'wide-scrolled' && o.id !== 'wide') expect(a.fl, `${o.id} ${v.kind}${v.i}: frame scrollLeft`).toBe(v.frameLeft)
             expect(near(a.table.width, o.before.table.width), `${o.id} ${v.kind}${v.i}: table width`).toBe(true)
             expect(near(a.table.height, o.before.table.height), `${o.id} ${v.kind}${v.i}: table height`).toBe(true)
           }

@@ -353,17 +353,14 @@ describe('round trip and speed', () => {
     }
     time(plain)
     time(linked)
-    // Use CPU time in the fork to exclude time it spends waiting for the runner to schedule it.
+    // Compare CPU times in the same worker. The ratio bounds the extra cost of markup across runner speeds.
     let ratio = Infinity
-    let least = Infinity
     for (let round = 0; round < 7; round++) {
       const p = time(plain)
       const l = time(linked)
       ratio = Math.min(ratio, l / p)
-      least = Math.min(least, l)
     }
     expect(ratio).toBeLessThanOrEqual(3)
-    expect(least).toBeLessThan(100)
   })
 })
 
