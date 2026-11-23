@@ -316,7 +316,10 @@ export class TableLineBar {
     this.el.append(this.bar, this.tip)
     this.bar.addEventListener('keydown', this.onKey)
     this.bar.addEventListener('focusout', (e) => {
-      if (!this.bar.contains(e.relatedTarget as Node | null)) this.hideTip()
+      if (!this.bar.contains(e.relatedTarget as Node | null)) {
+        this.keyboard = false
+        this.hideTip()
+      }
     })
   }
 
@@ -383,12 +386,18 @@ export class TableLineBar {
   }
 
   private wanted(anchors: readonly Anchor[]): Target | null {
+    const make = (a: Anchor, from: number, to: number, bySelection: boolean): Target => ({ key: `${a.n}:${a.kind}:${from}-${to}`, a, from, to, bySelection })
+    const shown = this.shown
+    // Hovering a different grip must not rebuild buttons while the keyboard is using them.
+    if (shown && this.keyboard && this.bar.contains(this.doc.activeElement)) {
+      const anchor = anchors.find((a) => a.n === shown.a.n && a.kind === shown.a.kind && a.i === shown.from)
+      if (anchor) return make(anchor, shown.from, shown.to, shown.bySelection)
+    }
     const p = this.cb.pointer()
     if (this.quiet) {
       if (p && hits(this.quiet, p.x, p.y)) return null
       this.quiet = null
     }
-    const make = (a: Anchor, from: number, to: number, bySelection: boolean): Target => ({ key: `${a.n}:${a.kind}:${from}-${to}`, a, from, to, bySelection })
     const over = p ? anchors.find((a) => hits(a.strip, p.x, p.y)) : undefined
     // (the pointer on the bar: the bar stays as it is, even if the grips under it are gone)
     if (p && this.shown && this.holds(p.x, p.y) && !over) {

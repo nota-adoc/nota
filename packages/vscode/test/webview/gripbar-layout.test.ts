@@ -300,7 +300,13 @@ const run = async () => {
       await over(sc().querySelector('td'))
       const strip = grips().querySelector('[data-t="0"][data-kind="' + kind + '"][data-i="' + i + '"]')
       if (!strip) { out.enter.push({ kind, i, nogrip: true }); continue }
-      strip.focus()
+      const other = grips().querySelector('[data-t="0"][data-kind="row"][data-i="1"]')
+      if (other) {
+        const p = centre(rc(other))
+        move(p.x, p.y)
+        await sleep(200)
+      }
+      strip.focus({ preventScroll: true })
       strip.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }))
       await sleep(500)
       const bar = visibleBar()
