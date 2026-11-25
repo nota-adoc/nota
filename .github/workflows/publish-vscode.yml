@@ -1,0 +1,75 @@
+# Publish the Nota VS Code extension (.vsix) to VS Code Marketplace and Open VSX.
+#
+# Required repository secrets (Settings -> Secrets and variables -> Actions):
+#   VSCE_PAT  Azure DevOps Personal Access Token with Marketplace (Manage) scope for publisher `nota-adoc`
+#   OVSX_PAT  Open VSX Registry access token for namespace `nota-adoc`
+#
+# Pre-release versions:
+#   - On GitHub Release (`published`), `--pre-release` is passed when the release is marked as a pre-release.
+#   - On manual `workflow_dispatch`, `--pre-release` is controlled by the `pre_release` input (true by default for 0.x).
+name: Publish VS Code Extension
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      pre_release:
+        description: Publish as pre-release
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Build VSIX and publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test -- --project vscode-host --maxWorkers 2
+      - run: npm run vsix
+
+      - name: Check secrets
+        id: check
+        env:
+          HAS_VSCE: ${{ secrets.VSCE_PAT != '' }}
+          HAS_OVSX: ${{ secrets.OVSX_PAT != '' }}
+        run: |
+          if [ "$HAS_VSCE" != "true" ] && [ "$HAS_OVSX" != "true" ]; then
+            if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+              echo "::error::Neither VSCE_PAT nor OVSX_PAT secret is configured."
+              exit 1
+            fi
+            echo "::notice::Skipping publish: neither VSCE_PAT nor OVSX_PAT secret is configured."
+          fi
+
+      - name: Publish to VS Code Marketplace
+        if: secrets.VSCE_PAT != ''
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: |
+          FLAG=""
+          if [ "${{ (github.event_name == 'workflow_dispatch' && inputs.pre_release) || (github.event_name == 'release' && github.event.release.prerelease) }}" = "true" ]; then
+            FLAG="--pre-release"
+          fi
+          npx --yes @vscode/vsce publish $FLAG --packagePath packages/vscode/nota-vscode-*.vsix
+
+      - name: Publish to Open VSX
+        if: secrets.OVSX_PAT != ''
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+        run: |
+          FLAG=""
+          if [ "${{ (github.event_name == 'workflow_dispatch' && inputs.pre_release) || (github.event_name == 'release' && github.event.release.prerelease) }}" = "true" ]; then
+            FLAG="--pre-release"
+          fi
+          npx --yes ovsx publish $FLAG packages/vscode/nota-vscode-*.vsix
