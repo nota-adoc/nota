@@ -62,11 +62,14 @@ code blocks, images, tables and Mermaid diagrams are edited on the page; anythin
 stays visible as editable source. The VS Code document remains the truth — save, undo, Git and an open text editor
 work as usual. One button switches the same tab to the AsciiDoc source. The extension makes no network requests.
 
-Install: download `nota-vscode-0.1.0.vsix` from the [Releases](https://github.com/nota-adoc/nota/releases) page of this repository and run
-`code --install-extension nota-vscode-0.1.0.vsix` (or "Extensions: Install from VSIX…" in VS Code). Settings live under `nota.*` (page width, outline view, anchors,
-language of the interface). The interface is English by default and Russian when VS Code is Russian
-(`nota.language`: `auto`, `ru`, `en`). The README of the extension is in English ([packages/vscode/README.md](packages/vscode/README.md))
-and in Russian ([packages/vscode/README.ru.md](packages/vscode/README.ru.md)).
+Install from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=nota-adoc.nota-vscode)
+(`code --install-extension nota-adoc.nota-vscode`), or download a `.vsix` from the
+[Releases](https://github.com/nota-adoc/nota/releases) page for offline installation ("Extensions: Install from VSIX…").
+Settings live under `nota.*` (page width, outline view, anchors, language of the interface). The interface is English
+by default and Russian when VS Code is Russian (`nota.language`: `auto`, `ru`, `en`). The README of the extension is in
+English ([packages/vscode/README.md](packages/vscode/README.md)) and in Russian
+([packages/vscode/README.ru.md](packages/vscode/README.ru.md)); detailed design notes live in
+[docs/vscode-spec.md](docs/vscode-spec.md).
 
 ## Development
 
