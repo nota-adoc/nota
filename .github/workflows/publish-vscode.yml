@@ -48,10 +48,13 @@ jobs:
           npx vsce publish --oidc $FLAG --packagePath packages/vscode/nota-vscode-*.vsix
 
       - name: Publish to Open VSX
-        if: secrets.OVSX_PAT != ''
         env:
           OVSX_PAT: ${{ secrets.OVSX_PAT }}
         run: |
+          if [ -z "$OVSX_PAT" ]; then
+            echo "OVSX_PAT is not configured; skipping Open VSX."
+            exit 0
+          fi
           FLAG=""
           if [ "${{ (github.event_name == 'workflow_dispatch' && inputs.pre_release) || (github.event_name == 'release' && github.event.release.prerelease) }}" = "true" ]; then
             FLAG="--pre-release"
