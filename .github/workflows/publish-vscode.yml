@@ -54,7 +54,7 @@ jobs:
           npx vsce package --no-dependencies ${{ steps.meta.outputs.flag }}
 
       - name: Publish to VS Code Marketplace (OIDC)
-        run: npx vsce publish --oidc ${{ steps.meta.outputs.flag }} --packagePath packages/vscode/nota-vscode-*.vsix
+        run: npx vsce publish --oidc --skip-duplicate ${{ steps.meta.outputs.flag }} --packagePath packages/vscode/nota-vscode-*.vsix
 
       - name: Publish to Open VSX
         env:
@@ -64,4 +64,5 @@ jobs:
             echo "OVSX_PAT is not configured; skipping Open VSX."
             exit 0
           fi
-          npx --yes ovsx publish ${{ steps.meta.outputs.flag }} packages/vscode/nota-vscode-*.vsix
+          npx --yes ovsx create-namespace nota-adoc -p "$OVSX_PAT" || true
+          npx --yes ovsx publish ${{ steps.meta.outputs.flag }} -p "$OVSX_PAT" packages/vscode/nota-vscode-*.vsix
