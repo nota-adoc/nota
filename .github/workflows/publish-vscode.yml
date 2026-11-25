@@ -6,7 +6,7 @@
 #
 # Pre-release versions:
 #   - On GitHub Release (`published`), `--pre-release` is passed when the release is marked as a pre-release.
-#   - On manual `workflow_dispatch`, `--pre-release` is controlled by the `pre_release` input (true by default for 0.x).
+#   - On manual `workflow_dispatch`, `--pre-release` is controlled by the `pre_release` input (false by default).
 name: Publish VS Code Extension
 
 on:
@@ -18,7 +18,7 @@ on:
         description: Publish as pre-release
         required: true
         type: boolean
-        default: true
+        default: false
 
 permissions:
   contents: read
