@@ -2,7 +2,7 @@
 
 **Lossless visual AsciiDoc editor for VS Code.** Edit `.adoc` and `.asciidoc` files visually on the page while keeping the underlying text as the truth — only the bytes you change are touched, so spacing, comments and attributes stay intact in Git.
 
-![Nota visual editor and AsciiDoc source side by side](https://raw.githubusercontent.com/nota-adoc/nota/main/docs/demo.gif)
+![Nota visual editor and AsciiDoc source side by side](https://raw.githubusercontent.com/nota-adoc/nota/main/docs/vscode-demo.gif)
 
 ## Features
 

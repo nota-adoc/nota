@@ -4,7 +4,7 @@
 
 **Визуальный AsciiDoc-редактор для VS Code без потери исходника.** Правьте файлы `.adoc` и `.asciidoc` визуально на странице, пока текст документа остаётся единственной истиной — меняются только затронутые байты, а отступы, комментарии и атрибуты остаются в Git нетронутыми.
 
-![Визуальный редактор Nota и исходник AsciiDoc рядом](https://raw.githubusercontent.com/nota-adoc/nota/main/docs/demo.gif)
+![Визуальный редактор Nota и исходник AsciiDoc рядом](https://raw.githubusercontent.com/nota-adoc/nota/main/docs/vscode-demo.gif)
 
 ## Возможности
 

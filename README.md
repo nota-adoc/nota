@@ -57,6 +57,8 @@ How Nota differs from Asciidoctor (what is supported, what is not, where the out
 
 ## VS Code extension
 
+![Nota visual editor for VS Code](docs/vscode-demo.gif)
+
 **Nota** opens `.adoc` / `.asciidoc` files in a visual editor tab: headings, marks, links, lists, admonitions,
 code blocks, images, tables and Mermaid diagrams are edited on the page; anything the editor does not understand
 stays visible as editable source. The VS Code document remains the truth — save, undo, Git and an open text editor
