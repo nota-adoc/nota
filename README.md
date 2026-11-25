@@ -10,6 +10,8 @@ compatible with Asciidoctor, and a visual editor on top of them: in the browser 
 [**Try the demo →**](https://nota-adoc.github.io/nota/) — a single static page: open an `.adoc` file, edit it
 visually and as source side by side, download the result. No account, no server; your file never leaves the browser.
 
+![Nota visual editor and AsciiDoc source side by side](docs/demo.gif)
+
 ## Why
 
 Most AsciiDoc tools convert a document and forget the source. Nota does the opposite: **the text is the truth**.

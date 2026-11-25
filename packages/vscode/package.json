@@ -7,16 +7,34 @@
   "publisher": "nota-adoc",
   "license": "MIT",
   "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#0a0a0a",
+    "theme": "dark"
+  },
+  "homepage": "https://nota-adoc.github.io/nota/",
+  "bugs": {
+    "url": "https://github.com/nota-adoc/nota/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nota-adoc/nota.git",
     "directory": "packages/vscode"
   },
+  "keywords": [
+    "asciidoc",
+    "adoc",
+    "wysiwyg",
+    "visual editor",
+    "editor",
+    "mermaid",
+    "documentation"
+  ],
   "type": "module",
   "engines": {
     "vscode": "^1.90.0"
   },
   "categories": [
+    "Visualization",
     "Other"
   ],
   "main": "./dist/extension.js",

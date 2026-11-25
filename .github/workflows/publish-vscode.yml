@@ -1,0 +1,59 @@
+# Publish the Nota VS Code extension (.vsix) to VS Code Marketplace (OIDC Trusted Publishing) and Open VSX.
+#
+# Authentication:
+#   - VS Code Marketplace uses OIDC Trusted Publishing configured on publisher `nota-adoc` (no PAT secret required).
+#   - Open VSX optionally uses repository secret `OVSX_PAT` (Access Token for namespace `nota-adoc`).
+#
+# Pre-release versions:
+#   - On GitHub Release (`published`), `--pre-release` is passed when the release is marked as a pre-release.
+#   - On manual `workflow_dispatch`, `--pre-release` is controlled by the `pre_release` input (true by default for 0.x).
+name: Publish VS Code Extension
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      pre_release:
+        description: Publish as pre-release
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Build VSIX and publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test -- --project vscode-host --maxWorkers 2
+      - run: npm run vsix
+
+      - name: Publish to VS Code Marketplace (OIDC)
+        run: |
+          FLAG=""
+          if [ "${{ (github.event_name == 'workflow_dispatch' && inputs.pre_release) || (github.event_name == 'release' && github.event.release.prerelease) }}" = "true" ]; then
+            FLAG="--pre-release"
+          fi
+          npx vsce publish --oidc $FLAG --packagePath packages/vscode/nota-vscode-*.vsix
+
+      - name: Publish to Open VSX
+        if: secrets.OVSX_PAT != ''
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+        run: |
+          FLAG=""
+          if [ "${{ (github.event_name == 'workflow_dispatch' && inputs.pre_release) || (github.event_name == 'release' && github.event.release.prerelease) }}" = "true" ]; then
+            FLAG="--pre-release"
+          fi
+          npx --yes ovsx publish $FLAG packages/vscode/nota-vscode-*.vsix
