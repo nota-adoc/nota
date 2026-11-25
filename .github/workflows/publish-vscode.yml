@@ -37,15 +37,24 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test -- --project vscode-host --maxWorkers 2
-      - run: npm run vsix
+
+      - name: Determine release flags
+        id: meta
+        run: |
+          if [ "${{ (github.event_name == 'workflow_dispatch' && inputs.pre_release) || (github.event_name == 'release' && github.event.release.prerelease) }}" = "true" ]; then
+            echo "flag=--pre-release" >> "$GITHUB_OUTPUT"
+          else
+            echo "flag=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build and package VSIX
+        run: |
+          npm run build -w packages/vscode
+          cd packages/vscode
+          npx vsce package --no-dependencies ${{ steps.meta.outputs.flag }}
 
       - name: Publish to VS Code Marketplace (OIDC)
-        run: |
-          FLAG=""
-          if [ "${{ (github.event_name == 'workflow_dispatch' && inputs.pre_release) || (github.event_name == 'release' && github.event.release.prerelease) }}" = "true" ]; then
-            FLAG="--pre-release"
-          fi
-          npx vsce publish --oidc $FLAG --packagePath packages/vscode/nota-vscode-*.vsix
+        run: npx vsce publish --oidc ${{ steps.meta.outputs.flag }} --packagePath packages/vscode/nota-vscode-*.vsix
 
       - name: Publish to Open VSX
         env:
@@ -55,8 +64,4 @@ jobs:
             echo "OVSX_PAT is not configured; skipping Open VSX."
             exit 0
           fi
-          FLAG=""
-          if [ "${{ (github.event_name == 'workflow_dispatch' && inputs.pre_release) || (github.event_name == 'release' && github.event.release.prerelease) }}" = "true" ]; then
-            FLAG="--pre-release"
-          fi
-          npx --yes ovsx publish $FLAG packages/vscode/nota-vscode-*.vsix
+          npx --yes ovsx publish ${{ steps.meta.outputs.flag }} packages/vscode/nota-vscode-*.vsix
