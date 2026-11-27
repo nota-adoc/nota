@@ -35,6 +35,8 @@
 | `nota.showAnchors` | `false` | Show `[[id]]` / `[#id]` anchor lines in Visual mode |
 | `nota.blocksInCapsule` | `all` | Toolbar block buttons (`all` or `frequent`) |
 
+`nota.language`: `auto` (the default) follows VS Code's UI language (`ru` for Russian, `en` for everything else).
+
 ## Tips
 
 - **Open `.adoc` as plain text by default:** right-click an `.adoc` tab → *Reopen Editor With…* → *Configure Default Editor for "*.adoc"…* → *Text Editor*.
@@ -44,6 +46,6 @@
 
 - [Try the live web demo](https://nota-adoc.github.io/nota/)
 - [GitHub repository](https://github.com/nota-adoc/nota)
-- [Русская версия (README.ru.md)](https://github.com/nota-adoc/nota/blob/main/packages/vscode/README.ru.md)
+- [Русская версия](README.ru.md)
 - [Full technical specification](https://github.com/nota-adoc/nota/blob/main/docs/vscode-spec.md)
 - [Report an issue](https://github.com/nota-adoc/nota/issues)

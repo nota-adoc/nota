@@ -1,6 +1,6 @@
 # Nota
 
-[English version](https://github.com/nota-adoc/nota/blob/main/packages/vscode/README.md)
+[English version](README.md)
 
 **Визуальный AsciiDoc-редактор для VS Code без потери исходника.** Правьте файлы `.adoc` и `.asciidoc` визуально на странице, пока текст документа остаётся единственной истиной — меняются только затронутые байты, а отступы, комментарии и атрибуты остаются в Git нетронутыми.
 
@@ -36,6 +36,8 @@
 | `nota.outlineView` | `capsule` | Оглавление: `capsule` (островок при наведении) или `side` (колонка слева) |
 | `nota.showAnchors` | `false` | Показывать строки якорей `[[id]]` / `[#id]` в режиме «Визуально» |
 | `nota.blocksInCapsule` | `all` | Кнопки блоков в капсуле (`all` — все, `frequent` — частые) |
+
+`nota.language`: `auto` (по умолчанию) следует языку интерфейса VS Code (`ru` для русского, `en` для остальных языков).
 
 ## Подсказки
 
